@@ -10,7 +10,7 @@ $result = $iamport->cancel(array(
 	'amount' 		=> 1000,					//amount가 생략되거나 0이면 전액취소. 금액지정이면 부분취소(PG사 정책별, 결제수단별로 부분취소가 불가능한 경우도 있음)
 	'reason'		=> '취소테스트',				//취소사유
 	'refund_holder' => '환불될 가상계좌 예금주', 		//이용 중인 PG사에서 가상계좌 환불 기능을 제공하는 경우. 일반적으로 특약 계약이 필요
-	'refund_bank',	=> '환불될 가상계좌 은행코드',
+	'refund_bank'	=> '환불될 가상계좌 은행코드',
 	'refund_account'=> '환불될 가상계좌 번호'
 ));
 if ( $result->success ) {
