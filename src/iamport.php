@@ -73,6 +73,7 @@ if ( !class_exists('Iamport') ) {
 		const CANCEL_PAYMENT_URL = 'https://api.iamport.kr/payments/cancel/';
 		const SBCR_ONETIME_PAYMENT_URL = 'https://api.iamport.kr/subscribe/payments/onetime/';
 		const SBCR_AGAIN_PAYMENT_URL = 'https://api.iamport.kr/subscribe/payments/again/';
+		const SBCR_CUSTOMERS_URL = "https://api.iamport.kr/subscribe/customers/";
 		const TOKEN_HEADER = 'Authorization';
 
 		private $imp_key = null;
@@ -187,6 +188,30 @@ if ( !class_exists('Iamport') ) {
 
 				$payment_data = new IamportPayment($response);
 				return new IamportResult(true, $payment_data);
+			} catch(IamportAuthException $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			} catch(IamportRequestException $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			} catch(Exception $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			}
+		}
+
+		// /subscribe/customers/{customer_uid} POST function
+		public function sbcr_customers_POST($data) {
+			try {
+				$access_token = $this->getAccessCode();
+
+				$keys = array_flip(array('customer_uid', 'card_number', 'expiry', 'birth', 'pwd_2digit'));
+				$customers_data = array_intersect_key($data, $keys);
+
+				$response = $this->postResponse(
+					self::SBCR_CUSTOMERS_URL.$customers_data['customer_uid'], 
+					$customers_data,
+					array(self::TOKEN_HEADER.': '.$access_token)
+					);
+
+				return new IamportResult(true, $response);
 			} catch(IamportAuthException $e) {
 				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
 			} catch(IamportRequestException $e) {
