@@ -75,7 +75,7 @@ if ( !class_exists('Iamport') ) {
 		const SBCR_AGAIN_PAYMENT_URL = 'https://api.iamport.kr/subscribe/payments/again/';
 		const SBCR_SCHEDULE_PAYMENT_URL = 'https://api.iamport.kr/subscribe/payments/schedule/';
 		const SBCR_UNSCHEDULE_PAYMENT_URL = 'https://api.iamport.kr/subscribe/payments/unschedule/';
-		const SBCR_CUSTOMER_URL = 'https://api.iamport.kr/subscribe/customers/';
+		const SBCR_CUSTOMERS_URL = 'https://api.iamport.kr/subscribe/customers/';
 
 		const TOKEN_HEADER = 'Authorization';
 
@@ -260,18 +260,22 @@ if ( !class_exists('Iamport') ) {
 			}
 		}
 
-		public function postCustomer($customer_uid, $data) {
+		// /subscribe/customers/{customer_uid} POST function
+		/**
+		 * @deprecated Renamed. Use subscribeCustomerPost($data)
+		 */
+		public function sbcr_customers_POST($data) {
 			try {
 				$access_token = $this->getAccessCode();
 
-				$keys = array_flip(array('card_number', 'expiry', 'birth', 'pwd_2digit', 'customer_name', 'customer_tel', 'customer_email', 'customer_addr', 'customer_postcode'));
-				$card_data = array_intersect_key($data, $keys);
+				$keys = array_flip(array('customer_uid', 'card_number', 'expiry', 'birth', 'pwd_2digit', 'customer_name', 'customer_tel', 'customer_email', 'customer_addr', 'customer_postcode'));
+				$customers_data = array_intersect_key($data, $keys);
 
 				$response = $this->postResponse(
-					self::SBCR_CUSTOMER_URL . $customer_uid, 
-					$card_data,
+					self::SBCR_CUSTOMERS_URL.$customers_data['customer_uid'], 
+					$customers_data,
 					array(self::TOKEN_HEADER.': '.$access_token)
-				);
+					);
 
 				return new IamportResult(true, $response);
 			} catch(IamportAuthException $e) {
@@ -283,12 +287,16 @@ if ( !class_exists('Iamport') ) {
 			}
 		}
 
-		public function deleteCustomer($customer_uid) {
+		public function subscribeCustomerPost($data) {
+			return $this->sbcr_customers_POST($data);
+		}
+
+		public function subscribeCustomerDelete($customer_uid) {
 			try {
 				$access_token = $this->getAccessCode();
 
 				$response = $this->deleteResponse(
-					self::SBCR_CUSTOMER_URL . $customer_uid, 
+					self::SBCR_CUSTOMERS_URL . $customer_uid, 
 					array(self::TOKEN_HEADER.': '.$access_token)
 				);
 
@@ -302,9 +310,9 @@ if ( !class_exists('Iamport') ) {
 			}
 		}
 
-		public function getCustomer($customer_uid) {
+		public function subscribeCustomerGet($customer_uid) {
 			try {
-				$response = $this->getResponse(self::SBCR_CUSTOMER_URL.$customer_uid);
+				$response = $this->getResponse(self::SBCR_CUSTOMERS_URL.$customer_uid);
 			    
 			    return new IamportResult(true, $response);
 			} catch(IamportAuthException $e) {
