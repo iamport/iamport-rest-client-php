@@ -1,5 +1,5 @@
 <?php
-require_once('src/iamport.php');
+require_once(dirname(__DIR__).'/src/iamport.php');
 
 $iamport = new Iamport('YOUR_IMP_REST_API_KEY', 'YOUR_IMP_REST_API_SECRET');
 

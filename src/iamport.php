@@ -73,6 +73,10 @@ if ( !class_exists('Iamport') ) {
 		const CANCEL_PAYMENT_URL = 'https://api.iamport.kr/payments/cancel/';
 		const SBCR_ONETIME_PAYMENT_URL = 'https://api.iamport.kr/subscribe/payments/onetime/';
 		const SBCR_AGAIN_PAYMENT_URL = 'https://api.iamport.kr/subscribe/payments/again/';
+		const SBCR_SCHEDULE_PAYMENT_URL = 'https://api.iamport.kr/subscribe/payments/schedule/';
+		const SBCR_UNSCHEDULE_PAYMENT_URL = 'https://api.iamport.kr/subscribe/payments/unschedule/';
+		const SBCR_CUSTOMER_URL = 'https://api.iamport.kr/subscribe/customers/';
+
 		const TOKEN_HEADER = 'Authorization';
 
 		private $imp_key = null;
@@ -148,11 +152,14 @@ if ( !class_exists('Iamport') ) {
 			}
 		}
 
+		/**
+		 * @deprecated Renamed. Use subscribeOnetime($data)
+		 */
 		public function sbcr_onetime($data) {
 			try {
 				$access_token = $this->getAccessCode();
 
-				$keys = array_flip(array('token', 'merchant_uid', 'amount', 'vat', 'card_number', 'expiry', 'birth', 'pwd_2digit', 'remember_me', 'customer_uid', 'name', 'buyer_name', 'buyer_email', 'buyer_tel', 'buyer_addr', 'buyer_postcode'));
+				$keys = array_flip(array('token', 'merchant_uid', 'amount', 'vat', 'card_number', 'expiry', 'birth', 'pwd_2digit', 'customer_uid', 'name', 'buyer_name', 'buyer_email', 'buyer_tel', 'buyer_addr', 'buyer_postcode'));
 				$onetime_data = array_intersect_key($data, $keys);
 
 				$response = $this->postResponse(
@@ -172,6 +179,9 @@ if ( !class_exists('Iamport') ) {
 			}
 		}
 
+		/**
+		 * @deprecated Renamed. Use subscribeAgain($data)
+		 */
 		public function sbcr_again($data) {
 			try {
 				$access_token = $this->getAccessCode();
@@ -196,6 +206,116 @@ if ( !class_exists('Iamport') ) {
 			}
 		}
 
+		public function subscribeOnetime($data) {
+			return $this->sbcr_onetime($data);
+		}
+
+		public function subscribeAgain($data) {
+			return $this->sbcr_again($data);
+		}
+
+		public function subscribeSchedule($data) {
+			try {
+				$access_token = $this->getAccessCode();
+
+				$keys = array_flip(array('customer_uid', 'checking_amount', 'card_number', 'expiry', 'birth', 'pwd_2digit', 'schedules'));
+				$schedule_data = array_intersect_key($data, $keys);
+
+				$response = $this->postResponse(
+					self::SBCR_SCHEDULE_PAYMENT_URL, 
+					$schedule_data,
+					array(self::TOKEN_HEADER.': '.$access_token)
+				);
+
+				return new IamportResult(true, $response);
+			} catch(IamportAuthException $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			} catch(IamportRequestException $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			} catch(Exception $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			}
+		}
+
+		public function subscribeUnschedule($data) {
+			try {
+				$access_token = $this->getAccessCode();
+
+				$keys = array_flip(array('customer_uid', 'merchant_uid'));
+				$scheduled_data = array_intersect_key($data, $keys);
+
+				$response = $this->postResponse(
+					self::SBCR_UNSCHEDULE_PAYMENT_URL, 
+					$scheduled_data,
+					array(self::TOKEN_HEADER.': '.$access_token)
+				);
+
+				return new IamportResult(true, $response);
+			} catch(IamportAuthException $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			} catch(IamportRequestException $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			} catch(Exception $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			}
+		}
+
+		public function postCustomer($customer_uid, $data) {
+			try {
+				$access_token = $this->getAccessCode();
+
+				$keys = array_flip(array('card_number', 'expiry', 'birth', 'pwd_2digit', 'customer_name', 'customer_tel', 'customer_email', 'customer_addr', 'customer_postcode'));
+				$card_data = array_intersect_key($data, $keys);
+
+				$response = $this->postResponse(
+					self::SBCR_CUSTOMER_URL . $customer_uid, 
+					$card_data,
+					array(self::TOKEN_HEADER.': '.$access_token)
+				);
+
+				return new IamportResult(true, $response);
+			} catch(IamportAuthException $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			} catch(IamportRequestException $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			} catch(Exception $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			}
+		}
+
+		public function deleteCustomer($customer_uid) {
+			try {
+				$access_token = $this->getAccessCode();
+
+				$response = $this->deleteResponse(
+					self::SBCR_CUSTOMER_URL . $customer_uid, 
+					array(self::TOKEN_HEADER.': '.$access_token)
+				);
+
+				return new IamportResult(true, $response);
+			} catch(IamportAuthException $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			} catch(IamportRequestException $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			} catch(Exception $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			}
+		}
+
+		public function getCustomer($customer_uid) {
+			try {
+				$response = $this->getResponse(self::SBCR_CUSTOMER_URL.$customer_uid);
+			    
+			    return new IamportResult(true, $response);
+			} catch(IamportAuthException $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			} catch(IamportRequestException $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			} catch(Exception $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			}
+		}
+
 		private function getResponse($request_url, $request_data=null) {
 			$access_token = $this->getAccessCode();
 			$headers = array(self::TOKEN_HEADER.': '.$access_token, 'Content-Type: application/json');
@@ -206,7 +326,7 @@ if ( !class_exists('Iamport') ) {
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-	        //execute get
+			//execute get
 			$body = curl_exec($ch);
 			$error_code = curl_errno($ch);
 			$status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -232,7 +352,7 @@ if ( !class_exists('Iamport') ) {
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data_str);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-	        //execute post
+			//execute post
 			$body = curl_exec($ch);
 			$error_code = curl_errno($ch);
 			$status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
