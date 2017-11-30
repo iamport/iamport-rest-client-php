@@ -15,7 +15,7 @@ $result = $iamport->sbcr_again(array(
 	//생략가능
 	'name'			=> '주문명',					// PG사 이메일 영수증의 상품명
 	'buyer_name'	=> '주문자명',					// PG사 이메일 영수증의 구매자명
-	'buyer_email'	=> '주문자 E-mail주소'			// PG사 이메일 영수증을 수신할 이메일주소 (생략시 이메일 영수증 발송 X)				
+	'buyer_email'	=> '주문자 E-mail주소',		// PG사 이메일 영수증을 수신할 이메일주소 (생략시 이메일 영수증 발송 X)
 	'buyer_tel'		=> '주문자 전화번호',
 	'buyer_addr'	=> '주문자 주소',
 	'buyer_postcode'=> '주문자 우편번호',
