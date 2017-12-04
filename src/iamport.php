@@ -375,6 +375,31 @@ if ( !class_exists('Iamport') ) {
 			return $r->response;
 		}
 
+        private function deleteResponse($request_url, $headers=array()) {
+            $default_header = array('Content-Type: application/json');
+            $headers = array_merge($default_header, $headers);
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $request_url);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+            //execute delete
+            $body = curl_exec($ch);
+            $error_code = curl_errno($ch);
+            $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            $r = json_decode(trim($body));
+            curl_close($ch);
+
+            if ( $error_code > 0 )	throw new Exception("Request Error(HTTP STATUS : ".$status_code.")", $error_code);
+            if ( empty($r) )	throw new Exception("API서버로부터 응답이 올바르지 않습니다. ".$body, 1);
+            if ( $r->code !== 0 )	throw new IamportRequestException($r);
+
+            return $r->response;
+        }
+
 		private function getAccessCode() {
 			try {
 				$now = time();
