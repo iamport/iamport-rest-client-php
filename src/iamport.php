@@ -76,6 +76,7 @@ if ( !class_exists('Iamport') ) {
 		const SBCR_SCHEDULE_PAYMENT_URL = 'https://api.iamport.kr/subscribe/payments/schedule/';
 		const SBCR_UNSCHEDULE_PAYMENT_URL = 'https://api.iamport.kr/subscribe/payments/unschedule/';
 		const SBCR_CUSTOMERS_URL = 'https://api.iamport.kr/subscribe/customers/';
+		const RECEIPT_URL = 'https://api.iamport.kr/receipts/';
 
 		const TOKEN_HEADER = 'Authorization';
 
@@ -315,6 +316,45 @@ if ( !class_exists('Iamport') ) {
 				$response = $this->getResponse(self::SBCR_CUSTOMERS_URL.$customer_uid);
 			    
 			    return new IamportResult(true, $response);
+			} catch(IamportAuthException $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			} catch(IamportRequestException $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			} catch(Exception $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			}
+		}
+
+		public function issueReceipt($impUid, $requestData)
+		{
+			try {
+				$accessToken = $this->getAccessCode();
+
+				$keys = array_flip(array("identifier", "identifier_type", "type", "buyer_name", "buyer_email", "buyer_tel", "vat"));
+				$postData = array_intersect_key($requestData, $keys);
+
+				$response = $this->postResponse(
+					self::RECEIPT_URL . $impUid, 
+					$postData,
+					array(self::TOKEN_HEADER.': '.$accessToken)
+				);
+
+				return new IamportResult(true, $response);
+			} catch(IamportAuthException $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			} catch(IamportRequestException $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			} catch(Exception $e) {
+				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
+			}
+		}
+
+		public function getReceipt($impUid)
+		{
+			try {
+				$response = $this->getResponse(self::RECEIPT_URL . $impUid);
+
+				return new IamportResult(true, $response);
 			} catch(IamportAuthException $e) {
 				return new IamportResult(false, null, array('code'=>$e->getCode(), 'message'=>$e->getMessage()));
 			} catch(IamportRequestException $e) {
