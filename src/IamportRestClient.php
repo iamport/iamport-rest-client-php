@@ -5,6 +5,7 @@ use Iamport\RestClient\Middleware\TokenMiddleware;
 use Iamport\RestClient\Middleware\DefaultRequestMiddleware;
 use Iamport\RestClient\Response\IamportResponse;
 use Iamport\RestClient\Response\Payment;
+use Iamport\RestClient\Exception\IamportException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
@@ -67,8 +68,9 @@ class IamportRestClient
     $response = new IamportResponse($httpClient->get($paymentUrl));
 
     if (!$response->isValid()) {
-      return null;
+      throw new IamportException($response);
     }
+
     return $response->getResponseAs(Payment::class);
   }
 
@@ -79,34 +81,26 @@ class IamportRestClient
     }
 
     $httpClient = $this->getHttpClient(false);
-    $httpResponse = $httpClient->post(self::API_BASE_URL . "/users/getToken", [
+
+    $authUrl = self::API_BASE_URL . "/users/getToken";
+    $response = new IamportResponse($httpClient->post($authUrl, [
       RequestOptions::JSON => [
         "imp_key" => $this->impKey,
         "imp_secret" => $this->impSecret,
       ]
-    ]);
+    ]));
 
-    switch($httpResponse->getStatusCode()) {
-      case 200 :
-        $jsonBody = json_decode($httpResponse->getBody());
-
-        $this->accessToken = $jsonBody->response->access_token;
-        $remainedTime = $jsonBody->response->expired_at - $jsonBody->response->now;
-
-        //호출하는 서버의 시간이 동기화되어있지 않을 가능성 고려 ( 로컬 서버 타임기준 계산 )
-        $this->expireTimestamp = time() + $remainedTime;
-
-        return $this->accessToken;
-        break;
-
-      case 401 :
-        throw new Exception($jsonBody->message, 401);
-        break;
-
-      default :
-        throw new Exception($jsonBody->message, $httpResponse->getStatusCode());
-        break;
+    if (!$response->isValid()) {
+      throw new IamportException($response);
     }
+
+    $auth = $response->getResponseAs(Auth::class);
+
+    $this->accessToken = $auth->getAccessToken();
+    //호출하는 서버의 시간이 동기화되어있지 않을 가능성 고려 ( 로컬 서버 타임기준 계산 )
+    $this->expireTimestamp = time() + $auth->getRemaindSeconds();
+
+    return $this->accessToken;
   }
 
   private function getHttpClient($authenticated)

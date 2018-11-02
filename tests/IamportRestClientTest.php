@@ -38,6 +38,7 @@ class IamportRestClientTest extends TestCase
   public function testRequestAccessToken()
   {
     $iamportClient = new Iamport\RestClient\IamportRestClient(self::TEST_IMP_KEY, self::TEST_IMP_SEC);
+    $unauthorizedClient = new Iamport\RestClient\IamportRestClient(self::TEST_IMP_KEY, self::TEST_IMP_SEC . "garbage");
 
     try {
       $token = $iamportClient->requestAccessToken(true);
@@ -45,8 +46,12 @@ class IamportRestClientTest extends TestCase
     } catch (Exception $e) {
       error_log($e->getMessage());
     }
+
+    $this->expectException(IamportException::class);
+    $token = $unauthorizedClient->requestAccessToken(true);
     
     unset($iamportClient);
+    unset($unauthorizedClient);
   }
 
   public function testGetPaymentByImpUid()
@@ -59,12 +64,12 @@ class IamportRestClientTest extends TestCase
     try {
       $payment = $iamportClient->paymentByImpUid($myImpUid);
       $this->assertNotNull($payment);
-
-      $nonPayment = $iamportClient->paymentByImpUid($nonImpUid);
-      $this->assertNull($nonPayment);
     } catch (Exception $e) {
       error_log($e->getMessage());
     }
+
+    $this->expectException(IamportException::class);
+    $nonPayment = $iamportClient->paymentByImpUid($nonImpUid);
     
     unset($iamportClient);
   }

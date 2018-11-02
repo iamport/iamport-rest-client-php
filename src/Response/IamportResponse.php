@@ -27,6 +27,11 @@ class IamportResponse
     return $statusCode >= 200 && $statusCode < 300 && $this->resultCode === 0;
   }
 
+  public function getCode()
+  {
+    return $this->resultCode;
+  }
+
   public function getMessage()
   {
     return $this->resultMessage;
@@ -34,6 +39,10 @@ class IamportResponse
 
   public function getResponseAs($clazz)
   {
+    if (empty($this->resultBody)) {
+      return null;
+    }
+
     return new $clazz($this->resultBody);
   }
 

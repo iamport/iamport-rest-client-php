@@ -1,21 +1,11 @@
 <?php 
 namespace Iamport\RestClient\Response;
 
-class Payment
+class Payment extends Base
 {
-  private $responseBody = null;
-
-  public function __construct($responseBody)
-  {
-    $this->responseBody = $responseBody;
-  }
 
   public function getData($name)
   {
-    if (is_null($this->responseBody)) {
-      return null;
-    }
-
     if (!isset($this->responseBody->{$name})) {
       return null;
     }
