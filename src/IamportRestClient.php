@@ -5,6 +5,7 @@ use Iamport\RestClient\Middleware\TokenMiddleware;
 use Iamport\RestClient\Middleware\DefaultRequestMiddleware;
 use Iamport\RestClient\Response\IamportResponse;
 use Iamport\RestClient\Response\Payment;
+use Iamport\RestClient\Response\Auth;
 use Iamport\RestClient\Exception\IamportException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;

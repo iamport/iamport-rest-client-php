@@ -1,6 +1,6 @@
 <?php 
 use PHPUnit\Framework\TestCase;
-
+use Iamport\RestClient\Exception\IamportException;
 /**
 *  Corresponding Class to test YourClass class
 *
