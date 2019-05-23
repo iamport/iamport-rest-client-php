@@ -66,11 +66,71 @@ if (!class_exists('IamportPayment')) {
 
         public function getCustomData($name = null)
         {
-            if (is_null($name)) return $this->custom_data;
+            if (is_null($name)) {
+                return $this->custom_data;
+            }
 
-            return $this->custom_data->{$name};
+            if (isset($this->custom_data->{$name})) {
+                return $this->custom_data->{$name};
+            }
+
+            return null;
         }
 
+    }
+}
+
+if (!class_exists('IamportPaymentsPaged')) {
+    class IamportPaymentsPaged
+    {
+        protected $total;
+        protected $previous;
+        protected $next;
+        protected $payments;
+
+        public function __construct($response)
+        {
+            $this->total = $response->total;
+            $this->previous = $response->previous;
+            $this->next = $response->next;
+
+            $this->payments = array();
+            foreach ($response->list as $row) {
+                $this->payments[] = new IamportPayment($row);
+            }
+        }
+
+        /**
+         * @return integer
+         */
+        public function getTotal()
+        {
+            return $this->total;
+        }
+
+        /**
+         * @return integer
+         */
+        public function getPrevious()
+        {
+            return $this->previous;
+        }
+
+        /**
+         * @return integer
+         */
+        public function getNext()
+        {
+            return $this->next;
+        }
+
+        /**
+         * @return array
+         */
+        public function getPayments()
+        {
+            return $this->payments;
+        }
     }
 }
 
@@ -81,6 +141,7 @@ if (!class_exists('Iamport')) {
         const GET_TOKEN_URL = 'https://api.iamport.kr/users/getToken';
         const GET_PAYMENT_URL = 'https://api.iamport.kr/payments/';
         const FIND_PAYMENT_URL = 'https://api.iamport.kr/payments/find/';
+        const FIND_ALL_PAYMENT_URL = 'https://api.iamport.kr/payments/findAll/';
         const CANCEL_PAYMENT_URL = 'https://api.iamport.kr/payments/cancel/';
         const SBCR_ONETIME_PAYMENT_URL = 'https://api.iamport.kr/subscribe/payments/onetime/';
         const SBCR_AGAIN_PAYMENT_URL = 'https://api.iamport.kr/subscribe/payments/again/';
@@ -120,13 +181,39 @@ if (!class_exists('Iamport')) {
             }
         }
 
-        public function findByMerchantUID($merchant_uid)
+        public function findByMerchantUID($merchantUid, $statusFilter=null)
         {
             try {
-                $response = $this->getResponse(self::FIND_PAYMENT_URL . $merchant_uid);
+                $endpoint = self::FIND_PAYMENT_URL . $merchantUid;
+                if (in_array($statusFilter, array('ready', 'paid', 'cancelled', 'failed'))) {
+                    $endpoint = $endpoint . '/' . $statusFilter;
+                }
+
+                $response = $this->getResponse($endpoint);
 
                 $payment_data = new IamportPayment($response);
                 return new IamportResult(true, $payment_data);
+            } catch (IamportAuthException $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            } catch (IamportRequestException $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            } catch (Exception $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            }
+        }
+
+        public function findAllByMerchantUID($merchantUid, $statusFilter=null)
+        {
+            try {
+                $endpoint = self::FIND_ALL_PAYMENT_URL . $merchantUid;
+                if (in_array($statusFilter, array('ready', 'paid', 'cancelled', 'failed'))) {
+                    $endpoint = $endpoint . '/' . $statusFilter;
+                }
+
+                $response = $this->getResponse($endpoint);
+
+                $pagedPayments = new IamportPaymentsPaged($response);
+                return new IamportResult(true, $pagedPayments);
             } catch (IamportAuthException $e) {
                 return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
             } catch (IamportRequestException $e) {
