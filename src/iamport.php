@@ -155,9 +155,9 @@ if (!class_exists('Iamport')) {
         private $imp_key = null;
         private $imp_secret = null;
 
-        private $access_token = null;
-        private $expired_at = null;
-        private $now = null;
+        protected $access_token = null;
+        protected $expired_at = null;
+        protected $now = null;
 
         public function __construct($imp_key, $imp_secret)
         {
@@ -477,7 +477,7 @@ if (!class_exists('Iamport')) {
             }
         }
 
-        private function getResponse($request_url, $request_data = null)
+        protected function getResponse($request_url, $request_data = null)
         {
             $access_token = $this->getAccessCode();
             $headers = array(self::TOKEN_HEADER . ': ' . $access_token, 'Content-Type: application/json');
@@ -502,7 +502,7 @@ if (!class_exists('Iamport')) {
             return $r->response;
         }
 
-        private function postResponse($request_url, $post_data = array(), $headers = array())
+        protected function postResponse($request_url, $post_data = array(), $headers = array())
         {
             $post_data_str = json_encode($post_data);
             $default_header = array('Content-Type: application/json', 'Content-Length: ' . strlen($post_data_str));
@@ -530,7 +530,7 @@ if (!class_exists('Iamport')) {
             return $r->response;
         }
 
-        private function deleteResponse($request_url, $headers = array())
+        protected function deleteResponse($request_url, $headers = array())
         {
             $default_header = array('Content-Type: application/json');
             $headers = array_merge($default_header, $headers);
@@ -556,7 +556,7 @@ if (!class_exists('Iamport')) {
             return $r->response;
         }
 
-        private function getAccessCode()
+        protected function getAccessCode()
         {
             try {
                 $now = time();
