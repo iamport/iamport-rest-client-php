@@ -1,29 +1,27 @@
 <?php
+
 namespace Iamport\RestClient\Middleware;
 
 use Psr\Http\Message\RequestInterface;
 
 class TokenMiddleware
 {
+    private $token = null;
 
-  private $token = null;
-
-  public function __construct($token)
-  {
-    $this->token = $token;
-  }
-
-  public function __invoke(callable $handler)
-  {
-    return function (
-      RequestInterface $request,
-      array $options
-    ) use ($handler)
+    public function __construct($token)
     {
-      $request = $request->withHeader("Authorization", "Bearer " . $this->token);
+        $this->token = $token;
+    }
 
-      return $handler($request, $options);
-    };
-  }
+    public function __invoke(callable $handler)
+    {
+        return function (
+            RequestInterface $request,
+            array $options
+    ) use ($handler) {
+            $request = $request->withHeader('Authorization', 'Bearer '.$this->token);
 
+            return $handler($request, $options);
+        };
+    }
 }

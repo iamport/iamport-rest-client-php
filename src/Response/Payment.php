@@ -1,26 +1,25 @@
-<?php 
+<?php
+
 namespace Iamport\RestClient\Response;
 
 class Payment extends Base
 {
+    public function getData($name)
+    {
+        if (!isset($this->responseBody->{$name})) {
+            return null;
+        }
 
-  public function getData($name)
-  {
-    if (!isset($this->responseBody->{$name})) {
-      return null;
+        return $this->responseBody->{$name};
     }
 
-    return $this->responseBody->{$name};
-  }
+    public function getCustomData($name)
+    {
+        $data = $this->getData('custom_data');
+        if (!isset($data->{$name})) {
+            return null;
+        }
 
-  public function getCustomData($name)
-  {
-    $data = $this->getData("custom_data");
-    if (!isset($data->{$name})) {
-      return null;
+        return $data->{$name};
     }
-
-    return $data->{$name};
-  }
-
 }

@@ -1,21 +1,22 @@
-<?php 
+<?php
+
 namespace Iamport\RestClient\Exception;
+
+use Exception;
 
 class IamportException extends Exception
 {
+    private $iamportResponse;
 
-  private $iamportResponse;
+    public function __construct($response)
+    {
+        parent::__construct($response->getMessage(), $response->getCode());
 
-  public function __construct($response)
-  {
-    parent::__construct($response->getMessage(), $response->getCode());
+        $this->iamportResponse = $response;
+    }
 
-    $this->iamportResponse = $response;
-  }
-
-  public function getIamportResponse()
-  {
-    return $this->iamportResponse;
-  }
-
+    public function getIamportResponse()
+    {
+        return $this->iamportResponse;
+    }
 }

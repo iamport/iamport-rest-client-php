@@ -1,14 +1,13 @@
-<?php 
+<?php
+
 namespace Iamport\RestClient\Response;
 
 class Base
 {
-  
-  protected $responseBody = null;
+    protected $responseBody = null;
 
-  public function __construct($responseBody)
-  {
-    $this->responseBody = $responseBody;
-  }
-
+    public function __construct($responseBody)
+    {
+        $this->responseBody = $responseBody;
+    }
 }
