@@ -75,7 +75,7 @@ class IamportRestClient
         return $response->getResponseAs(Payment::class);
     }
 
-    public function requestAccessToken($force)
+    public function requestAccessToken($force = false)
     {
         if (!$this->isTokenExpired() && !$force) {
             return $this->accessToken;
