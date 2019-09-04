@@ -9,7 +9,7 @@ class IamportResponse
     private $resultMessage    = null;
     private $resultBody       = null;
 
-    public function __construct($httpResponse)
+    public function __construct($httpResponse = null)
     {
         $this->internalResponse = $httpResponse;
         $res                    = json_decode($httpResponse->getBody());
@@ -45,10 +45,5 @@ class IamportResponse
         }
 
         return new $clazz($this->resultBody);
-    }
-
-    public function getHttpResponse()
-    {
-        return $this->internalResponse;
     }
 }
