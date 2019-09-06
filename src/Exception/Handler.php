@@ -3,9 +3,8 @@
 namespace Iamport\RestClient\Exception;
 
 use Exception;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Exception\RequestException;
 use Iamport\RestClient\Result;
 
 /**
@@ -30,9 +29,7 @@ class Handler
             throw new IamportRequestException($exception);
         } elseif ($exception instanceof ConnectException) {
             throw new Exception('[Connect Error] '.$exception->getMessage(), $exception->getCode());
-        } elseif ($exception instanceof ServerException) {
-            throw new Exception('[Server Error] '.$exception->getMessage(), $exception->getCode());
-        } elseif ($exception instanceof ClientException) {
+        } elseif ($exception instanceof RequestException) {
             $errorResponse = json_decode($exception->getResponse()->getBody());
             if (0 !== $errorResponse->code) {
                 throw new IamportRequestException($errorResponse);

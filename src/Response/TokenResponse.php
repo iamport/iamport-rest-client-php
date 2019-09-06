@@ -2,7 +2,7 @@
 
 namespace Iamport\RestClient\Response;
 
-class IamportResponse
+class TokenResponse
 {
     private $internalResponse = null;
     private $resultCode       = -1;

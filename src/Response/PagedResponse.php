@@ -3,9 +3,9 @@
 namespace Iamport\RestClient\Response;
 
 /**
- * Class PaymentsPaged.
+ * Class PagedResponse.
  */
-class PaymentsPaged
+class PagedResponse
 {
     protected $total;
     protected $previous;
@@ -13,7 +13,7 @@ class PaymentsPaged
     protected $payments;
 
     /**
-     * PaymentsPaged constructor.
+     * PagedResponse constructor.
      *
      * @param $response
      */
@@ -25,7 +25,7 @@ class PaymentsPaged
 
         $this->payments = [];
         foreach ($response->list as $row) {
-            $this->payments[] = new Payment((object) $row);
+            $this->payments[] = new Response((object) $row);
         }
     }
 

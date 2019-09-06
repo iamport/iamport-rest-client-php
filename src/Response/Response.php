@@ -2,18 +2,20 @@
 
 namespace Iamport\RestClient\Response;
 
-class Payment extends Base
+class Response extends Base
 {
     protected $customData = null;
 
     /**
-     * Payment constructor.
+     * Response constructor.
      *
      * @param $response
      */
     public function __construct($response)
     {
-        $this->customData = json_decode($response->custom_data);
+        if(isset($response->custom_data)){
+            $this->customData = json_decode($response->custom_data);
+        }
         parent::__construct($response);
     }
 

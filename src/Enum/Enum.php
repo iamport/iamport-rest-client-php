@@ -1,6 +1,6 @@
 <?php
 
-namespace Iamport\RestClient\Libraries;
+namespace Iamport\RestClient\Enum;
 
 use Exception;
 
@@ -61,7 +61,7 @@ abstract class Enum
     }
 
     /**
-     * @param $value int
+     * @param $value string
      *
      * @return string|null
      */
@@ -91,7 +91,7 @@ abstract class Enum
     }
 
     /**
-     * @param $value int
+     * @param $value string
      *
      * @return string
      */

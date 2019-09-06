@@ -4,13 +4,17 @@ namespace Iamport\RestClient;
 
 use Exception;
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
-use Iamport\RestClient\Enum\ApiType;
+use GuzzleHttp\Promise\PromiseInterface;
+use Iamport\RestClient\Enum\Endpoint;
 use Iamport\RestClient\Exception\Handler;
 use Iamport\RestClient\Exception\IamportAuthException;
 use Iamport\RestClient\Exception\IamportRequestException;
 use Iamport\RestClient\Response\Auth;
-use Iamport\RestClient\Response\IamportResponse;
+use Iamport\RestClient\Response\PagedResponse;
+use Iamport\RestClient\Response\Response;
+use Iamport\RestClient\Response\TokenResponse;
 use Iamport\RestClient\Middleware\TokenMiddleware;
 use Iamport\RestClient\Middleware\DefaultRequestMiddleware;
 use GuzzleHttp\Client;
@@ -34,10 +38,10 @@ class IamportBase
     /**
      * Iamport constructor.
      *
-     * @param $impKey
-     * @param $impSecret
+     * @param string $impKey
+     * @param string $impSecret
      */
-    public function __construct($impKey, $impSecret)
+    public function __construct(string $impKey, string $impSecret)
     {
         $this->impKey    = $impKey;
         $this->impSecret = $impSecret;
@@ -62,14 +66,14 @@ class IamportBase
     }
 
     /**
-     * @param $force
+     * @param bool $force
      *
      * @return string|null
      *
      * @throws IamportAuthException
      * @throws Exception
      */
-    public function requestAccessToken($force)
+    public function requestAccessToken(bool $force)
     {
         if (!$this->isTokenExpired() && !$force) {
             return $this->accessToken;
@@ -78,8 +82,8 @@ class IamportBase
         try {
             $httpClient = $this->getHttpClient(false);
 
-            $authUrl  = ApiType::GET_TOKEN;
-            $response = new IamportResponse($httpClient->post($authUrl, [
+            $authUrl  = Endpoint::TOKEN;
+            $response = new TokenResponse($httpClient->post($authUrl, [
                 RequestOptions::JSON => [
                     'imp_key'    => $this->impKey,
                     'imp_secret' => $this->impSecret,
@@ -102,13 +106,13 @@ class IamportBase
     }
 
     /**
-     * @param $authenticated
+     * @param bool $authenticated
      *
      * @return Client
      *
      * @throws IamportAuthException
      */
-    protected function getHttpClient($authenticated)
+    protected function getHttpClient(bool $authenticated)
     {
         $stack = HandlerStack::create();
         $stack->push(new DefaultRequestMiddleware());
@@ -120,24 +124,24 @@ class IamportBase
 
         $client = new Client([
             'handler'  => $stack,
-            'base_uri' => ApiType::API_BASE_URL,
+            'base_uri' => Endpoint::API_BASE_URL,
         ]);
 
         return $client;
     }
 
     /**
-     * @param $method
-     * @param $uri
-     * @param array $attributes
-     * @param bool  $authenticated
+     * @param string $method
+     * @param string $uri
+     * @param array  $attributes
+     * @param bool   $authenticated
      *
      * @return object
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws Exception
      */
-    public function request($method, $uri, $attributes = [], $authenticated = false)
+    public function request(string $method, string $uri, array $attributes = [], bool $authenticated = true)
     {
         try {
             $client   = $this->getHttpClient($authenticated);
@@ -158,17 +162,17 @@ class IamportBase
     }
 
     /**
-     * @param $method
-     * @param $uri
-     * @param array $attributes
+     * @param string $method
+     * @param string $uri
+     * @param array  $attributes
+     * @param bool   $authenticated
      *
-     * @param bool $authenticated
-     * @return object
+     * @return PromiseInterface
      *
      * @throws IamportAuthException
      * @throws IamportRequestException
      */
-    protected function requestAsync($method, $uri, $attributes = [], $authenticated = false)
+    public function requestPromise(string $method, string $uri, array $attributes = [], bool $authenticated = true): PromiseInterface
     {
         try {
             $client   = $this->getHttpClient($authenticated);
@@ -194,6 +198,45 @@ class IamportBase
             return json_decode($response->getBody())->response;
         } catch (Exception $e) {
             Handler::report($e);
+        }
+    }
+
+    /**
+     * @param string $method
+     * @param string $uri
+     * @param array  $attributes
+     * @param string $responseType
+     * @param bool   $authenticated
+     *
+     * @return Result
+     *
+     * @throws GuzzleException
+     */
+    public function callApi(string $method, string $uri, array $attributes = [], string $responseType = 'default', bool $authenticated = true)
+    {
+        try {
+            if(isset($attributes['query'])) {
+                $attributes['query'] = json_encode($attributes['query']);
+            }
+
+            if(isset($attributes['body'])) {
+                $attributes['body'] = json_encode($attributes['body']);
+            }
+
+            $response = $this->request($method, $uri, $attributes, $authenticated);
+
+            switch ($responseType) {
+                case 'paged':
+                    $result = new PagedResponse($response);
+                    break;
+                default:
+                    $result  = new Response($response);
+                    break;
+            }
+            return new Result(true, $result);
+
+        } catch (Exception $e) {
+            return Handler::render($e);
         }
     }
 }
