@@ -4,6 +4,7 @@ namespace Iamport\RestClient;
 
 use Exception;
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\RequestException;
 use Iamport\RestClient\Enum\ApiType;
 use Iamport\RestClient\Exception\Handler;
 use Iamport\RestClient\Exception\IamportAuthException;
@@ -15,6 +16,7 @@ use Iamport\RestClient\Middleware\DefaultRequestMiddleware;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use GuzzleHttp\HandlerStack;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class IamportBase.
@@ -150,6 +152,46 @@ class IamportBase
             }
 
             return (object) $parseResponse->response;
+        } catch (Exception $e) {
+            Handler::report($e);
+        }
+    }
+
+    /**
+     * @param $method
+     * @param $uri
+     * @param array $attributes
+     *
+     * @param bool $authenticated
+     * @return object
+     *
+     * @throws IamportAuthException
+     * @throws IamportRequestException
+     */
+    protected function requestAsync($method, $uri, $attributes = [], $authenticated = false)
+    {
+        try {
+            $client   = $this->getHttpClient($authenticated);
+            $promise  = $client->requestAsync($method, $uri, $attributes);
+
+            $promise->then(
+                function (ResponseInterface $response) use (&$promise) {
+                    $parseResponse = json_decode($response->getBody());
+                    if (0 !== $parseResponse->code) {
+                        throw new IamportRequestException($parseResponse);
+                    }
+                    if (empty($parseResponse->response)) {
+                        throw new Exception('API서버로부터 응답이 올바르지 않습니다. '.$parseResponse, 1);
+                    }
+                },
+                function (RequestException $e) {
+                    throw new IamportRequestException($e);
+                }
+            );
+
+            $response = $promise->wait();
+
+            return json_decode($response->getBody())->response;
         } catch (Exception $e) {
             Handler::report($e);
         }
