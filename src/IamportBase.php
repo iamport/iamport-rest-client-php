@@ -29,8 +29,14 @@ class IamportBase
 {
     const EXPIRE_BUFFER = 30;
 
-    /** @var string $impKey define here what this variable is for, do this for every instance variable */
+    /**
+     * @var string $impKey
+     */
     private $impKey          = null;
+
+    /**
+     * @var string $impSecret
+     */
     private $impSecret       = null;
     private $accessToken     = null;
     private $expireTimestamp = 0;
@@ -62,7 +68,7 @@ class IamportBase
     {
         $now = time();
 
-        return null == $this->accessToken || ($this->expireTimestamp - self::EXPIRE_BUFFER) < $now;
+        return null === $this->accessToken || ($this->expireTimestamp - self::EXPIRE_BUFFER) < $now;
     }
 
     /**

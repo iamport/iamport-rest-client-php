@@ -4,6 +4,13 @@ namespace Iamport\RestClient;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Iamport\RestClient\Enum\Endpoint;
+use Iamport\RestClient\Request\AgainPayment;
+use Iamport\RestClient\Request\IssueBillingKey;
+use Iamport\RestClient\Request\IssueReceipt;
+use Iamport\RestClient\Request\CancelPayment;
+use Iamport\RestClient\Request\OnetimePayment;
+use Iamport\RestClient\Request\SubscribeSchedule;
+use Iamport\RestClient\Request\SubscribeUnschedule;
 
 /**
  * Class Iamport.
@@ -87,18 +94,15 @@ class Iamport extends IamportBase
      * 주문취소.
      * [POST] /payments/cancel.
      *
-     * @param array $request
+     * @param CancelPayment $request
      *
      * @return Result
      *
      * @throws GuzzleException
      */
-    public function paymentCancel(array $request): Result
+    public function paymentCancel(CancelPayment $request): Result
     {
-        $keys        = array_flip(['imp_uid', 'merchant_uid', 'amount', 'tax_free', 'checksum', 'reason', 'refund_holder', 'refund_bank', 'refund_account']);
-        $formData    = array_intersect_key($request, $keys);
-
-        $attributes = ['body' => $formData];
+        $attributes = ['body' => $request->toArray()];
 
         return $this->callApi('POST', Endpoint::PAYMENTS_CANCEL, $attributes);
     }
@@ -122,40 +126,34 @@ class Iamport extends IamportBase
      * 현금영수증 발행.
      * [POST] /receipts/{$impUid}.
      *
-     * @param string $impUid
-     * @param array  $request
+     * @param IssueReceipt $request
      *
      * @return Result
      *
      * @throws GuzzleException
      */
-    public function issueReceipt(string $impUid, array $request): Result
+    public function issueReceipt(IssueReceipt $request): Result
     {
-        $keys       = array_flip(['identifier', 'identifier_type', 'type', 'buyer_name', 'buyer_email', 'buyer_tel', 'vat']);
-        $formData   = array_intersect_key($request, $keys);
-        $attributes = ['body' => $formData];
+        $attributes = ['body' => $request->toArray()];
 
-        return $this->callApi('POST', Endpoint::RECEIPT.$impUid, $attributes);
+        return $this->callApi('POST', Endpoint::RECEIPT.$request->imp_uid, $attributes);
     }
 
     /**
      * 비인증결제 빌링키 등록(수정).
      * [POST] /subscribe/customers/{customer_uid}.
      *
-     * @param string $customerUid
-     * @param array  $request
+     * @param IssueBillingKey $request
      *
      * @return Result
      *
      * @throws GuzzleException
      */
-    public function addBillingKey(string $customerUid, array $request): Result
+    public function addBillingKey(IssueBillingKey $request): Result
     {
-        $keys          = array_flip(['card_number', 'expiry', 'birth', 'pwd_2digit', 'customer_name', 'customer_tel', 'customer_email', 'customer_addr', 'customer_postcode']);
-        $formData      = array_intersect_key($request, $keys);
-        $attributes    = ['body' => $formData];
+        $attributes = ['body' => $request->toArray()];
 
-        return $this->callApi('POST', Endpoint::SBCR_CUSTOMERS.$customerUid, $attributes);
+        return $this->callApi('POST', Endpoint::SBCR_CUSTOMERS.$request->customer_uid, $attributes);
     }
 
     /**
@@ -192,17 +190,15 @@ class Iamport extends IamportBase
      * 빌링키 발급과 결제 요청을 동시에 처리.
      * [POST] /subscribe/payments/onetime.
      *
-     * @param array $request
+     * @param OnetimePayment $request
      *
      * @return Result
      *
      * @throws GuzzleException
      */
-    public function subscribeOnetime(array $request): Result
+    public function subscribeOnetime(OnetimePayment $request): Result
     {
-        $keys          = array_flip(['token', 'merchant_uid', 'amount', 'vat', 'card_number', 'expiry', 'birth', 'pwd_2digit', 'customer_uid', 'name', 'buyer_name', 'buyer_email', 'buyer_tel', 'buyer_addr', 'buyer_postcode']);
-        $formData      = array_intersect_key($request, $keys);
-        $attributes    = ['body' => $formData];
+        $attributes = ['body' => $request->toArray()];
 
         return $this->callApi('POST', Endpoint::SBCR_PAYMENTS_ONETIME, $attributes);
     }
@@ -211,17 +207,15 @@ class Iamport extends IamportBase
      * 저장된 빌링키로 재결제.
      * [POST] /subscribe/payments/again.
      *
-     * @param array $request
+     * @param AgainPayment $request
      *
      * @return Result
      *
      * @throws GuzzleException
      */
-    public function subscribeAgain(array $request): Result
+    public function subscribeAgain(AgainPayment $request): Result
     {
-        $keys          = array_flip(['token', 'customer_uid', 'merchant_uid', 'amount', 'vat', 'name', 'buyer_name', 'buyer_email', 'buyer_tel', 'buyer_addr', 'buyer_postcode']);
-        $formData      = array_intersect_key($request, $keys);
-        $attributes    = ['body' => $formData];
+        $attributes = ['body' => $request->toArray()];
 
         return $this->callApi('POST', Endpoint::SBCR_PAYMENTS_AGAIN, $attributes);
     }
@@ -230,17 +224,15 @@ class Iamport extends IamportBase
      * 저장된 빌링키로 정기 예약 결제.
      * [POST] /subscribe/payments/schedule.
      *
-     * @param array $request
+     * @param SubscribeSchedule $request
      *
      * @return Result
      *
      * @throws GuzzleException
      */
-    public function subscribeSchedule(array $request): Result
+    public function subscribeSchedule(SubscribeSchedule $request): Result
     {
-        $keys          = array_flip(['customer_uid', 'checking_amount', 'card_number', 'expiry', 'birth', 'pwd_2digit', 'schedules']);
-        $formData      = array_intersect_key($request, $keys);
-        $attributes    = ['body' => $formData];
+        $attributes = ['body' => $request->toArray()];
 
         return $this->callApi('POST', Endpoint::SBCR_PAYMENTS_SCHEDULE, $attributes);
     }
@@ -249,17 +241,15 @@ class Iamport extends IamportBase
      * 비인증 결제요청예약 취소
      * [POST] /subscribe/payments/unschedule.
      *
-     * @param array $request
+     * @param SubscribeUnschedule $request
      *
      * @return Result
      *
      * @throws GuzzleException
      */
-    public function subscribeUnschedule(array $request): Result
+    public function subscribeUnschedule(SubscribeUnschedule $request): Result
     {
-        $keys          = array_flip(['customer_uid', 'merchant_uid']);
-        $formData      = array_intersect_key($request, $keys);
-        $attributes    = ['body' => $formData];
+        $attributes = ['body' => $request->toArray()];
 
         return $this->callApi('POST', Endpoint::SBCR_PAYMENTS_UNSCHEDULE, $attributes);
     }
