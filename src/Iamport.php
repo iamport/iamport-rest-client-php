@@ -2,255 +2,258 @@
 
 namespace Iamport\RestClient;
 
+use Exception;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Promise\PromiseInterface;
 use Iamport\RestClient\Enum\Endpoint;
-use Iamport\RestClient\Request\AgainPayment;
-use Iamport\RestClient\Request\IssueBillingKey;
-use Iamport\RestClient\Request\IssueReceipt;
-use Iamport\RestClient\Request\CancelPayment;
-use Iamport\RestClient\Request\OnetimePayment;
-use Iamport\RestClient\Request\SubscribeSchedule;
-use Iamport\RestClient\Request\SubscribeUnschedule;
+use Iamport\RestClient\Exception\Handler;
+use Iamport\RestClient\Exception\IamportAuthException;
+use Iamport\RestClient\Exception\IamportRequestException;
+use Iamport\RestClient\Request\RequestBase;
+use Iamport\RestClient\Response\Auth;
+use Iamport\RestClient\Response\PagedResponse;
+use Iamport\RestClient\Response\Response;
+use Iamport\RestClient\Response\TokenResponse;
+use Iamport\RestClient\Middleware\TokenMiddleware;
+use Iamport\RestClient\Middleware\DefaultRequestMiddleware;
+use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
+use GuzzleHttp\HandlerStack;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class Iamport.
  */
-class Iamport extends IamportBase
+class Iamport
 {
+    const EXPIRE_BUFFER = 30;
+
     /**
-     * imp_uid 로 주문정보 찾기(아임포트에서 생성된 거래고유번호).
-     * [GET] /payments/{$impUid}.
-     *
-     * @param string $impUid
-     *
-     * @return Result
-     *
-     * @throws GuzzleException
+     * @var string
      */
-    public function paymentImpUid(string $impUid): Result
+    private $impKey          = null;
+
+    /**
+     * @var string
+     */
+    private $impSecret       = null;
+    private $accessToken     = null;
+    private $expireTimestamp = 0;
+
+    /**
+     * Iamport constructor.
+     *
+     * @param string $impKey
+     * @param string $impSecret
+     */
+    public function __construct(string $impKey, string $impSecret)
     {
-        return $this->callApi('GET', Endpoint::PAYMENTS.$impUid);
+        $this->impKey    = $impKey;
+        $this->impSecret = $impSecret;
     }
 
     /**
-     * merchant_uid 로 주문정보 찾기(가맹점의 주문번호).
-     * [GET] /payments/find/{$merchantUid}/{$paymentStatus}.
-     *
-     * @param string      $merchantUid
-     * @param string|null $paymentStatus
-     * @param string      $sorting
-     *
-     * @return Result
-     *
-     * @throws GuzzleException
+     * @return string|null
      */
-    public function paymentMerchantUid(string $merchantUid, string $paymentStatus = null, string $sorting = '-started'): Result
+    public function getAccessToken(): ?string
     {
-        $endPoint = Endpoint::PAYMENTS_FIND.$merchantUid;
-        if (in_array($paymentStatus, ['ready', 'paid', 'cancelled', 'failed'])) {
-            $endPoint = $endPoint.'/'.$paymentStatus;
+        return $this->accessToken;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTokenExpired(): bool
+    {
+        $now = time();
+
+        return null === $this->accessToken || ($this->expireTimestamp - self::EXPIRE_BUFFER) < $now;
+    }
+
+    /**
+     * @param bool $force
+     *
+     * @return string|null
+     *
+     * @throws IamportAuthException
+     * @throws Exception
+     */
+    public function requestAccessToken(bool $force): ?string
+    {
+        if (!$this->isTokenExpired() && !$force) {
+            return $this->accessToken;
         }
 
-        $attributes = [
-            'query' => [
-                'sorting' => $sorting,
-            ],
-        ];
+        try {
+            $httpClient = $this->getHttpClient(false);
 
-        return $this->callApi('GET', $endPoint, $attributes);
+            $authUrl  = Endpoint::TOKEN;
+            $response = new TokenResponse($httpClient->post($authUrl, [
+                RequestOptions::JSON => [
+                    'imp_key'    => $this->impKey,
+                    'imp_secret' => $this->impSecret,
+                ],
+            ]));
+
+            $auth = $response->getResponseAs(Auth::class);
+
+            $this->accessToken = $auth->getAccessToken();
+            //호출하는 서버의 시간이 동기화되어있지 않을 가능성 고려 ( 로컬 서버 타임기준 계산 )
+            $this->expireTimestamp = time() + $auth->getRemaindSeconds();
+
+            return $this->accessToken;
+        } catch (ConnectException $e) {
+            throw new Exception('RequestTrait Error(HTTP STATUS : '.$e->getcode().')', $e->getHandlerContext()['errno']);
+        } catch (Exception $e) {
+            $errorResponse = json_decode($e->getResponse()->getBody());
+            throw new IamportAuthException('[API인증오류] '.$errorResponse->message, $errorResponse->code);
+        }
     }
 
     /**
-     * merchant_uid 로 주문정보 모두 찾기(가맹점의 주문번호).
-     * [GET] /payments/findAll/{$merchantUid}/{$paymentStatus}.
+     * @param bool $authenticated
      *
-     * @param string $merchantUid
-     * @param string $paymentStatus
-     * @param int    $page
-     * @param string $sorting
+     * @return Client
      *
-     * @return Result
-     *
-     * @throws GuzzleException
+     * @throws IamportAuthException
      */
-    public function paymentsMerchantUid(string $merchantUid, string $paymentStatus = null, int $page = 1, string $sorting = '-started'): Result
+    protected function getHttpClient(bool $authenticated): Client
     {
-        $endPoint = Endpoint::PAYMENTS_FIND_ALL.$merchantUid;
-        if (in_array($paymentStatus, ['ready', 'paid', 'cancelled', 'failed'])) {
-            $endPoint = $endPoint.'/'.$paymentStatus;
+        $stack = HandlerStack::create();
+        $stack->push(new DefaultRequestMiddleware());
+
+        if ($authenticated) {
+            $token = $this->requestAccessToken(false);
+            $stack->push(new TokenMiddleware($token));
         }
 
-        $attributes = [
-            'query' => [
-                'sorting' => $sorting,
-                'page'    => $page,
-            ],
-        ];
+        $client = new Client([
+            'handler'  => $stack,
+            'base_uri' => Endpoint::API_BASE_URL,
+        ]);
 
-        return $this->callApi('GET', $endPoint, $attributes, 'paged');
+        return $client;
     }
 
     /**
-     * 주문취소.
-     * [POST] /payments/cancel.
+     * @param string $method
+     * @param string $uri
+     * @param array  $attributes
+     * @param bool   $authenticated
      *
-     * @param CancelPayment $request
+     * @return object
      *
-     * @return Result
-     *
-     * @throws GuzzleException
+     * @throws Exception
      */
-    public function paymentCancel(CancelPayment $request): Result
+    public function request(string $method, string $uri, array $attributes = [], bool $authenticated = true)
     {
-        $attributes = ['body' => $request->toArray()];
+        try {
+            $client   = $this->getHttpClient($authenticated);
+            $response = $client->request($method, $uri, $attributes);
 
-        return $this->callApi('POST', Endpoint::PAYMENTS_CANCEL, $attributes);
+            $parseResponse = (object) json_decode($response->getBody(), true);
+            if (0 !== $parseResponse->code) {
+                throw new IamportRequestException($parseResponse);
+            }
+            if (empty($parseResponse->response)) {
+                throw new Exception('API서버로부터 응답이 올바르지 않습니다. '.$parseResponse, 1);
+            }
+
+            return (object) $parseResponse->response;
+        } catch (GuzzleException $e) {
+            Handler::report($e);
+        } catch (Exception $e) {
+            Handler::report($e);
+        }
     }
 
     /**
-     * 발행된 현금영수증 조회.
-     * [GET] /receipts/{$impUid}.
+     * @param string $method
+     * @param string $uri
+     * @param array  $attributes
+     * @param bool   $authenticated
      *
-     * @param string $impUid
+     * @return PromiseInterface
      *
-     * @return Result
-     *
-     * @throws GuzzleException
+     * @throws IamportAuthException
+     * @throws IamportRequestException
      */
-    public function receipt(string $impUid): Result
+    public function requestPromise(string $method, string $uri, array $attributes = [], bool $authenticated = true): PromiseInterface
     {
-        return $this->callApi('GET', Endpoint::RECEIPT.$impUid);
+        try {
+            $client   = $this->getHttpClient($authenticated);
+            $promise  = $client->requestAsync($method, $uri, $attributes);
+
+            $promise->then(
+                function (ResponseInterface $response) use (&$promise) {
+                    $parseResponse = json_decode($response->getBody());
+                    if (0 !== $parseResponse->code) {
+                        throw new IamportRequestException($parseResponse);
+                    }
+                    if (empty($parseResponse->response)) {
+                        throw new Exception('API서버로부터 응답이 올바르지 않습니다. '.$parseResponse, 1);
+                    }
+                },
+                function (RequestException $e) {
+                    throw new IamportRequestException($e);
+                }
+            );
+
+            return $promise;
+        } catch (Exception $e) {
+            Handler::report($e);
+        }
     }
 
     /**
-     * 현금영수증 발행.
-     * [POST] /receipts/{$impUid}.
-     *
-     * @param IssueReceipt $request
+     * @param RequestBase $request
      *
      * @return Result
-     *
-     * @throws GuzzleException
      */
-    public function issueReceipt(IssueReceipt $request): Result
+    public function callApi(RequestBase $request): Result
     {
-        $attributes = ['body' => $request->toArray()];
+        try {
+            $method        = $request->verb();
+            $uri           = $request->path();
+            $attributes    = $request->attributes();
+            $responseType  = $request->responseType;
+            $authenticated = $request->authenticated;
 
-        return $this->callApi('POST', Endpoint::RECEIPT.$request->imp_uid, $attributes);
+            $response = $this->request($method, $uri, $attributes, $authenticated);
+
+            switch ($responseType) {
+                case 'paged':
+                    $result = new PagedResponse($response);
+                    break;
+                default:
+                    $result  = new Response($response);
+                    break;
+            }
+
+            return new Result(true, $result);
+        } catch (Exception $e) {
+            return Handler::render($e);
+        }
     }
 
     /**
-     * 비인증결제 빌링키 등록(수정).
-     * [POST] /subscribe/customers/{customer_uid}.
+     * @param RequestBase $request
      *
-     * @param IssueBillingKey $request
-     *
-     * @return Result
-     *
-     * @throws GuzzleException
+     * @return PromiseInterface|Result
      */
-    public function addBillingKey(IssueBillingKey $request): Result
+    public function callApiPromise(RequestBase $request)
     {
-        $attributes = ['body' => $request->toArray()];
+        try {
+            $method        = $request->verb();
+            $uri           = $request->path();
+            $attributes    = $request->attributes();
+            $authenticated = $request->authenticated;
 
-        return $this->callApi('POST', Endpoint::SBCR_CUSTOMERS.$request->customer_uid, $attributes);
-    }
-
-    /**
-     * 비인증결제 빌링키 조회.
-     * [GET] /subscribe/customers/{$customerUid}.
-     *
-     * @param string $customerUid
-     *
-     * @return Result
-     *
-     * @throws GuzzleException
-     */
-    public function billingKey(string $customerUid): Result
-    {
-        return $this->callApi('GET', Endpoint::SBCR_CUSTOMERS.$customerUid);
-    }
-
-    /**
-     * 비인증결제 빌링키 삭제.
-     * [DELETE] /subscribe/customers/{$customerUid}.
-     *
-     * @param string $customerUid
-     *
-     * @return Result
-     *
-     * @throws GuzzleException
-     */
-    public function delBillingKey(string $customerUid): Result
-    {
-        return $this->callApi('DELETE', Endpoint::SBCR_CUSTOMERS.$customerUid);
-    }
-
-    /**
-     * 빌링키 발급과 결제 요청을 동시에 처리.
-     * [POST] /subscribe/payments/onetime.
-     *
-     * @param OnetimePayment $request
-     *
-     * @return Result
-     *
-     * @throws GuzzleException
-     */
-    public function subscribeOnetime(OnetimePayment $request): Result
-    {
-        $attributes = ['body' => $request->toArray()];
-
-        return $this->callApi('POST', Endpoint::SBCR_PAYMENTS_ONETIME, $attributes);
-    }
-
-    /**
-     * 저장된 빌링키로 재결제.
-     * [POST] /subscribe/payments/again.
-     *
-     * @param AgainPayment $request
-     *
-     * @return Result
-     *
-     * @throws GuzzleException
-     */
-    public function subscribeAgain(AgainPayment $request): Result
-    {
-        $attributes = ['body' => $request->toArray()];
-
-        return $this->callApi('POST', Endpoint::SBCR_PAYMENTS_AGAIN, $attributes);
-    }
-
-    /**
-     * 저장된 빌링키로 정기 예약 결제.
-     * [POST] /subscribe/payments/schedule.
-     *
-     * @param SubscribeSchedule $request
-     *
-     * @return Result
-     *
-     * @throws GuzzleException
-     */
-    public function subscribeSchedule(SubscribeSchedule $request): Result
-    {
-        $attributes = ['body' => $request->toArray()];
-
-        return $this->callApi('POST', Endpoint::SBCR_PAYMENTS_SCHEDULE, $attributes);
-    }
-
-    /**
-     * 비인증 결제요청예약 취소
-     * [POST] /subscribe/payments/unschedule.
-     *
-     * @param SubscribeUnschedule $request
-     *
-     * @return Result
-     *
-     * @throws GuzzleException
-     */
-    public function subscribeUnschedule(SubscribeUnschedule $request): Result
-    {
-        $attributes = ['body' => $request->toArray()];
-
-        return $this->callApi('POST', Endpoint::SBCR_PAYMENTS_UNSCHEDULE, $attributes);
+            return $this->requestPromise($method, $uri, $attributes, $authenticated);
+        } catch (Exception $e) {
+            return Handler::render($e);
+        }
     }
 }

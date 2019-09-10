@@ -2,8 +2,10 @@
 
 namespace Iamport\RestClient\Request;
 
+use Iamport\RestClient\Enum\Endpoint;
+
 /**
- * Class OnetimePayment.
+ * Class SubscribeOnetime.
  *
  * @property string $merchant_uid
  * @property float  $amount
@@ -24,7 +26,7 @@ namespace Iamport\RestClient\Request;
  * @property string $custom_data
  * @property string $notice_url
  */
-class OnetimePayment
+class SubscribeOnetime extends RequestBase
 {
     use RequestTrait;
 
@@ -119,7 +121,7 @@ class OnetimePayment
     private $notice_url;
 
     /**
-     * OnetimePayment constructor.
+     * SubscribeOnetime constructor.
      *
      * @param string   $merchant_uid
      * @param float    $amount
@@ -281,5 +283,34 @@ class OnetimePayment
     public function setNoticeUrl(string $notice_url): void
     {
         $this->notice_url = $notice_url;
+    }
+
+    /**
+     * 빌링키 발급과 결제 요청을 동시에 처리.
+     * [POST] /subscribe/payments/onetime.
+     *
+     * @return string
+     */
+    public function path(): string
+    {
+        return Endpoint::SBCR_PAYMENTS_ONETIME;
+    }
+
+    /**
+     * @return array
+     */
+    public function attributes(): array
+    {
+        return [
+            'body' => json_encode($this->toArray()),
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function verb(): string
+    {
+        return 'POST';
     }
 }

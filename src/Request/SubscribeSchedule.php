@@ -2,6 +2,8 @@
 
 namespace Iamport\RestClient\Request;
 
+use Iamport\RestClient\Enum\Endpoint;
+
 /**
  * Class SubscribeSchedule.
  *
@@ -14,7 +16,7 @@ namespace Iamport\RestClient\Request;
  * @property string $pg
  * @property array  $schedules
  */
-class SubscribeSchedule
+class SubscribeSchedule extends RequestBase
 {
     use RequestTrait;
 
@@ -143,5 +145,34 @@ class SubscribeSchedule
     public function setPg(string $pg): void
     {
         $this->pg = $pg;
+    }
+
+    /**
+     * 저장된 빌링키로 정기 예약 결제.
+     * [POST] /subscribe/payments/schedule.
+     *
+     * @return string
+     */
+    public function path(): string
+    {
+        return Endpoint::SBCR_PAYMENTS_SCHEDULE;
+    }
+
+    /**
+     * @return array
+     */
+    public function attributes(): array
+    {
+        return [
+            'body' => json_encode($this->toArray()),
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function verb(): string
+    {
+        return 'POST';
     }
 }

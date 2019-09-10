@@ -2,13 +2,15 @@
 
 namespace Iamport\RestClient\Request;
 
+use Iamport\RestClient\Enum\Endpoint;
+
 /**
  * Class SubscribeUnschedule.
  *
  * @property string $customer_uid
  * @property array  $merchant_uid
  */
-class SubscribeUnschedule
+class SubscribeUnschedule extends RequestBase
 {
     use RequestTrait;
 
@@ -46,5 +48,34 @@ class SubscribeUnschedule
     public function setMerchantUid(array $merchant_uid): void
     {
         $this->merchant_uid = $merchant_uid;
+    }
+
+    /**
+     * 비인증 결제요청예약 취소
+     * [POST] /subscribe/payments/unschedule.
+     *
+     * @return string
+     */
+    public function path(): string
+    {
+        return Endpoint::SBCR_PAYMENTS_UNSCHEDULE;
+    }
+
+    /**
+     * @return array
+     */
+    public function attributes(): array
+    {
+        return [
+            'body' => json_encode($this->toArray()),
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function verb(): string
+    {
+        return 'POST';
     }
 }

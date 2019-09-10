@@ -2,6 +2,8 @@
 
 namespace Iamport\RestClient\Request;
 
+use Iamport\RestClient\Enum\Endpoint;
+
 /**
  * Class CancelPayment.
  *
@@ -15,7 +17,7 @@ namespace Iamport\RestClient\Request;
  * @property string $refund_bank
  * @property string $refund_account
  */
-class CancelPayment
+class CancelPayment extends RequestBase
 {
     use RequestTrait;
 
@@ -65,8 +67,7 @@ class CancelPayment
     private $refund_account;
 
     /**
-     * 아임포트 고유번호로 결제 취소.
-     * required property가 선택사항( 둘중하나 )이므로 오버로딩을 static으로 구현.
+     * 아임포트 고유번호로 인스턴스 생성
      *
      * @param string $impUid
      *
@@ -81,8 +82,7 @@ class CancelPayment
     }
 
     /**
-     * 거래 고유번호로 결제 취소.
-     * required property가 선택사항( 둘중하나 )이므로 오버로딩을 static으로 구현.
+     * 거래 고유번호로 인스턴스 생성
      *
      * @param string $merchant_uid
      *
@@ -166,5 +166,34 @@ class CancelPayment
     public function setRefundAccount(string $refund_account): void
     {
         $this->refund_account = $refund_account;
+    }
+
+    /**
+     * 주문취소.
+     * [POST] /payments/cancel.
+     *
+     * @return string
+     */
+    public function path(): string
+    {
+        return Endpoint::PAYMENTS_CANCEL;
+    }
+
+    /**
+     * @return array
+     */
+    public function attributes(): array
+    {
+        return [
+            'body' => json_encode($this->toArray()),
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function verb(): string
+    {
+        return 'POST';
     }
 }

@@ -2,8 +2,10 @@
 
 namespace Iamport\RestClient\Request;
 
+use Iamport\RestClient\Enum\Endpoint;
+
 /**
- * Class AgainPayment.
+ * Class SubscribeAgain.
  *
  * @property string $customer_uid
  * @property string $merchant_uid
@@ -19,7 +21,7 @@ namespace Iamport\RestClient\Request;
  * @property string $custom_data
  * @property string $notice_url
  */
-class AgainPayment
+class SubscribeAgain extends RequestBase
 {
     use RequestTrait;
 
@@ -89,7 +91,7 @@ class AgainPayment
     private $notice_url;
 
     /**
-     * AgainPayment constructor.
+     * SubscribeAgain constructor.
      *
      * @param string $customer_uid
      * @param string $merchant_uid
@@ -206,5 +208,34 @@ class AgainPayment
     public function setNoticeUrl(string $notice_url): void
     {
         $this->notice_url = $notice_url;
+    }
+
+    /**
+     * 저장된 빌링키로 재결제.
+     * [POST] /subscribe/payments/again.
+     *
+     * @return string
+     */
+    public function path(): string
+    {
+        return Endpoint::SBCR_PAYMENTS_AGAIN;
+    }
+
+    /**
+     * @return array
+     */
+    public function attributes(): array
+    {
+        return [
+            'body' => json_encode($this->toArray()),
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function verb(): string
+    {
+        return 'POST';
     }
 }
