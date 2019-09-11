@@ -22,7 +22,7 @@ abstract class Enum
      */
     private static function getConstants()
     {
-        if (null == self::$constCacheArray) {
+        if (null === self::$constCacheArray) {
             self::$constCacheArray = [];
         }
 

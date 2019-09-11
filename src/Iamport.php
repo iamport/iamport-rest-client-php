@@ -3,24 +3,24 @@
 namespace Iamport\RestClient;
 
 use Exception;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Promise\PromiseInterface;
+use GuzzleHttp\RequestOptions;
 use Iamport\RestClient\Enum\Endpoint;
 use Iamport\RestClient\Exception\Handler;
 use Iamport\RestClient\Exception\IamportAuthException;
 use Iamport\RestClient\Exception\IamportRequestException;
+use Iamport\RestClient\Middleware\DefaultRequestMiddleware;
+use Iamport\RestClient\Middleware\TokenMiddleware;
 use Iamport\RestClient\Request\RequestBase;
-use Iamport\RestClient\Response\Auth;
+use Iamport\RestClient\Response\AuthResponse;
 use Iamport\RestClient\Response\PagedResponse;
 use Iamport\RestClient\Response\Response;
 use Iamport\RestClient\Response\TokenResponse;
-use Iamport\RestClient\Middleware\TokenMiddleware;
-use Iamport\RestClient\Middleware\DefaultRequestMiddleware;
-use GuzzleHttp\Client;
-use GuzzleHttp\RequestOptions;
-use GuzzleHttp\HandlerStack;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -39,7 +39,13 @@ class Iamport
      * @var string
      */
     private $impSecret       = null;
+    /**
+     * @var string|null
+     */
     private $accessToken     = null;
+    /**
+     * @var int
+     */
     private $expireTimestamp = 0;
 
     /**
@@ -97,7 +103,7 @@ class Iamport
                 ],
             ]));
 
-            $auth = $response->getResponseAs(Auth::class);
+            $auth = $response->getResponseAs(AuthResponse::class);
 
             $this->accessToken = $auth->getAccessToken();
             //호출하는 서버의 시간이 동기화되어있지 않을 가능성 고려 ( 로컬 서버 타임기준 계산 )
@@ -129,12 +135,10 @@ class Iamport
             $stack->push(new TokenMiddleware($token));
         }
 
-        $client = new Client([
+        return new Client([
             'handler'  => $stack,
             'base_uri' => Endpoint::API_BASE_URL,
         ]);
-
-        return $client;
     }
 
     /**
@@ -157,7 +161,7 @@ class Iamport
             if (0 !== $parseResponse->code) {
                 throw new IamportRequestException($parseResponse);
             }
-            if (empty($parseResponse->response)) {
+            if (!$parseResponse->response) {
                 throw new Exception('API서버로부터 응답이 올바르지 않습니다. '.$parseResponse, 1);
             }
 
@@ -187,12 +191,12 @@ class Iamport
             $promise  = $client->requestAsync($method, $uri, $attributes);
 
             $promise->then(
-                function (ResponseInterface $response) use (&$promise) {
+                function (ResponseInterface $response) {
                     $parseResponse = json_decode($response->getBody());
                     if (0 !== $parseResponse->code) {
                         throw new IamportRequestException($parseResponse);
                     }
-                    if (empty($parseResponse->response)) {
+                    if (!$parseResponse->response) {
                         throw new Exception('API서버로부터 응답이 올바르지 않습니다. '.$parseResponse, 1);
                     }
                 },

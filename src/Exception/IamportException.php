@@ -4,10 +4,21 @@ namespace Iamport\RestClient\Exception;
 
 use Exception;
 
-class IamportException extends Exception
+/**
+ * Class IamportException.
+ */
+final class IamportException extends Exception
 {
+    /**
+     * @var
+     */
     private $iamportResponse;
 
+    /**
+     * IamportException constructor.
+     *
+     * @param $response
+     */
     public function __construct($response)
     {
         parent::__construct($response->getMessage(), $response->getCode());
@@ -15,6 +26,9 @@ class IamportException extends Exception
         $this->iamportResponse = $response;
     }
 
+    /**
+     * @return mixed
+     */
     public function getIamportResponse()
     {
         return $this->iamportResponse;

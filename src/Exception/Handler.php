@@ -10,7 +10,7 @@ use Iamport\RestClient\Result;
 /**
  * Class Handler.
  */
-class Handler
+final class Handler
 {
     /**
      * @param null $exception

@@ -90,6 +90,7 @@ class Receipt extends RequestBase
      *
      * @param string $impUid
      * @param string $identifier
+     *
      * @return Receipt
      */
     public static function issue(string $impUid, string $identifier)
@@ -197,7 +198,7 @@ class Receipt extends RequestBase
      */
     public function attributes(): array
     {
-        if($this->verb === 'POST') {
+        if ($this->verb === 'POST') {
             return [
                 'body' => json_encode($this->toArray()),
             ];

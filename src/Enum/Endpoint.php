@@ -2,29 +2,32 @@
 
 namespace Iamport\RestClient\Enum;
 
+/**
+ * Class Endpoint.
+ */
 class Endpoint extends Enum
 {
-    const API_BASE_URL                = 'https://api.iamport.kr';
-    const TOKEN                       = '/users/getToken';
-    const PAYMENTS                    = '/payments/';
-    const PAYMENTS_PREPARE            = '/payments/prepare';
-    const PAYMENTS_STATUS             = '/payments/status/';
-    const PAYMENTS_FIND               = '/payments/find/';
-    const PAYMENTS_FIND_ALL           = '/payments/findAll/';
-    const PAYMENTS_CANCEL             = '/payments/cancel/';
-    const CERTIFICATIONS              = '/certifications';
-    const CARDS                       = '/cards';
-    const BANKS                       = '/banks';
-    const ESCROW                      = '/escrows/logis/';
-    const KAKAO                       = '/kakao/payment/orders';
-    const PAYCO                       = '/payco/orders/status/';
-    const SBCR_PAYMENTS_ONETIME       = '/subscribe/payments/onetime/';
-    const SBCR_PAYMENTS_AGAIN         = '/subscribe/payments/again/';
-    const SBCR_PAYMENTS_SCHEDULE      = '/subscribe/payments/schedule/';
-    const SBCR_PAYMENTS_UNSCHEDULE    = '/subscribe/payments/unschedule/';
-    const SBCR_CUSTOMERS              = '/subscribe/customers/';
-    const RECEIPT                     = '/receipts/';
-    const RECEIPT_EXTERNAL            = '/receipts/external/';
-    const VBANKS                      = '/vbanks/';
-    const VBANKS_HOLDER               = '/vbanks/holder';
+    public const API_BASE_URL                = 'https://api.iamport.kr';
+    public const TOKEN                       = '/users/getToken';
+    public const PAYMENTS                    = '/payments/';
+    public const PAYMENTS_PREPARE            = '/payments/prepare';
+    public const PAYMENTS_STATUS             = '/payments/status/';
+    public const PAYMENTS_FIND               = '/payments/find/';
+    public const PAYMENTS_FIND_ALL           = '/payments/findAll/';
+    public const PAYMENTS_CANCEL             = '/payments/cancel/';
+    public const CERTIFICATIONS              = '/certifications';
+    public const CARDS                       = '/cards';
+    public const BANKS                       = '/banks';
+    public const ESCROW                      = '/escrows/logis/';
+    public const KAKAO                       = '/kakao/payment/orders';
+    public const PAYCO                       = '/payco/orders/status/';
+    public const SBCR_PAYMENTS_ONETIME       = '/subscribe/payments/onetime/';
+    public const SBCR_PAYMENTS_AGAIN         = '/subscribe/payments/again/';
+    public const SBCR_PAYMENTS_SCHEDULE      = '/subscribe/payments/schedule/';
+    public const SBCR_PAYMENTS_UNSCHEDULE    = '/subscribe/payments/unschedule/';
+    public const SBCR_CUSTOMERS              = '/subscribe/customers/';
+    public const RECEIPT                     = '/receipts/';
+    public const RECEIPT_EXTERNAL            = '/receipts/external/';
+    public const VBANKS                      = '/vbanks/';
+    public const VBANKS_HOLDER               = '/vbanks/holder';
 }

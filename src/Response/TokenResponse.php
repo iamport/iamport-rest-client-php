@@ -2,13 +2,33 @@
 
 namespace Iamport\RestClient\Response;
 
+/**
+ * Class TokenResponse.
+ */
 class TokenResponse
 {
+    /**
+     * @var null
+     */
     private $internalResponse = null;
+    /**
+     * @var int
+     */
     private $resultCode       = -1;
+    /**
+     * @var string|null
+     */
     private $resultMessage    = null;
+    /**
+     * @var |null
+     */
     private $resultBody       = null;
 
+    /**
+     * TokenResponse constructor.
+     *
+     * @param null $httpResponse
+     */
     public function __construct($httpResponse = null)
     {
         $this->internalResponse = $httpResponse;
@@ -21,6 +41,9 @@ class TokenResponse
         }
     }
 
+    /**
+     * @return bool
+     */
     public function isValid()
     {
         $statusCode = $this->internalResponse->getStatusCode();
@@ -28,19 +51,28 @@ class TokenResponse
         return $statusCode >= 200 && $statusCode < 300 && 0 === $this->resultCode;
     }
 
+    /**
+     * @return int
+     */
     public function getCode()
     {
         return $this->resultCode;
     }
 
+    /**
+     * @return |null
+     */
     public function getMessage()
     {
         return $this->resultMessage;
     }
 
+    /**
+     * @param $clazz
+     */
     public function getResponseAs($clazz)
     {
-        if (empty($this->resultBody)) {
+        if (!$this->resultBody) {
             return null;
         }
 

@@ -22,8 +22,10 @@ trait RequestTrait
     }
 
     /**
-     * private property에 접근하기 위한 magic method
+     * private property에 접근하기 위한 magic method.
+     *
      * @example $property->{$name}
+     *
      * @param $name
      *
      * @return string|null

@@ -21,42 +21,42 @@ class SubscribeSchedule extends RequestBase
     use RequestTrait;
 
     /**
-     * @var string 고객 고유번호.
+     * @var string 고객 고유번호
      */
     private $customer_uid;
 
     /**
-     * @var int 카드정상결제여부 체크용 금액.
+     * @var int 카드정상결제여부 체크용 금액
      */
     private $checking_amount;
 
     /**
-     * @var string 카드번호(dddd-dddd-dddd-dddd).
+     * @var string 카드번호(dddd-dddd-dddd-dddd)
      */
     private $card_number;
 
     /**
-     * @var string 카드 유효기간(YYYY-MM).
+     * @var string 카드 유효기간(YYYY-MM)
      */
     private $expiry;
 
     /**
-     * @var string 생년월일6자리(법인카드의 경우 사업자등록번호10자리).
+     * @var string 생년월일6자리(법인카드의 경우 사업자등록번호10자리)
      */
     private $birth;
 
     /**
-     * @var string 카드비밀번호 앞 2자리.
+     * @var string 카드비밀번호 앞 2자리
      */
     private $pwd_2digit;
 
     /**
-     * @var string API 방식 비인증 PG설정이 2개 이상인 경우 지정.
+     * @var string API 방식 비인증 PG설정이 2개 이상인 경우 지정
      */
     private $pg;
 
     /**
-     * @var array 결제예약 스케쥴.
+     * @var array 결제예약 스케쥴
      */
     private $schedules = [];
 

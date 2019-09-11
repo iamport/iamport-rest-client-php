@@ -29,5 +29,8 @@
         "psr-4": {
             "Iamport\\RestClient\\Test\\": "tests/"
         }
+    },
+    "scripts": {
+        "test": "phpunit"
     }
 }

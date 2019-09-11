@@ -1,12 +1,14 @@
 <?php
 
-
 namespace Iamport\RestClient;
 
-use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 
+/**
+ * Class Dumper.
+ */
 class Dumper
 {
     /**
@@ -24,6 +26,9 @@ class Dumper
         }
     }
 
+    /**
+     * @param $x
+     */
     public static function dd($x)
     {
         array_map(function ($x) {

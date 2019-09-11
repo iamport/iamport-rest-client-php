@@ -37,7 +37,6 @@ abstract class RequestBase
         $this->authenticated = $authenticated;
     }
 
-
     /**
      * @return string
      */

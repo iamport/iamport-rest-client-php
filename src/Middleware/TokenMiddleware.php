@@ -4,15 +4,31 @@ namespace Iamport\RestClient\Middleware;
 
 use Psr\Http\Message\RequestInterface;
 
+/**
+ * Class TokenMiddleware.
+ */
 class TokenMiddleware
 {
+    /**
+     * @var null
+     */
     private $token = null;
 
+    /**
+     * TokenMiddleware constructor.
+     *
+     * @param $token
+     */
     public function __construct($token)
     {
         $this->token = $token;
     }
 
+    /**
+     * @param callable $handler
+     *
+     * @return \Closure
+     */
     public function __invoke(callable $handler)
     {
         return function (

@@ -106,7 +106,7 @@ class SubscribeCustomer extends RequestBase
      * 비인증결제 빌링키 등록(수정).
      * [POST] /subscribe/customers/{customer_uid}.
      *
-     * @param string $customer_uid
+     * @param string   $customer_uid
      * @param CardInfo $cardInfo
      *
      * @return SubscribeCustomer
@@ -235,7 +235,7 @@ class SubscribeCustomer extends RequestBase
 
     /**
      * 구매자의 빌링키 정보 조회
-     * [GET] /subscribe/customers/{customer_uid}
+     * [GET] /subscribe/customers/{customer_uid}.
      *
      * 구매자에 대해 빌링키 발급 및 저장
      * [POST] /subscribe/customers/{customer_uid}
@@ -255,7 +255,7 @@ class SubscribeCustomer extends RequestBase
      */
     public function attributes(): array
     {
-        if($this->verb === 'POST') {
+        if ($this->verb === 'POST') {
             return [
                 'body' => json_encode($this->toArray()),
             ];

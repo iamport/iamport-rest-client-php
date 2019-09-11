@@ -154,7 +154,7 @@ class Payment extends RequestBase
             }
 
             if (in_array($this->payment_status, ['ready', 'paid', 'cancelled', 'failed'])) {
-                $endPoint = $endPoint.'/'.$this->payment_status;
+                $endPoint .= '/'.$this->payment_status;
             }
 
             return $endPoint;

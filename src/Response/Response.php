@@ -2,8 +2,14 @@
 
 namespace Iamport\RestClient\Response;
 
-class Response extends Base
+/**
+ * Class Response.
+ */
+class Response extends ResponseBase
 {
+    /**
+     * @var mixed|null
+     */
     protected $customData = null;
 
     /**
@@ -13,12 +19,17 @@ class Response extends Base
      */
     public function __construct($response)
     {
-        if(isset($response->custom_data)){
+        if (isset($response->custom_data)) {
             $this->customData = json_decode($response->custom_data);
         }
         parent::__construct($response);
     }
 
+    /**
+     * @param $name
+     *
+     * @return |null
+     */
     public function __get($name)
     {
         if (!isset($this->responseBody->{$name})) {
@@ -28,6 +39,11 @@ class Response extends Base
         return $this->responseBody->{$name};
     }
 
+    /**
+     * @param $name
+     *
+     * @return |null
+     */
     public function getCustomData($name)
     {
         $data = $this->customData;
