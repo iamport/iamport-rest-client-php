@@ -10,17 +10,17 @@ class Result
     /**
      * @var bool
      */
-    private $success = false;
+    public $success = false;
 
     /**
      * @var mixed
      */
-    private $data;
+    public $data;
 
     /**
      * @var array|null
      */
-    private $error;
+    public $error;
 
     /**
      * Result constructor.

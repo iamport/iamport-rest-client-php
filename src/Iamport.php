@@ -147,7 +147,7 @@ class Iamport
      * @param array  $attributes
      * @param bool   $authenticated
      *
-     * @return object
+     * @return object|array
      *
      * @throws Exception
      */
@@ -165,7 +165,7 @@ class Iamport
                 throw new Exception('API서버로부터 응답이 올바르지 않습니다. '.$parseResponse, 1);
             }
 
-            return (object) $parseResponse->response;
+            return $parseResponse->response;
         } catch (GuzzleException $e) {
             Handler::report($e);
         } catch (Exception $e) {
@@ -229,10 +229,10 @@ class Iamport
 
             switch ($responseType) {
                 case 'paged':
-                    $result = new PagedResponse($response);
+                    $result = new PagedResponse((object) $response);
                     break;
                 default:
-                    $result  = new Response($response);
+                    $result  = new Response((object) $response);
                     break;
             }
 

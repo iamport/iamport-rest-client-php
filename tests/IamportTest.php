@@ -13,14 +13,6 @@ use Iamport\RestClient\Request\SubscribeSchedule;
 use Iamport\RestClient\Request\SubscribeUnschedule;
 use PHPUnit\Framework\TestCase;
 
-/**
- *  Corresponding Class to test YourClass class.
- *
- *  For each class in your library, there should be a corresponding Unit-Test for it
- *  Unit-Tests should be as much as possible independent from other test going on.
- *
- *  @author yourname
- */
 class IamportTest extends TestCase
 {
     const TEST_IMP_KEY = 'imp_apikey';
@@ -31,6 +23,13 @@ class IamportTest extends TestCase
     const CUSTOMER_UID = 'customer_1234';
 
     private $iamport;
+
+    private function test_assert_object_has_attribute($response)
+    {
+        $this->assertObjectHasAttribute('success', $response);
+        $this->assertObjectHasAttribute('data', $response);
+        $this->assertObjectHasAttribute('error', $response);
+    }
 
     /**
      * This method is called before each test.
@@ -47,9 +46,7 @@ class IamportTest extends TestCase
 
         $response    = $this->iamport->callApi($payment);
 
-        $this->assertObjectHasAttribute('success', $response);
-        $this->assertObjectHasAttribute('data', $response);
-        $this->assertObjectHasAttribute('error', $response);
+        $this->test_assert_object_has_attribute($response);
 
         unset($payment);
     }
@@ -63,9 +60,7 @@ class IamportTest extends TestCase
 
         $response                = $this->iamport->callApi($payment);
 
-        $this->assertObjectHasAttribute('success', $response);
-        $this->assertObjectHasAttribute('data', $response);
-        $this->assertObjectHasAttribute('error', $response);
+        $this->test_assert_object_has_attribute($response);
 
         unset($payment);
     }
@@ -80,9 +75,7 @@ class IamportTest extends TestCase
 
         $response                 = $this->iamport->callApi($payments);
 
-        $this->assertObjectHasAttribute('success', $response);
-        $this->assertObjectHasAttribute('data', $response);
-        $this->assertObjectHasAttribute('error', $response);
+        $this->test_assert_object_has_attribute($response);
 
         unset($payment);
     }
@@ -101,9 +94,7 @@ class IamportTest extends TestCase
 
         $response                      = $this->iamport->callApi($cancelPayment);
 
-        $this->assertObjectHasAttribute('success', $response);
-        $this->assertObjectHasAttribute('data', $response);
-        $this->assertObjectHasAttribute('error', $response);
+        $this->test_assert_object_has_attribute($response);
 
         unset($cancelPayment);
     }
@@ -122,9 +113,7 @@ class IamportTest extends TestCase
 
         $response                      = $this->iamport->callApi($cancelPayment);
 
-        $this->assertObjectHasAttribute('success', $response);
-        $this->assertObjectHasAttribute('data', $response);
-        $this->assertObjectHasAttribute('error', $response);
+        $this->test_assert_object_has_attribute($response);
 
         unset($cancelPayment);
     }
@@ -136,9 +125,7 @@ class IamportTest extends TestCase
 
         $response = $this->iamport->callApi($receipt);
 
-        $this->assertObjectHasAttribute('success', $response);
-        $this->assertObjectHasAttribute('data', $response);
-        $this->assertObjectHasAttribute('error', $response);
+        $this->test_assert_object_has_attribute($response);
 
         unset($receipt);
     }
@@ -150,9 +137,7 @@ class IamportTest extends TestCase
 
         $response = $this->iamport->callApi($receipt);
 
-        $this->assertObjectHasAttribute('success', $response);
-        $this->assertObjectHasAttribute('data', $response);
-        $this->assertObjectHasAttribute('error', $response);
+        $this->test_assert_object_has_attribute($response);
 
         unset($receipt);
     }
@@ -169,9 +154,7 @@ class IamportTest extends TestCase
 
         $response = $this->iamport->callApi($receipt);
 
-        $this->assertObjectHasAttribute('success', $response);
-        $this->assertObjectHasAttribute('data', $response);
-        $this->assertObjectHasAttribute('error', $response);
+        $this->test_assert_object_has_attribute($response);
 
         unset($receipt);
     }
@@ -188,9 +171,7 @@ class IamportTest extends TestCase
         $subscribeCustomer->customer_postcode = '고객(카드소지자) 우편번호';
         $response                             = $this->iamport->callApi($subscribeCustomer);
 
-        $this->assertObjectHasAttribute('success', $response);
-        $this->assertObjectHasAttribute('data', $response);
-        $this->assertObjectHasAttribute('error', $response);
+        $this->test_assert_object_has_attribute($response);
 
         unset($cardInfo);
         unset($subscribeCustomer);
@@ -202,9 +183,7 @@ class IamportTest extends TestCase
         $subscribeCustomer = SubscribeCustomer::view(self::CUSTOMER_UID);
         $response          = $this->iamport->callApi($subscribeCustomer);
 
-        $this->assertObjectHasAttribute('success', $response);
-        $this->assertObjectHasAttribute('data', $response);
-        $this->assertObjectHasAttribute('error', $response);
+        $this->test_assert_object_has_attribute($response);
 
         unset($subscribeCustomer);
     }
@@ -215,9 +194,7 @@ class IamportTest extends TestCase
         $subscribeCustomer = SubscribeCustomer::delete(self::CUSTOMER_UID);
         $response          = $this->iamport->callApi($subscribeCustomer);
 
-        $this->assertObjectHasAttribute('success', $response);
-        $this->assertObjectHasAttribute('data', $response);
-        $this->assertObjectHasAttribute('error', $response);
+        $this->test_assert_object_has_attribute($response);
 
         unset($subscribeCustomer);
     }
@@ -241,9 +218,7 @@ class IamportTest extends TestCase
         $subscribeOnetime->notice_url     = 'http://notice.example.com';
         $response                         = $this->iamport->callApi($subscribeOnetime);
 
-        $this->assertObjectHasAttribute('success', $response);
-        $this->assertObjectHasAttribute('data', $response);
-        $this->assertObjectHasAttribute('error', $response);
+        $this->test_assert_object_has_attribute($response);
 
         unset($cardInfo);
         unset($subscribeOnetime);
@@ -264,9 +239,7 @@ class IamportTest extends TestCase
         $subscribeAgain->notice_url     = '';
         $response                       = $this->iamport->callApi($subscribeAgain);
 
-        $this->assertObjectHasAttribute('success', $response);
-        $this->assertObjectHasAttribute('data', $response);
-        $this->assertObjectHasAttribute('error', $response);
+        $this->test_assert_object_has_attribute($response);
 
         unset($subscribeAgain);
     }
@@ -296,9 +269,7 @@ class IamportTest extends TestCase
 
         $response   = $this->iamport->callApi($subscribeSchedule);
 
-        $this->assertObjectHasAttribute('success', $response);
-        $this->assertObjectHasAttribute('data', $response);
-        $this->assertObjectHasAttribute('error', $response);
+        $this->test_assert_object_has_attribute($response);
 
         unset($subscribeSchedule);
         unset($cardInfo);
@@ -313,9 +284,7 @@ class IamportTest extends TestCase
         $subscribeUnschedule->merchant_uid = ['order_1568016126'];
         $response                          = $this->iamport->callApi($subscribeUnschedule);
 
-        $this->assertObjectHasAttribute('success', $response);
-        $this->assertObjectHasAttribute('data', $response);
-        $this->assertObjectHasAttribute('error', $response);
+        $this->test_assert_object_has_attribute($response);
 
         unset($subscribeUnschedule);
     }
