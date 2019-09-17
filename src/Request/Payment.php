@@ -11,7 +11,7 @@ use Iamport\RestClient\Enum\Endpoint;
  * @property string $merchant_uid
  * @property string $payment_status
  * @property string $sorting
- * @property int $page
+ * @property int    $page
  */
 class Payment extends RequestBase
 {
@@ -42,7 +42,6 @@ class Payment extends RequestBase
      */
     private $page = 1;
 
-
     /**
      * 아임포트 고유번호로 인스턴스 생성.
      *
@@ -50,10 +49,10 @@ class Payment extends RequestBase
      *
      * @return Payment
      */
-    public static function getImpUid(string $impUid)
+    public static function withImpUid(string $impUid)
     {
-        $instance = new self();
-        $instance->setImpUid($impUid);
+        $instance          = new self();
+        $instance->imp_uid = $impUid;
 
         return $instance;
     }
@@ -65,10 +64,10 @@ class Payment extends RequestBase
      *
      * @return Payment
      */
-    public static function getMerchantUid(string $merchant_uid)
+    public static function withMerchantUid(string $merchant_uid)
     {
-        $instance = new self();
-        $instance->setMerchantUid($merchant_uid);
+        $instance               = new self();
+        $instance->merchant_uid = $merchant_uid;
 
         return $instance;
     }
@@ -82,9 +81,9 @@ class Payment extends RequestBase
      */
     public static function listMerchantUid(string $merchant_uid)
     {
-        $instance = new self();
-        $instance->setMerchantUid($merchant_uid);
-        $instance->setResponseType('paged');
+        $instance               = new self();
+        $instance->merchant_uid = $merchant_uid;
+        $instance->responseType = 'paged';
 
         return $instance;
     }
@@ -146,8 +145,7 @@ class Payment extends RequestBase
         if (!is_null($this->imp_uid)) {
             return Endpoint::PAYMENTS.$this->imp_uid;
         } elseif (!is_null($this->merchant_uid)) {
-
-            if( $this->responseType === 'paged' ) {
+            if ($this->responseType === 'paged') {
                 $endPoint = Endpoint::PAYMENTS_FIND_ALL.$this->merchant_uid;
             } else {
                 $endPoint = Endpoint::PAYMENTS_FIND.$this->merchant_uid;
@@ -172,7 +170,7 @@ class Payment extends RequestBase
                     'sorting' => $this->sorting,
                 ],
             ];
-            if( $this->responseType === 'paged' ) {
+            if ($this->responseType === 'paged') {
                 $result['query']['page'] = $this->page;
             }
         } else {

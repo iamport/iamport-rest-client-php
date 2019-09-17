@@ -94,9 +94,9 @@ class SubscribeCustomer extends RequestBase
      */
     public static function view(string $customer_uid)
     {
-        $instance = new self();
-        $instance->setCustomerUid($customer_uid);
-        $instance->verb = 'GET';
+        $instance               = new self();
+        $instance->customer_uid = $customer_uid;
+        $instance->verb         = 'GET';
 
         return $instance;
     }
@@ -113,11 +113,11 @@ class SubscribeCustomer extends RequestBase
      */
     public static function issue(string $customer_uid, CardInfo $cardInfo)
     {
-        $instance = new self();
-        $instance->setCustomerUid($customer_uid);
-        $instance->setCardNumber($cardInfo->card_number);
-        $instance->setExpiry($cardInfo->expiry);
-        $instance->setBirth($cardInfo->birth);
+        $instance               = new self();
+        $instance->customer_uid = $customer_uid;
+        $instance->card_number  = $cardInfo->card_number;
+        $instance->expiry       = $cardInfo->expiry;
+        $instance->birth        = $cardInfo->birth;
 
         if (!is_null($cardInfo->pwd_2digit)) {
             $instance->setPwd2digit($cardInfo->pwd_2digit);
@@ -138,9 +138,9 @@ class SubscribeCustomer extends RequestBase
      */
     public static function delete(string $customer_uid)
     {
-        $instance = new self();
-        $instance->setCustomerUid($customer_uid);
-        $instance->verb = 'DELETE';
+        $instance               = new self();
+        $instance->customer_uid = $customer_uid;
+        $instance->verb         = 'DELETE';
 
         return $instance;
     }

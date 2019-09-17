@@ -76,9 +76,9 @@ class Receipt extends RequestBase
      */
     public static function view(string $impUid)
     {
-        $instance = new self();
-        $instance->setImpUid($impUid);
-        $instance->verb = 'GET';
+        $instance          = new self();
+        $instance->imp_uid = $impUid;
+        $instance->verb    = 'GET';
 
         return $instance;
     }
@@ -95,10 +95,10 @@ class Receipt extends RequestBase
      */
     public static function issue(string $impUid, string $identifier)
     {
-        $instance = new self();
-        $instance->setImpUid($impUid);
-        $instance->setIdentifier($identifier);
-        $instance->verb = 'POST';
+        $instance             = new self();
+        $instance->imp_uid    = $impUid;
+        $instance->identifier =$identifier;
+        $instance->verb       = 'POST';
 
         return $instance;
     }
@@ -114,9 +114,9 @@ class Receipt extends RequestBase
      */
     public static function cancel(string $impUid)
     {
-        $instance = new self();
-        $instance->setImpUid($impUid);
-        $instance->verb = 'DELETE';
+        $instance          = new self();
+        $instance->imp_uid = $impUid;
+        $instance->verb    = 'DELETE';
 
         return $instance;
     }

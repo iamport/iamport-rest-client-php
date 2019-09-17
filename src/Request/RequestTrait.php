@@ -50,6 +50,7 @@ trait RequestTrait
     }
 
     /**
+     *
      * @return array
      */
     public function toArray()
@@ -57,7 +58,10 @@ trait RequestTrait
         $vars  = get_object_vars($this);
         $array = [];
         foreach ($vars as $key => $value) {
-            $array[ltrim($key, '_')] = $value;
+            // formdata에 불필표한 데이터 제외하고 배열로 전환
+            if (!in_array($key, ['verb', 'responseType', 'authenticated']) ) {
+                $array[ltrim($key, '_')] = $value;
+            }
         }
 
         return $array;

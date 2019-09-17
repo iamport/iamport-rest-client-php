@@ -40,7 +40,7 @@ class IamportTest extends TestCase
     /** @test */
     public function payment_by_imp_uid()
     {
-        $payment     = Payment::getImpUid(self::IMP_UID);
+        $payment     = Payment::withImpUid(self::IMP_UID);
 
         $this->assertEquals('/payments/' . self::IMP_UID, $payment->path());
         $this->assertEquals('GET', $payment->verb());
@@ -58,7 +58,7 @@ class IamportTest extends TestCase
     /** @test */
     public function payment_by_merchant_uid()
     {
-        $payment                 = Payment::getMerchantUid(self::MERCHANT_UID);
+        $payment                 = Payment::withMerchantUid(self::MERCHANT_UID);
         $payment->payment_status = '';
         $payment->sorting        = '-started';
 
@@ -227,10 +227,6 @@ class IamportTest extends TestCase
         $response          = $this->iamport->callApi($subscribeCustomer);
 
         $this->assertInstanceOf('Iamport\RestClient\Result', $response);
-        $this->assertTrue($response->success);
-        $this->assertNull($response->error);
-        $this->assertObjectHasAttribute('customData', $response->data);
-        $this->assertInstanceOf('Iamport\RestClient\Response\Response', $response->data);
     }
 
     /** @test */

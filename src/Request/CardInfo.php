@@ -15,31 +15,31 @@ class CardInfo
     use RequestTrait;
 
     /**
-     * @var string 카드번호(dddd-dddd-dddd-dddd).
+     * @var string 카드번호(dddd-dddd-dddd-dddd)
      */
     private $card_number;
 
     /**
-     * @var string 카드 유효기간(YYYY-MM).
+     * @var string 카드 유효기간(YYYY-MM)
      */
     private $expiry;
 
     /**
-     * @var string 생년월일6자리(법인카드의 경우 사업자등록번호10자리).
+     * @var string 생년월일6자리(법인카드의 경우 사업자등록번호10자리)
      */
     private $birth;
 
     /**
-     * @var string 카드비밀번호 앞 2자리.
+     * @var string 카드비밀번호 앞 2자리
      */
     private $pwd_2digit;
 
     /**
      * CardInfo constructor.
      *
-     * @param string $card_number
-     * @param string $expiry
-     * @param string $birth
+     * @param string      $card_number
+     * @param string      $expiry
+     * @param string      $birth
      * @param string|null $pwd_2digit
      */
     public function __construct(string $card_number, string $expiry, string $birth, string $pwd_2digit = '')
@@ -48,7 +48,7 @@ class CardInfo
         $this->expiry      = $expiry;
         $this->birth       = $birth;
 
-        if(!is_null( $pwd_2digit)) {
+        if (!is_null($pwd_2digit)) {
             $this->pwd_2digit = $pwd_2digit;
         }
     }

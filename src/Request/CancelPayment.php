@@ -67,22 +67,22 @@ class CancelPayment extends RequestBase
     private $refund_account;
 
     /**
-     * 아임포트 고유번호로 인스턴스 생성
+     * 아임포트 고유번호로 인스턴스 생성.
      *
-     * @param string $impUid
+     * @param string $imp_uid
      *
      * @return CancelPayment
      */
-    public static function withImpUid(string $impUid)
+    public static function withImpUid(string $imp_uid)
     {
-        $instance = new self();
-        $instance->setImpUid($impUid);
+        $instance          = new self();
+        $instance->imp_uid = $imp_uid;
 
         return $instance;
     }
 
     /**
-     * 거래 고유번호로 인스턴스 생성
+     * 거래 고유번호로 인스턴스 생성.
      *
      * @param string $merchant_uid
      *
@@ -90,8 +90,8 @@ class CancelPayment extends RequestBase
      */
     public static function withMerchantUid(string $merchant_uid)
     {
-        $instance = new self();
-        $instance->setMerchantUid($merchant_uid);
+        $instance               = new self();
+        $instance->merchant_uid = $merchant_uid;
 
         return $instance;
     }
