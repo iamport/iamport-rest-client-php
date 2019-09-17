@@ -19,17 +19,10 @@ class IamportTest extends TestCase
     const TEST_IMP_SEC = 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f';
 
     const IMP_UID      = 'imp_448280090638';
-    const MERCHANT_UID = 'merchant_1567415998047';
+    const MERCHANT_UID = 'merchant_1448280088556';
     const CUSTOMER_UID = 'customer_1234';
 
     private $iamport;
-
-    private function test_assert_object_has_attribute($response)
-    {
-        $this->assertObjectHasAttribute('success', $response);
-        $this->assertObjectHasAttribute('data', $response);
-        $this->assertObjectHasAttribute('error', $response);
-    }
 
     /**
      * This method is called before each test.
@@ -39,30 +32,47 @@ class IamportTest extends TestCase
         $this->iamport = new Iamport(self::TEST_IMP_KEY, self::TEST_IMP_SEC);
     }
 
+    protected function tearDown()
+    {
+        $this->iamport  = null;
+    }
+
     /** @test */
     public function payment_by_imp_uid()
     {
         $payment     = Payment::getImpUid(self::IMP_UID);
 
+        $this->assertEquals('/payments/' . self::IMP_UID, $payment->path());
+        $this->assertEquals('GET', $payment->verb());
+        $this->assertEmpty($payment->attributes());
+
         $response    = $this->iamport->callApi($payment);
 
-        $this->test_assert_object_has_attribute($response);
-
-        unset($payment);
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+        $this->assertTrue($response->success);
+        $this->assertNull($response->error);
+        $this->assertObjectHasAttribute('customData', $response->data);
+        $this->assertInstanceOf('Iamport\RestClient\Response\Response', $response->data);
     }
 
     /** @test */
     public function payment_by_merchant_uid()
     {
         $payment                 = Payment::getMerchantUid(self::MERCHANT_UID);
-        $payment->payment_status = 'ready';
+        $payment->payment_status = '';
         $payment->sorting        = '-started';
+
+        $this->assertEquals('/payments/find/' . self::MERCHANT_UID, $payment->path());
+        $this->assertEquals('GET', $payment->verb());
+        $this->assertArrayHasKey('query', $payment->attributes());
 
         $response                = $this->iamport->callApi($payment);
 
-        $this->test_assert_object_has_attribute($response);
-
-        unset($payment);
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+        $this->assertTrue($response->success);
+        $this->assertNull($response->error);
+        $this->assertObjectHasAttribute('customData', $response->data);
+        $this->assertInstanceOf('Iamport\RestClient\Response\Response', $response->data);
     }
 
     /** @test */
@@ -73,11 +83,21 @@ class IamportTest extends TestCase
         $payments->page           = 1;
         $payments->sorting        = '-started';
 
+        $this->assertEquals('/payments/findAll/' . self::MERCHANT_UID, $payments->path());
+        $this->assertEquals('GET', $payments->verb());
+        $this->assertArrayHasKey('sorting', $payments->attributes()['query']);
+        $this->assertArrayHasKey('page', $payments->attributes()['query']);
+
         $response                 = $this->iamport->callApi($payments);
 
-        $this->test_assert_object_has_attribute($response);
-
-        unset($payment);
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+        $this->assertTrue($response->success);
+        $this->assertNull($response->error);
+        $this->assertInstanceOf('Iamport\RestClient\Response\PagedResponse', $response->data);
+        $this->assertIsInt($response->data->getTotal());
+        $this->assertIsInt($response->data->getPrevious());
+        $this->assertIsInt($response->data->getNext());
+        $this->assertInstanceOf('Iamport\RestClient\Response\Response', $response->data->getPayments()[0]);
     }
 
     /** @test */
@@ -92,11 +112,14 @@ class IamportTest extends TestCase
         $cancelPayment->refund_bank    = '환불될 가상계좌 은행코드';
         $cancelPayment->refund_account = '환불될 가상계좌 번호';
 
+        $this->assertSame($cancelPayment->imp_uid, self::IMP_UID);
+        $this->assertEquals('/payments/cancel/', $cancelPayment->path());
+        $this->assertEquals('POST', $cancelPayment->verb());
+        $this->assertArrayHasKey('body', $cancelPayment->attributes());
+
         $response                      = $this->iamport->callApi($cancelPayment);
 
-        $this->test_assert_object_has_attribute($response);
-
-        unset($cancelPayment);
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
     }
 
     /** @test */
@@ -111,11 +134,14 @@ class IamportTest extends TestCase
         $cancelPayment->refund_bank    = '환불될 가상계좌 은행코드';
         $cancelPayment->refund_account = '환불될 가상계좌 번호';
 
+        $this->assertSame($cancelPayment->merchant_uid, self::MERCHANT_UID);
+        $this->assertEquals('/payments/cancel/', $cancelPayment->path());
+        $this->assertEquals('POST', $cancelPayment->verb());
+        $this->assertArrayHasKey('body', $cancelPayment->attributes());
+
         $response                      = $this->iamport->callApi($cancelPayment);
 
-        $this->test_assert_object_has_attribute($response);
-
-        unset($cancelPayment);
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
     }
 
     /** @test */
@@ -123,11 +149,17 @@ class IamportTest extends TestCase
     {
         $receipt  = Receipt::view(self::IMP_UID);
 
+        $this->assertEquals('/receipts/' . self::IMP_UID, $receipt->path());
+        $this->assertEquals('GET', $receipt->verb());
+        $this->assertEmpty($receipt->attributes());
+
         $response = $this->iamport->callApi($receipt);
 
-        $this->test_assert_object_has_attribute($response);
-
-        unset($receipt);
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+        $this->assertTrue($response->success);
+        $this->assertNull($response->error);
+        $this->assertObjectHasAttribute('customData', $response->data);
+        $this->assertInstanceOf('Iamport\RestClient\Response\Response', $response->data);
     }
 
     /** @test */
@@ -135,28 +167,32 @@ class IamportTest extends TestCase
     {
         $receipt  = Receipt::cancel(self::IMP_UID);
 
+        $this->assertEquals('/receipts/' . self::IMP_UID, $receipt->path());
+        $this->assertEquals('DELETE', $receipt->verb());
+        $this->assertEmpty($receipt->attributes());
+
         $response = $this->iamport->callApi($receipt);
 
-        $this->test_assert_object_has_attribute($response);
-
-        unset($receipt);
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
     }
 
     /** @test */
     public function issue_receipt()
     {
-        $receipt              = Receipt::issue('imps_168056340072', '01012341234');
+        $receipt              = Receipt::issue(self::IMP_UID, '01012341234');
         $receipt->type        = 'person';
         $receipt->buyer_name  = '구매자 이름';
         $receipt->buyer_email = '구매자 이메일';
         $receipt->buyer_tel   = '구매자 전화번호';
         $receipt->tax_free    = 0;
 
+        $this->assertEquals('/receipts/' . self::IMP_UID, $receipt->path());
+        $this->assertEquals('POST', $receipt->verb());
+        $this->assertArrayHasKey('body', $receipt->attributes());
+
         $response = $this->iamport->callApi($receipt);
 
-        $this->test_assert_object_has_attribute($response);
-
-        unset($receipt);
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
     }
 
     /** @test */
@@ -169,34 +205,46 @@ class IamportTest extends TestCase
         $subscribeCustomer->customer_email    = '고객(카드소지자) 이메일';
         $subscribeCustomer->customer_addr     = '고객(카드소지자) 주소';
         $subscribeCustomer->customer_postcode = '고객(카드소지자) 우편번호';
+
+        $this->assertEquals('/subscribe/customers/' . self::CUSTOMER_UID, $subscribeCustomer->path());
+        $this->assertEquals('POST', $subscribeCustomer->verb());
+        $this->assertArrayHasKey('body', $subscribeCustomer->attributes());
+
         $response                             = $this->iamport->callApi($subscribeCustomer);
 
-        $this->test_assert_object_has_attribute($response);
-
-        unset($cardInfo);
-        unset($subscribeCustomer);
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
     }
 
     /** @test */
     public function view_subscribe_billing_key()
     {
         $subscribeCustomer = SubscribeCustomer::view(self::CUSTOMER_UID);
+
+        $this->assertEquals('/subscribe/customers/' . self::CUSTOMER_UID, $subscribeCustomer->path());
+        $this->assertEquals('GET', $subscribeCustomer->verb());
+        $this->assertEmpty($subscribeCustomer->attributes());
+
         $response          = $this->iamport->callApi($subscribeCustomer);
 
-        $this->test_assert_object_has_attribute($response);
-
-        unset($subscribeCustomer);
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+        $this->assertTrue($response->success);
+        $this->assertNull($response->error);
+        $this->assertObjectHasAttribute('customData', $response->data);
+        $this->assertInstanceOf('Iamport\RestClient\Response\Response', $response->data);
     }
 
     /** @test */
     public function delete_subscribe_billing_key()
     {
         $subscribeCustomer = SubscribeCustomer::delete(self::CUSTOMER_UID);
+
+        $this->assertEquals('/subscribe/customers/' . self::CUSTOMER_UID, $subscribeCustomer->path());
+        $this->assertEquals('DELETE', $subscribeCustomer->verb());
+        $this->assertEmpty($subscribeCustomer->attributes());
+
         $response          = $this->iamport->callApi($subscribeCustomer);
 
-        $this->test_assert_object_has_attribute($response);
-
-        unset($subscribeCustomer);
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
     }
 
     /** @test */
@@ -216,12 +264,14 @@ class IamportTest extends TestCase
         $subscribeOnetime->card_quota     = '카드 할부개월 수';
         $subscribeOnetime->custom_data    = '';
         $subscribeOnetime->notice_url     = 'http://notice.example.com';
+
+        $this->assertEquals('/subscribe/payments/onetime/', $subscribeOnetime->path());
+        $this->assertEquals('POST', $subscribeOnetime->verb());
+        $this->assertArrayHasKey('body', $subscribeOnetime->attributes());
+
         $response                         = $this->iamport->callApi($subscribeOnetime);
 
-        $this->test_assert_object_has_attribute($response);
-
-        unset($cardInfo);
-        unset($subscribeOnetime);
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
     }
 
     /** @test */
@@ -237,11 +287,14 @@ class IamportTest extends TestCase
         $subscribeAgain->card_quota     = '카드 할부개월 수';
         $subscribeAgain->custom_data    = '';
         $subscribeAgain->notice_url     = '';
+
+        $this->assertEquals('/subscribe/payments/again/', $subscribeAgain->path());
+        $this->assertEquals('POST', $subscribeAgain->verb());
+        $this->assertArrayHasKey('body', $subscribeAgain->attributes());
+
         $response                       = $this->iamport->callApi($subscribeAgain);
 
-        $this->test_assert_object_has_attribute($response);
-
-        unset($subscribeAgain);
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
     }
 
     /** @test */
@@ -267,14 +320,13 @@ class IamportTest extends TestCase
         $subscribeSchedule->addSchedules($schedule1);
         $subscribeSchedule->addSchedules($schedule2);
 
+        $this->assertEquals('/subscribe/payments/schedule/', $subscribeSchedule->path());
+        $this->assertEquals('POST', $subscribeSchedule->verb());
+        $this->assertArrayHasKey('body', $subscribeSchedule->attributes());
+
         $response   = $this->iamport->callApi($subscribeSchedule);
 
-        $this->test_assert_object_has_attribute($response);
-
-        unset($subscribeSchedule);
-        unset($cardInfo);
-        unset($schedule1);
-        unset($schedule2);
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
     }
 
     /** @test */
@@ -282,10 +334,13 @@ class IamportTest extends TestCase
     {
         $subscribeUnschedule               = new SubscribeUnschedule(self::CUSTOMER_UID);
         $subscribeUnschedule->merchant_uid = ['order_1568016126'];
+
+        $this->assertEquals('/subscribe/payments/unschedule/', $subscribeUnschedule->path());
+        $this->assertEquals('POST', $subscribeUnschedule->verb());
+        $this->assertArrayHasKey('body', $subscribeUnschedule->attributes());
+
         $response                          = $this->iamport->callApi($subscribeUnschedule);
 
-        $this->test_assert_object_has_attribute($response);
-
-        unset($subscribeUnschedule);
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
     }
 }
