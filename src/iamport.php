@@ -140,6 +140,7 @@ if (!class_exists('Iamport')) {
 
         const GET_TOKEN_URL = 'https://api.iamport.kr/users/getToken';
         const GET_PAYMENT_URL = 'https://api.iamport.kr/payments/';
+        const GET_CERTIFICATION_URL = 'https://api.iamport.kr/certifications/';
         const FIND_PAYMENT_URL = 'https://api.iamport.kr/payments/find/';
         const FIND_ALL_PAYMENT_URL = 'https://api.iamport.kr/payments/findAll/';
         const CANCEL_PAYMENT_URL = 'https://api.iamport.kr/payments/cancel/';
@@ -214,6 +215,21 @@ if (!class_exists('Iamport')) {
 
                 $pagedPayments = new IamportPaymentsPaged($response);
                 return new IamportResult(true, $pagedPayments);
+            } catch (IamportAuthException $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            } catch (IamportRequestException $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            } catch (Exception $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            }
+        }
+
+        public function findCertificationByImpUID($impUid)
+        {
+            try {
+                $response = $this->getResponse(self::GET_CERTIFICATION_URL . $impUid);
+
+                return new IamportResult(true, $response);
             } catch (IamportAuthException $e) {
                 return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
             } catch (IamportRequestException $e) {
