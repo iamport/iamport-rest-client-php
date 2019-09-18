@@ -5,6 +5,10 @@ require_once '../vendor/autoload.php';
 use Iamport\RestClient\Iamport;
 use Iamport\RestClient\Request\CancelPayment;
 use Iamport\RestClient\Request\CardInfo;
+use Iamport\RestClient\Request\Certification;
+use Iamport\RestClient\Request\EscrowLogis;
+use Iamport\RestClient\Request\EscrowLogisInvoice;
+use Iamport\RestClient\Request\EscrowLogisPerson;
 use Iamport\RestClient\Request\Payment;
 use Iamport\RestClient\Request\Receipt;
 use Iamport\RestClient\Request\Schedule;
@@ -14,13 +18,21 @@ use Iamport\RestClient\Request\SubscribeOnetime;
 use Iamport\RestClient\Request\SubscribeSchedule;
 use Iamport\RestClient\Request\SubscribeUnschedule;
 
-$impKey = 'imp_apikey';
-$impSecret = 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f';
-$impUid = 'imp_448280090638';
+$impKey      = 'imp_apikey';
+$impSecret   = 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f';
+$impUid      = 'imp_448280090638';
 $merchantUid = 'merchant_1448280088556';
 $customerUid = 'customer_1234';
 
 $iamport = new Iamport($impKey, $impSecret);
+
+// imp_uid 로 SMS본인인증된 결과를 조회
+$certifications = Certification::view($impUid);
+$getCertifications = $iamport->callApi($certifications);
+
+// imp_uid 로 SMS본인인증된 결과를 아임포트에서 삭제
+$certifications = Certification::delete($impUid);
+$deleteCertifications = $iamport->callApi($certifications);
 
 // imp_uid 로 주문정보 찾기(아임포트에서 생성된 거래고유번호)
 $payment     = Payment::withImpUid($impUid);
@@ -162,3 +174,14 @@ $subscribeSchedule   = $iamport->callApi($scheduleData);
 $unscheduleData               = new SubscribeUnschedule($customerUid);
 $unscheduleData->merchant_uid = ['1order_1568016126'];
 $subscribeUnschedule          = $iamport->callApi($unscheduleData);
+
+// 에스크로 결제건에 대한 배송정보 등록/수정
+$sender = new EscrowLogisPerson('홍길동', '010-1234-5678', '서울시 강남구 삼성동', '15411');
+$receiver = new EscrowLogisPerson('김길동', '010-1234-5678', '서울시 마포구 연희동', '16211');
+$invoice = new EscrowLogisInvoice('시옷', '123456', '1568785782');
+
+$escrow = EscrowLogis::register($impUid, $sender, $receiver, $invoice);
+$registerEscrow          = $iamport->callApi($escrow);
+
+$escrow = EscrowLogis::update($impUid, $sender, $receiver, $invoice);
+$updateEscrow          = $iamport->callApi($escrow);

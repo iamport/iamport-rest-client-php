@@ -3,6 +3,10 @@
 use Iamport\RestClient\Iamport;
 use Iamport\RestClient\Request\CancelPayment;
 use Iamport\RestClient\Request\CardInfo;
+use Iamport\RestClient\Request\Certification;
+use Iamport\RestClient\Request\EscrowLogis;
+use Iamport\RestClient\Request\EscrowLogisInvoice;
+use Iamport\RestClient\Request\EscrowLogisPerson;
 use Iamport\RestClient\Request\Payment;
 use Iamport\RestClient\Request\Receipt;
 use Iamport\RestClient\Request\Schedule;
@@ -38,11 +42,39 @@ class IamportTest extends TestCase
     }
 
     /** @test */
+    public function view_certification()
+    {
+        $certification     = Certification::view(self::IMP_UID);
+
+        $this->assertEquals('/certifications/'.self::IMP_UID, $certification->path());
+        $this->assertEquals('GET', $certification->verb());
+        $this->assertEmpty($certification->attributes());
+
+        $response    = $this->iamport->callApi($certification);
+
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+    }
+
+    /** @test */
+    public function delete_certification()
+    {
+        $certification     = Certification::delete(self::IMP_UID);
+
+        $this->assertEquals('/certifications/'.self::IMP_UID, $certification->path());
+        $this->assertEquals('DELETE', $certification->verb());
+        $this->assertEmpty($certification->attributes());
+
+        $response    = $this->iamport->callApi($certification);
+
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+    }
+
+    /** @test */
     public function payment_by_imp_uid()
     {
         $payment     = Payment::withImpUid(self::IMP_UID);
 
-        $this->assertEquals('/payments/' . self::IMP_UID, $payment->path());
+        $this->assertEquals('/payments/'.self::IMP_UID, $payment->path());
         $this->assertEquals('GET', $payment->verb());
         $this->assertEmpty($payment->attributes());
 
@@ -62,7 +94,7 @@ class IamportTest extends TestCase
         $payment->payment_status = '';
         $payment->sorting        = '-started';
 
-        $this->assertEquals('/payments/find/' . self::MERCHANT_UID, $payment->path());
+        $this->assertEquals('/payments/find/'.self::MERCHANT_UID, $payment->path());
         $this->assertEquals('GET', $payment->verb());
         $this->assertArrayHasKey('query', $payment->attributes());
 
@@ -83,7 +115,7 @@ class IamportTest extends TestCase
         $payments->page           = 1;
         $payments->sorting        = '-started';
 
-        $this->assertEquals('/payments/findAll/' . self::MERCHANT_UID, $payments->path());
+        $this->assertEquals('/payments/findAll/'.self::MERCHANT_UID, $payments->path());
         $this->assertEquals('GET', $payments->verb());
         $this->assertArrayHasKey('sorting', $payments->attributes()['query']);
         $this->assertArrayHasKey('page', $payments->attributes()['query']);
@@ -149,7 +181,7 @@ class IamportTest extends TestCase
     {
         $receipt  = Receipt::view(self::IMP_UID);
 
-        $this->assertEquals('/receipts/' . self::IMP_UID, $receipt->path());
+        $this->assertEquals('/receipts/'.self::IMP_UID, $receipt->path());
         $this->assertEquals('GET', $receipt->verb());
         $this->assertEmpty($receipt->attributes());
 
@@ -167,7 +199,7 @@ class IamportTest extends TestCase
     {
         $receipt  = Receipt::cancel(self::IMP_UID);
 
-        $this->assertEquals('/receipts/' . self::IMP_UID, $receipt->path());
+        $this->assertEquals('/receipts/'.self::IMP_UID, $receipt->path());
         $this->assertEquals('DELETE', $receipt->verb());
         $this->assertEmpty($receipt->attributes());
 
@@ -186,7 +218,7 @@ class IamportTest extends TestCase
         $receipt->buyer_tel   = '구매자 전화번호';
         $receipt->tax_free    = 0;
 
-        $this->assertEquals('/receipts/' . self::IMP_UID, $receipt->path());
+        $this->assertEquals('/receipts/'.self::IMP_UID, $receipt->path());
         $this->assertEquals('POST', $receipt->verb());
         $this->assertArrayHasKey('body', $receipt->attributes());
 
@@ -206,7 +238,7 @@ class IamportTest extends TestCase
         $subscribeCustomer->customer_addr     = '고객(카드소지자) 주소';
         $subscribeCustomer->customer_postcode = '고객(카드소지자) 우편번호';
 
-        $this->assertEquals('/subscribe/customers/' . self::CUSTOMER_UID, $subscribeCustomer->path());
+        $this->assertEquals('/subscribe/customers/'.self::CUSTOMER_UID, $subscribeCustomer->path());
         $this->assertEquals('POST', $subscribeCustomer->verb());
         $this->assertArrayHasKey('body', $subscribeCustomer->attributes());
 
@@ -220,7 +252,7 @@ class IamportTest extends TestCase
     {
         $subscribeCustomer = SubscribeCustomer::view(self::CUSTOMER_UID);
 
-        $this->assertEquals('/subscribe/customers/' . self::CUSTOMER_UID, $subscribeCustomer->path());
+        $this->assertEquals('/subscribe/customers/'.self::CUSTOMER_UID, $subscribeCustomer->path());
         $this->assertEquals('GET', $subscribeCustomer->verb());
         $this->assertEmpty($subscribeCustomer->attributes());
 
@@ -234,7 +266,7 @@ class IamportTest extends TestCase
     {
         $subscribeCustomer = SubscribeCustomer::delete(self::CUSTOMER_UID);
 
-        $this->assertEquals('/subscribe/customers/' . self::CUSTOMER_UID, $subscribeCustomer->path());
+        $this->assertEquals('/subscribe/customers/'.self::CUSTOMER_UID, $subscribeCustomer->path());
         $this->assertEquals('DELETE', $subscribeCustomer->verb());
         $this->assertEmpty($subscribeCustomer->attributes());
 
@@ -336,6 +368,42 @@ class IamportTest extends TestCase
         $this->assertArrayHasKey('body', $subscribeUnschedule->attributes());
 
         $response                          = $this->iamport->callApi($subscribeUnschedule);
+
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+    }
+
+    /** @test */
+    public function register_escrow()
+    {
+        $sender   = new EscrowLogisPerson('홍길동', '010-1234-5678', '서울시 강남구 삼성동', '15411');
+        $receiver = new EscrowLogisPerson('김길동', '010-1234-5678', '서울시 마포구 연희동', '16211');
+        $invoice  = new EscrowLogisInvoice('시옷', '123456', '1568785782');
+
+        $escrow               = EscrowLogis::register(self::IMP_UID, $sender, $receiver, $invoice);
+
+        $this->assertEquals('/escrows/logis/'.self::IMP_UID, $escrow->path());
+        $this->assertEquals('POST', $escrow->verb());
+        $this->assertArrayHasKey('body', $escrow->attributes());
+
+        $response                          = $this->iamport->callApi($escrow);
+
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+    }
+
+    /** @test */
+    public function update_escrow()
+    {
+        $sender   = new EscrowLogisPerson('홍길동', '010-1234-5678', '서울시 강남구 삼성동', '15411');
+        $receiver = new EscrowLogisPerson('김길동', '010-1234-5678', '서울시 마포구 연희동', '16211');
+        $invoice  = new EscrowLogisInvoice('시옷', '123456', '1568785782');
+
+        $escrow               = EscrowLogis::update(self::IMP_UID, $sender, $receiver, $invoice);
+
+        $this->assertEquals('/escrows/logis/'.self::IMP_UID, $escrow->path());
+        $this->assertEquals('PUT', $escrow->verb());
+        $this->assertArrayHasKey('body', $escrow->attributes());
+
+        $response                          = $this->iamport->callApi($escrow);
 
         $this->assertInstanceOf('Iamport\RestClient\Result', $response);
     }

@@ -30,6 +30,16 @@ Request 객체 방식은 `API Endpoint`, `Http verb`, `request` 데이터들이 
 ```
 
 ### 제공되는 Request 객체 목록
+**본인인증 API**
+- Certification
+    - [Certification::view()](https://api.iamport.kr/#!/certifications/getCertification)
+    - [Certification::delete()](https://api.iamport.kr/#!/certifications/deleteCertification)
+    
+**에스크로 API**
+- EscrowLogis
+    - [EscrowLogis::register()](https://api.iamport.kr/#!/escrow.logis/escrow_logis_save)
+    - [EscrowLogis::update()](https://api.iamport.kr/#!/escrow.logis/escrow_logis_save_0)
+        
 **결제관련 기본 API**
 - Payment
     - [Payment::getImpUid()](https://api.iamport.kr/#!/payments/getPaymentByImpUid)
@@ -46,7 +56,6 @@ Request 객체 방식은 `API Endpoint`, `Http verb`, `request` 데이터들이 
     - [SubscribeSchedule()](https://api.iamport.kr/#!/subscribe/schedule)
 - SubscribeUnschedule
     - [SubscribeUnschedule()](https://api.iamport.kr/#!/subscribe/unschedule)
-
 
 **비인증 결제 빌링키 관리 API**
 - SubscribeCustomer

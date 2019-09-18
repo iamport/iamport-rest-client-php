@@ -15,7 +15,7 @@ class Endpoint extends Enum
     public const PAYMENTS_FIND               = '/payments/find/';
     public const PAYMENTS_FIND_ALL           = '/payments/findAll/';
     public const PAYMENTS_CANCEL             = '/payments/cancel/';
-    public const CERTIFICATIONS              = '/certifications';
+    public const CERTIFICATIONS              = '/certifications/';
     public const CARDS                       = '/cards';
     public const BANKS                       = '/banks';
     public const ESCROW                      = '/escrows/logis/';
