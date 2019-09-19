@@ -28,67 +28,67 @@ class SubscribeAgain extends RequestBase
     /**
      * @var string 고객 고유번호
      */
-    private $customer_uid;
+    protected $customer_uid;
 
     /**
      * @var string 가맹점 거래 고유번호
      */
-    private $merchant_uid;
+    protected $merchant_uid;
 
     /**
      * @var string 결제금액
      */
-    private $amount;
+    protected $amount;
 
     /**
      * @var string 주문명
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string amount 중 면세공급가액
      */
-    private $tax_free;
+    protected $tax_free;
 
     /**
      * @var string 주문자명
      */
-    private $buyer_name;
+    protected $buyer_name;
 
     /**
      * @var string 주문자 E-mail주소
      */
-    private $buyer_email;
+    protected $buyer_email;
 
     /**
      * @var string 주문자 전화번호
      */
-    private $buyer_tel;
+    protected $buyer_tel;
 
     /**
      * @var string 주문자 주소
      */
-    private $buyer_addr;
+    protected $buyer_addr;
 
     /**
      * @var string 주문자 우편번호
      */
-    private $buyer_postcode;
+    protected $buyer_postcode;
 
     /**
      * @var string 카드할부개월수. 2 이상의 integer 할부개월수 적용(결제금액 50,000원 이상 한정).
      */
-    private $card_quota;
+    protected $card_quota;
 
     /**
      * @var string 거래정보와 함께 저장할 추가 정보
      */
-    private $custom_data;
+    protected $custom_data;
 
     /**
      * @var string 결제성공 시 통지될 Notification URL(Webhook URL)
      */
-    private $notice_url;
+    protected $notice_url;
 
     /**
      * SubscribeAgain constructor.

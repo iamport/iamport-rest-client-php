@@ -31,57 +31,57 @@ class SubscribeCustomer extends RequestBase
     /**
      * @var string 구매자 고유 번호
      */
-    private $customer_uid;
+    protected $customer_uid;
 
     /**
      * @var string API 방식 비인증 PG설정이 2개 이상인 경우 지정
      */
-    private $pg;
+    protected $pg;
 
     /**
      * @var string 카드번호(dddd-dddd-dddd-dddd)
      */
-    private $card_number;
+    protected $card_number;
 
     /**
      * @var string 카드 유효기간(YYYY-MM)
      */
-    private $expiry;
+    protected $expiry;
 
     /**
      * @var string 생년월일6자리(법인카드의 경우 사업자등록번호10자리)
      */
-    private $birth;
+    protected $birth;
 
     /**
      * @var string 카드비밀번호 앞 2자리
      */
-    private $pwd_2digit;
+    protected $pwd_2digit;
 
     /**
      * @var string 카드 고객(카드소지자) 관리용 성함
      */
-    private $customer_name;
+    protected $customer_name;
 
     /**
      * @var string 고객(카드소지자) 전화번호
      */
-    private $customer_tel;
+    protected $customer_tel;
 
     /**
      * @var string 고객(카드소지자) Email
      */
-    private $customer_email;
+    protected $customer_email;
 
     /**
      * @var string 고객(카드소지자) 주소
      */
-    private $customer_addr;
+    protected $customer_addr;
 
     /**
      * @var string 고객(카드소지자) 우편번호
      */
-    private $customer_postcode;
+    protected $customer_postcode;
 
     /**
      * SubscribeCustomer GET constructor.

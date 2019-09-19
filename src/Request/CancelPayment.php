@@ -24,47 +24,47 @@ class CancelPayment extends RequestBase
     /**
      * @var string 취소할 거래의 아임포트 고유번호
      */
-    private $imp_uid;
+    protected $imp_uid;
 
     /**
      * @var string 가맹점에서 전달한 거래 고유번호
      */
-    private $merchant_uid;
+    protected $merchant_uid;
 
     /**
      * @var float (부분)취소요청금액(누락이면 전액취소)
      */
-    private $amount;
+    protected $amount;
 
     /**
      * @var float (부분)취소요청금액 중 면세금액(누락되면 0원처리)
      */
-    private $tax_free;
+    protected $tax_free;
 
     /**
      * @var float 취소 트랜잭션 수행 전, 현재시점의 취소 가능한 잔액
      */
-    private $checksum;
+    protected $checksum;
 
     /**
      * @var string 취소 사유
      */
-    private $reason;
+    protected $reason;
 
     /**
      * @var string 환불계좌 예금주(가상계좌취소시 필수)
      */
-    private $refund_holder;
+    protected $refund_holder;
 
     /**
      * @var string 환불계좌 은행코드(하단 은행코드표 참조, 가상계좌취소시 필수)
      */
-    private $refund_bank;
+    protected $refund_bank;
 
     /**
      * @var string 환불계좌 계좌번호(가상계좌취소시 필수)
      */
-    private $refund_account;
+    protected $refund_account;
 
     /**
      * 아임포트 고유번호로 인스턴스 생성.

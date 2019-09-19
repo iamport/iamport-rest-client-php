@@ -8,7 +8,7 @@ use Exception;
  * Enum 클래스 기본 정의
  * Class Enum.
  */
-abstract class Enum
+class Enum
 {
     /**
      * @var null

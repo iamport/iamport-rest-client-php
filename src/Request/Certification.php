@@ -21,7 +21,7 @@ class Certification extends RequestBase
     /**
      * @var string 아임포트 거래 고유번호
      */
-    private $imp_uid;
+    protected $imp_uid;
 
     /**
      * Certification GET constructor.

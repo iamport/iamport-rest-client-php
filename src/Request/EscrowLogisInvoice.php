@@ -16,17 +16,17 @@ class EscrowLogisInvoice
     /**
      * @var string 택배사 코드
      */
-    private $company;
+    protected $company;
 
     /**
      * @var string 송장번호
      */
-    private $invoice;
+    protected $invoice;
 
     /**
      * @var int 발송일시 UNIX TIMESTAMP
      */
-    private $sent_at;
+    protected $sent_at;
 
     /**
      * EscrowLogisInvoice constructor.

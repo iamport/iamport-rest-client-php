@@ -17,22 +17,22 @@ class EscrowLogisPerson
     /**
      * @var string 이름
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string 전화번호
      */
-    private $tel;
+    protected $tel;
 
     /**
      * @var string 주소
      */
-    private $addr;
+    protected $addr;
 
     /**
      * @var string 우편번호
      */
-    private $postcode;
+    protected $postcode;
 
     /**
      * EscrowLogisPerson constructor.

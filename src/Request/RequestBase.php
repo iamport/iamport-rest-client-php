@@ -12,7 +12,7 @@ abstract class RequestBase
      *
      * @var string
      */
-    public $responseType = 'deault';
+    public $responseType = 'default';
 
     /**
      * 토큰 포함 여부

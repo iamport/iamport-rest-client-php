@@ -24,57 +24,57 @@ class Schedule
     /**
      * @var string
      */
-    private $merchant_uid;
+    protected $merchant_uid;
 
     /**
      * @var int
      */
-    private $schedule_at;
+    protected $schedule_at;
 
     /**
      * @var float
      */
-    private $amount;
+    protected $amount;
 
     /**
      * @var float
      */
-    private $tax_free;
+    protected $tax_free;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      */
-    private $buyer_name;
+    protected $buyer_name;
 
     /**
      * @var string
      */
-    private $buyer_email;
+    protected $buyer_email;
 
     /**
      * @var string
      */
-    private $buyer_tel;
+    protected $buyer_tel;
 
     /**
      * @var string
      */
-    private $buyer_addr;
+    protected $buyer_addr;
 
     /**
      * @var string
      */
-    private $buyer_postcode;
+    protected $buyer_postcode;
 
     /**
      * @var string
      */
-    private $notice_url;
+    protected $notice_url;
 
     /**
      * Schedule constructor.

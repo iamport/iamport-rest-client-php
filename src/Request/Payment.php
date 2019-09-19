@@ -20,27 +20,27 @@ class Payment extends RequestBase
     /**
      * @var string 아임포트 고유번호
      */
-    private $imp_uid;
+    protected $imp_uid;
 
     /**
      * @var string 가맹점에서 전달한 거래 고유번호
      */
-    private $merchant_uid;
+    protected $merchant_uid;
 
     /**
      * @var string status 상태 [ ready, paid, failed, cancelled ]
      */
-    private $payment_status = '';
+    protected $payment_status = '';
 
     /**
      * @var string 정렬기준. [ -started, started, -paid, paid, -updated, updated ]
      */
-    private $sorting = '-started';
+    protected $sorting = '-started';
 
     /**
      * @var int 페이지번호
      */
-    private $page = 1;
+    protected $page = 1;
 
     /**
      * 아임포트 고유번호로 인스턴스 생성.

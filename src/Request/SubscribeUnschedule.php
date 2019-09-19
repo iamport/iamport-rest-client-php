@@ -17,12 +17,12 @@ class SubscribeUnschedule extends RequestBase
     /**
      * @var string 고객 고유번호
      */
-    private $customer_uid;
+    protected $customer_uid;
 
     /**
      * @var array 구매자 고유 번호
      */
-    private $merchant_uid;
+    protected $merchant_uid;
 
     /**
      * SubscribeUnschedule constructor.

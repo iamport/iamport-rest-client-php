@@ -28,42 +28,42 @@ class Receipt extends RequestBase
     /**
      * @var string 아임포트 거래 고유번호
      */
-    private $imp_uid;
+    protected $imp_uid;
 
     /**
      * @var string 현금영수증 발행대상 식별정보 국세청현금영수증카드, 휴대폰번호, 주민등록번호, 사업자등록번호
      */
-    private $identifier;
+    protected $identifier;
 
     /**
      * @var string 현금영수증 발행대상 식별정보 유형. [ person, business, phone, taxcard ].
      */
-    private $identifier_type;
+    protected $identifier_type;
 
     /**
      * @var string 현금영수증 발행 타입(대상). [ person, company ].
      */
-    private $type;
+    protected $type;
 
     /**
      * @var string 구매자 이름 (현금영수증 발행건 사후 추적을 위해 입력을 강력히 권장합니다)
      */
-    private $buyer_name;
+    protected $buyer_name;
 
     /**
      * @var string 구매자 Email
      */
-    private $buyer_email;
+    protected $buyer_email;
 
     /**
      * @var string 구매자 전화번호 (현금영수증 발행건 사후 추적을 위해 입력을 강력히 권장합니다
      */
-    private $buyer_tel;
+    protected $buyer_tel;
 
     /**
      * @var int 현금영수증 발행금액 중 면세금액 지정하지 않으면 0원으로 적용
      */
-    private $tax_free;
+    protected $tax_free;
 
     /**
      * Receipt GET constructor.

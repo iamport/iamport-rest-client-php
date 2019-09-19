@@ -17,22 +17,22 @@ class CardInfo
     /**
      * @var string 카드번호(dddd-dddd-dddd-dddd)
      */
-    private $card_number;
+    protected $card_number;
 
     /**
      * @var string 카드 유효기간(YYYY-MM)
      */
-    private $expiry;
+    protected $expiry;
 
     /**
      * @var string 생년월일6자리(법인카드의 경우 사업자등록번호10자리)
      */
-    private $birth;
+    protected $birth;
 
     /**
      * @var string 카드비밀번호 앞 2자리
      */
-    private $pwd_2digit;
+    protected $pwd_2digit;
 
     /**
      * CardInfo constructor.

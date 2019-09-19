@@ -24,22 +24,22 @@ class EscrowLogis extends RequestBase
     /**
      * @var string 아임포트 거래 고유번호
      */
-    private $imp_uid;
+    protected $imp_uid;
 
     /**
      * @var array 발신자 정보
      */
-    private $sender;
+    protected $sender;
 
     /**
      * @var array 수신자 정보
      */
-    private $receiver;
+    protected $receiver;
 
     /**
      * @var array 배송정보
      */
-    private $logis;
+    protected $logis;
 
     /**
      * EscrowLogis POST constructor.

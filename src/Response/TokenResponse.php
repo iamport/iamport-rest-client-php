@@ -60,7 +60,7 @@ class TokenResponse
     }
 
     /**
-     * @return |null
+     * @return string|null
      */
     public function getMessage()
     {
@@ -69,6 +69,7 @@ class TokenResponse
 
     /**
      * @param $clazz
+     * @return object
      */
     public function getResponseAs($clazz)
     {
