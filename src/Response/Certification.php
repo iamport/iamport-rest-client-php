@@ -2,6 +2,9 @@
 
 namespace Iamport\RestClient\Response;
 
+/**
+ * Class Certification.
+ */
 class Certification
 {
     use ResponseTrait;

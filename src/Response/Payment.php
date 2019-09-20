@@ -224,7 +224,6 @@ class Payment
      */
     protected $cash_receipt_issued;
 
-
     /**
      * Payment constructor.
      *

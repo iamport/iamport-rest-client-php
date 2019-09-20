@@ -139,6 +139,8 @@ class SubscribeOnetime extends RequestBase
         if (!is_null($cardInfo->pwd_2digit)) {
             $this->pwd_2digit = $cardInfo->pwd_2digit;
         }
+
+        $this->responseType = 'Payment';
     }
 
     /**

@@ -104,6 +104,7 @@ class SubscribeAgain extends RequestBase
         $this->merchant_uid = $merchant_uid;
         $this->amount       = $amount;
         $this->name         = $name;
+        $this->responseType = 'Payment';
     }
 
     /**

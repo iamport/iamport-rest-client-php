@@ -68,6 +68,7 @@ class SubscribeSchedule extends RequestBase
     public function __construct(string $customer_uid)
     {
         $this->customer_uid = $customer_uid;
+        $this->responseType = 'Schedule';
     }
 
     /**

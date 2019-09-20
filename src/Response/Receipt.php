@@ -2,6 +2,9 @@
 
 namespace Iamport\RestClient\Response;
 
+/**
+ * Class Receipt.
+ */
 class Receipt
 {
     use ResponseTrait;
@@ -140,5 +143,4 @@ class Receipt
     {
         return $this->cancelled_at;
     }
-
 }

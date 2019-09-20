@@ -84,6 +84,14 @@ class SubscribeCustomer extends RequestBase
     protected $customer_postcode;
 
     /**
+     * SubscribeCustomer constructor.
+     */
+    public function __construct()
+    {
+        $this->responseType = 'SubscribeCustomer';
+    }
+
+    /**
      * SubscribeCustomer GET constructor.
      * 비인증결제 빌링키 조회.
      * [GET] /subscribe/customers/{$customerUid}.

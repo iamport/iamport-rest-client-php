@@ -124,26 +124,51 @@ class Iamport
     }
 
     /**
-     * @param bool $authenticated
+     * @param RequestBase $request
      *
-     * @return Client
-     *
-     * @throws IamportAuthException
+     * @return Result
      */
-    protected function getHttpClient(bool $authenticated): Client
+    public function callApi(RequestBase $request): Result
     {
-        $stack = HandlerStack::create();
-        $stack->push(new DefaultRequestMiddleware());
+        try {
+            $method        = $request->verb();
+            $uri           = $request->path();
+            $attributes    = $request->attributes();
+            $responseClass  = $request->responseType;
+            $authenticated = $request->authenticated;
+            $isCollection  = $request->isCollection;
 
-        if ($authenticated) {
-            $token = $this->requestAccessToken(false);
-            $stack->push(new TokenMiddleware($token));
+            $response = $this->request($method, $uri, $attributes, $authenticated);
+
+            if($isCollection){
+                $result = (new Collection($response, $responseClass));
+            } else {
+                $result = (new Item($response, $responseClass))->getClassAs();
+            }
+
+            return new Result(true, $result);
+        } catch (Exception $e) {
+            return Handler::render($e);
         }
+    }
 
-        return new Client([
-            'handler'  => $stack,
-            'base_uri' => Endpoint::API_BASE_URL,
-        ]);
+    /**
+     * @param RequestBase $request
+     *
+     * @return PromiseInterface|Result
+     */
+    public function callApiPromise(RequestBase $request)
+    {
+        try {
+            $method        = $request->verb();
+            $uri           = $request->path();
+            $attributes    = $request->attributes();
+            $authenticated = $request->authenticated;
+
+            return $this->requestPromise($method, $uri, $attributes, $authenticated);
+        } catch (Exception $e) {
+            return Handler::render($e);
+        }
     }
 
     /**
@@ -217,50 +242,25 @@ class Iamport
     }
 
     /**
-     * @param RequestBase $request
+     * @param bool $authenticated
      *
-     * @return Result
-     */
-    public function callApi(RequestBase $request): Result
-    {
-        try {
-            $method        = $request->verb();
-            $uri           = $request->path();
-            $attributes    = $request->attributes();
-            $responseClass  = $request->responseType;
-            $authenticated = $request->authenticated;
-            $isCollection  = $request->isCollection;
-
-            $response = $this->request($method, $uri, $attributes, $authenticated);
-
-            if($isCollection){
-                $result = (new Collection($response, $responseClass));
-            } else {
-                $result = (new Item($response, $responseClass))->getClassAs();
-            }
-
-            return new Result(true, $result);
-        } catch (Exception $e) {
-            return Handler::render($e);
-        }
-    }
-
-    /**
-     * @param RequestBase $request
+     * @return Client
      *
-     * @return PromiseInterface|Result
+     * @throws IamportAuthException
      */
-    public function callApiPromise(RequestBase $request)
+    protected function getHttpClient(bool $authenticated): Client
     {
-        try {
-            $method        = $request->verb();
-            $uri           = $request->path();
-            $attributes    = $request->attributes();
-            $authenticated = $request->authenticated;
+        $stack = HandlerStack::create();
+        $stack->push(new DefaultRequestMiddleware());
 
-            return $this->requestPromise($method, $uri, $attributes, $authenticated);
-        } catch (Exception $e) {
-            return Handler::render($e);
+        if ($authenticated) {
+            $token = $this->requestAccessToken(false);
+            $stack->push(new TokenMiddleware($token));
         }
+
+        return new Client([
+            'handler'  => $stack,
+            'base_uri' => Endpoint::API_BASE_URL,
+        ]);
     }
 }

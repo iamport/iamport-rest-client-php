@@ -42,6 +42,14 @@ class EscrowLogis extends RequestBase
     protected $logis;
 
     /**
+     * EscrowLogis constructor.
+     */
+    public function __construct()
+    {
+        $this->responseType = 'EscrowLogis';
+    }
+
+    /**
      * EscrowLogis POST constructor.
      * 에스크로 결제 건에 대한 배송정보 등록.
      * [POST] /escrows/logis/{imp_uid}.
