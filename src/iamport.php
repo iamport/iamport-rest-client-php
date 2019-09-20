@@ -279,7 +279,7 @@ if (!class_exists('Iamport')) {
             try {
                 $access_token = $this->getAccessCode();
 
-                $keys = array_flip(array('token', 'merchant_uid', 'amount', 'vat', 'card_number', 'expiry', 'birth', 'pwd_2digit', 'customer_uid', 'name', 'buyer_name', 'buyer_email', 'buyer_tel', 'buyer_addr', 'buyer_postcode'));
+                $keys = array_flip(array('token', 'merchant_uid', 'amount', 'vat', 'card_number', 'expiry', 'birth', 'pwd_2digit', 'customer_uid', 'name', 'buyer_name', 'buyer_email', 'buyer_tel', 'buyer_addr', 'buyer_postcode', 'card_quota', 'custom_data', 'notice_url'));
                 $onetime_data = array_intersect_key($data, $keys);
 
                 $response = $this->postResponse(
