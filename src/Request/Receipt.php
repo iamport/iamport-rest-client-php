@@ -97,7 +97,7 @@ class Receipt extends RequestBase
     {
         $instance             = new self();
         $instance->imp_uid    = $impUid;
-        $instance->identifier =$identifier;
+        $instance->identifier = $identifier;
         $instance->verb       = 'POST';
 
         return $instance;

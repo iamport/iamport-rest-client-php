@@ -11,14 +11,17 @@ class TokenResponse
      * @var null
      */
     private $internalResponse = null;
+
     /**
      * @var int
      */
     private $resultCode       = -1;
+
     /**
      * @var string|null
      */
     private $resultMessage    = null;
+
     /**
      * @var |null
      */

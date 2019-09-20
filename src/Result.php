@@ -10,17 +10,17 @@ class Result
     /**
      * @var bool
      */
-    public $success = false;
+    protected $success = false;
 
     /**
      * @var mixed
      */
-    public $data;
+    protected $data;
 
     /**
      * @var array|null
      */
-    public $error;
+    protected $error;
 
     /**
      * Result constructor.
@@ -37,5 +37,29 @@ class Result
             'code'    => $error['code'],
             'message' => $error['message'],
         ];
+    }
+
+    /**
+     * @return bool
+     */
+    public function getSuccess(): bool
+    {
+        return $this->success;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getError(): ?array
+    {
+        return $this->error;
     }
 }

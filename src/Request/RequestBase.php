@@ -8,11 +8,16 @@ namespace Iamport\RestClient\Request;
 abstract class RequestBase
 {
     /**
-     * response 유형 [ default, paged ].
+     * response 유형
      *
      * @var string
      */
-    public $responseType = 'default';
+    public $responseType = '';
+
+    /**
+     * @var bool
+     */
+    public $isCollection = false;
 
     /**
      * 토큰 포함 여부

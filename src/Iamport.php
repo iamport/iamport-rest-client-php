@@ -17,11 +17,16 @@ use Iamport\RestClient\Exception\IamportRequestException;
 use Iamport\RestClient\Middleware\DefaultRequestMiddleware;
 use Iamport\RestClient\Middleware\TokenMiddleware;
 use Iamport\RestClient\Request\RequestBase;
+use Iamport\RestClient\Request\Schedule;
 use Iamport\RestClient\Response\AuthResponse;
-use Iamport\RestClient\Response\PagedResponse;
-use Iamport\RestClient\Response\Response;
+use Iamport\RestClient\Response\Collection;
+use Iamport\RestClient\Response\Payment;
+use Iamport\RestClient\Response\PaymentTransformer;
+use Iamport\RestClient\Response\Item;
 use Iamport\RestClient\Response\TokenResponse;
 use Psr\Http\Message\ResponseInterface;
+use Spatie\Fractalistic\ArraySerializer;
+use Spatie\Fractalistic\Fractal;
 
 /**
  * Class Iamport.
@@ -222,18 +227,16 @@ class Iamport
             $method        = $request->verb();
             $uri           = $request->path();
             $attributes    = $request->attributes();
-            $responseType  = $request->responseType;
+            $responseClass  = $request->responseType;
             $authenticated = $request->authenticated;
+            $isCollection  = $request->isCollection;
 
             $response = $this->request($method, $uri, $attributes, $authenticated);
 
-            switch ($responseType) {
-                case 'paged':
-                    $result = new PagedResponse((object) $response);
-                    break;
-                default:
-                    $result  = new Response((object) $response);
-                    break;
+            if($isCollection){
+                $result = (new Collection($response, $responseClass));
+            } else {
+                $result = (new Item($response, $responseClass))->getClassAs();
             }
 
             return new Result(true, $result);

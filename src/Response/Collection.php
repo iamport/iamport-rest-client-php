@@ -3,29 +3,30 @@
 namespace Iamport\RestClient\Response;
 
 /**
- * Class PagedResponse.
+ * Class Collection.
  */
-class PagedResponse
+class Collection
 {
     protected $total;
     protected $previous;
     protected $next;
-    protected $payments;
+    protected $items;
 
     /**
-     * PagedResponse constructor.
+     * Collection constructor.
      *
      * @param $response
+     * @param string $responseType
      */
-    public function __construct($response)
+    public function __construct(array $response, string $responseType)
     {
-        $this->total    = $response->total;
-        $this->previous = $response->previous;
-        $this->next     = $response->next;
+        $this->total    = $response['total'];
+        $this->previous = $response['previous'];
+        $this->next     = $response['next'];
 
-        $this->payments = [];
-        foreach ($response->list as $row) {
-            $this->payments[] = new Response((object) $row);
+        $this->items = [];
+        foreach ($response['list'] as $row) {
+            $this->items[] = (new Item($row, $responseType))->getClassAs();
         }
     }
 
@@ -56,8 +57,8 @@ class PagedResponse
     /**
      * @return array
      */
-    public function getPayments()
+    public function getItems()
     {
-        return $this->payments;
+        return $this->items;
     }
 }
