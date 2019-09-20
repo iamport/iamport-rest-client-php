@@ -66,6 +66,14 @@ class Receipt extends RequestBase
     protected $tax_free;
 
     /**
+     * Receipt constructor.
+     */
+    public function __construct()
+    {
+        $this->responseType = 'Receipt';
+    }
+
+    /**
      * Receipt GET constructor.
      * 발행된 현금영수증 조회.
      * [GET] /receipts/{$impUid}.

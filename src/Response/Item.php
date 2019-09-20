@@ -8,6 +8,9 @@ namespace Iamport\RestClient\Response;
 class Item
 {
 
+    /**
+     *
+     */
     private const NAMESPACE = 'Iamport\\RestClient\\Response\\';
 
     /**
@@ -33,9 +36,9 @@ class Item
     }
 
     /**
-     * @return Response
+     * @return mixed
      */
-    public function getClassAs(): Response
+    public function getClassAs()
     {
         return new $this->clazz($this->response);
     }

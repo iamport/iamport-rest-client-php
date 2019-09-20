@@ -67,6 +67,14 @@ class CancelPayment extends RequestBase
     protected $refund_account;
 
     /**
+     * CancelPayment constructor.
+     */
+    public function __construct()
+    {
+        $this->responseType = 'Payment';
+    }
+
+    /**
      * 아임포트 고유번호로 인스턴스 생성.
      *
      * @param string $imp_uid

@@ -24,6 +24,14 @@ class Certification extends RequestBase
     protected $imp_uid;
 
     /**
+     * Certification constructor.
+     */
+    public function __construct()
+    {
+        $this->responseType = 'Certification';
+    }
+
+    /**
      * Certification GET constructor.
      * SMS본인인증된 결과를 조회.
      * [GET] /certifications/{imp_uid}.

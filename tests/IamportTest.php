@@ -84,7 +84,7 @@ class IamportTest extends TestCase
         $this->assertTrue($response->success);
         $this->assertNull($response->error);
         $this->assertObjectHasAttribute('customData', $response->data);
-        $this->assertInstanceOf('Iamport\RestClient\Response\Response', $response->data);
+        $this->assertInstanceOf('Iamport\RestClient\Response\Item', $response->data);
     }
 
     /** @test */
@@ -104,7 +104,7 @@ class IamportTest extends TestCase
         $this->assertTrue($response->success);
         $this->assertNull($response->error);
         $this->assertObjectHasAttribute('customData', $response->data);
-        $this->assertInstanceOf('Iamport\RestClient\Response\Response', $response->data);
+        $this->assertInstanceOf('Iamport\RestClient\Response\Item', $response->data);
     }
 
     /** @test */
@@ -125,11 +125,11 @@ class IamportTest extends TestCase
         $this->assertInstanceOf('Iamport\RestClient\Result', $response);
         $this->assertTrue($response->success);
         $this->assertNull($response->error);
-        $this->assertInstanceOf('Iamport\RestClient\Response\PagedResponse', $response->data);
+        $this->assertInstanceOf('Iamport\RestClient\Response\Collection', $response->data);
         $this->assertIsInt($response->data->getTotal());
         $this->assertIsInt($response->data->getPrevious());
         $this->assertIsInt($response->data->getNext());
-        $this->assertInstanceOf('Iamport\RestClient\Response\Response', $response->data->getPayments()[0]);
+        $this->assertInstanceOf('Iamport\RestClient\Response\Item', $response->data->getPayments()[0]);
     }
 
     /** @test */
@@ -191,7 +191,7 @@ class IamportTest extends TestCase
         $this->assertTrue($response->success);
         $this->assertNull($response->error);
         $this->assertObjectHasAttribute('customData', $response->data);
-        $this->assertInstanceOf('Iamport\RestClient\Response\Response', $response->data);
+        $this->assertInstanceOf('Iamport\RestClient\Response\Item', $response->data);
     }
 
     /** @test */

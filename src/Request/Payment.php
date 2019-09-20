@@ -5,7 +5,7 @@ namespace Iamport\RestClient\Request;
 use Iamport\RestClient\Enum\Endpoint;
 
 /**
- * Class Payment.
+ * Class PaymentTransformer.
  *
  * @property string $imp_uid
  * @property string $merchant_uid
@@ -41,6 +41,14 @@ class Payment extends RequestBase
      * @var int 페이지번호
      */
     protected $page = 1;
+
+    /**
+     * Payment constructor.
+     */
+    public function __construct()
+    {
+        $this->responseType = 'Payment';
+    }
 
     /**
      * 아임포트 고유번호로 인스턴스 생성.
@@ -83,7 +91,7 @@ class Payment extends RequestBase
     {
         $instance               = new self();
         $instance->merchant_uid = $merchant_uid;
-        $instance->responseType = 'paged';
+        $instance->isCollection = true;
 
         return $instance;
     }
@@ -145,7 +153,7 @@ class Payment extends RequestBase
         if (!is_null($this->imp_uid)) {
             return Endpoint::PAYMENTS.$this->imp_uid;
         } elseif (!is_null($this->merchant_uid)) {
-            if ($this->responseType === 'paged') {
+            if ($this->isCollection) {
                 $endPoint = Endpoint::PAYMENTS_FIND_ALL.$this->merchant_uid;
             } else {
                 $endPoint = Endpoint::PAYMENTS_FIND.$this->merchant_uid;
@@ -170,7 +178,7 @@ class Payment extends RequestBase
                     'sorting' => $this->sorting,
                 ],
             ];
-            if ($this->responseType === 'paged') {
+            if ($this->isCollection) {
                 $result['query']['page'] = $this->page;
             }
         } else {
