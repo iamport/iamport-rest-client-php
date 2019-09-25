@@ -2,28 +2,39 @@
 
 namespace Iamport\RestClient\Exception;
 
-use Exception;
+use GuzzleHttp\Exception\RequestException;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class IamportException.
  */
-final class IamportException extends Exception
+class IamportException extends RequestException
 {
     /**
-     * @var
+     * @var array
      */
     private $iamportResponse;
 
     /**
      * IamportException constructor.
      *
-     * @param $response
+     * @param $iamportResponse
+     * @param RequestInterface       $request
+     * @param ResponseInterface|null $response
+     * @param \Exception|null        $previous
+     * @param array                  $handlerContext
      */
-    public function __construct($response)
-    {
-        parent::__construct($response->getMessage(), $response->getCode());
+    public function __construct(
+        $iamportResponse,
+        RequestInterface $request,
+        ResponseInterface $response = null,
+        \Exception $previous = null,
+        array $handlerContext = []
+    ) {
+        $this->iamportResponse = $iamportResponse;
 
-        $this->iamportResponse = $response;
+        parent::__construct($iamportResponse->message, $request, $response, $previous, $handlerContext);
     }
 
     /**
@@ -32,5 +43,23 @@ final class IamportException extends Exception
     public function getIamportResponse()
     {
         return $this->iamportResponse;
+    }
+
+    /**
+     * Check if a iamportResponse was received.
+     *
+     * @return bool
+     */
+    public function hasIamportResponse()
+    {
+        return $this->iamportResponse !== null;
+    }
+
+    /**
+     *  iamportResponse delete.
+     */
+    public function deleteResponse()
+    {
+        unset($this->iamportResponse);
     }
 }

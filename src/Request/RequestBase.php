@@ -2,6 +2,8 @@
 
 namespace Iamport\RestClient\Request;
 
+use GuzzleHttp\Client;
+
 /**
  * Class RequestBase.
  */
@@ -27,6 +29,11 @@ abstract class RequestBase
     public $authenticated = true;
 
     /**
+     * @var Client
+     */
+    public $client = null;
+
+    /**
      * @param string $responseType
      */
     public function setResponseType(string $responseType): void
@@ -40,6 +47,14 @@ abstract class RequestBase
     public function setAuthenticated(bool $authenticated): void
     {
         $this->authenticated = $authenticated;
+    }
+
+    /**
+     * @param Client $client
+     */
+    public function setClient(Client $client): void
+    {
+        $this->client = $client;
     }
 
     /**

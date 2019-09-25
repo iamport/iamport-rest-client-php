@@ -2,6 +2,8 @@
 
 namespace Iamport\RestClient;
 
+use Exception;
+
 /**
  * Class Result.
  */
@@ -18,7 +20,7 @@ class Result
     protected $data;
 
     /**
-     * @var array|null
+     * @var mixed
      */
     protected $error;
 
@@ -27,16 +29,13 @@ class Result
      *
      * @param bool  $success
      * @param mixed $data
-     * @param array $error
+     * @param object $error
      */
-    public function __construct(bool $success = false, $data = null, array $error = null)
+    public function __construct(bool $success = false, $data = null, $error = null)
     {
         $this->success = $success;
         $this->data    = $data;
-        $this->error   = is_null($error) ? null : [
-            'code'    => $error['code'],
-            'message' => $error['message'],
-        ];
+        $this->error = is_null($error) ? null : $error;
     }
 
     /**
@@ -56,9 +55,9 @@ class Result
     }
 
     /**
-     * @return array|null
+     * @return mixed
      */
-    public function getError(): ?array
+    public function getError()
     {
         return $this->error;
     }
