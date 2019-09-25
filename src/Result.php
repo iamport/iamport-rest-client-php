@@ -2,8 +2,6 @@
 
 namespace Iamport\RestClient;
 
-use Exception;
-
 /**
  * Class Result.
  */
@@ -27,15 +25,15 @@ class Result
     /**
      * Result constructor.
      *
-     * @param bool  $success
-     * @param mixed $data
+     * @param bool   $success
+     * @param mixed  $data
      * @param object $error
      */
     public function __construct(bool $success = false, $data = null, $error = null)
     {
         $this->success = $success;
         $this->data    = $data;
-        $this->error = is_null($error) ? null : $error;
+        $this->error   = is_null($error) ? null : $error;
     }
 
     /**

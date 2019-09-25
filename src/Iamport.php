@@ -4,29 +4,21 @@ namespace Iamport\RestClient;
 
 use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Promise\PromiseInterface;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
 use Iamport\RestClient\Enum\Endpoint;
-use Iamport\RestClient\Exception\Handler;
-use Iamport\RestClient\Exception\IamportAuthException;
-use Iamport\RestClient\Exception\IamportRequestException;
+use Iamport\RestClient\Exception\ExceptionHandler;
+use Iamport\RestClient\Exception\IamportException;
 use Iamport\RestClient\Middleware\DefaultRequestMiddleware;
 use Iamport\RestClient\Middleware\TokenMiddleware;
 use Iamport\RestClient\Request\RequestBase;
-use Iamport\RestClient\Request\Schedule;
 use Iamport\RestClient\Response\AuthResponse;
 use Iamport\RestClient\Response\Collection;
-use Iamport\RestClient\Response\Payment;
-use Iamport\RestClient\Response\PaymentTransformer;
 use Iamport\RestClient\Response\Item;
 use Iamport\RestClient\Response\TokenResponse;
-use Psr\Http\Message\ResponseInterface;
-use Spatie\Fractalistic\ArraySerializer;
-use Spatie\Fractalistic\Fractal;
 
 /**
  * Class Iamport.
@@ -84,14 +76,154 @@ class Iamport
     }
 
     /**
+     * @param RequestBase $request
+     *
+     * @return Result
+     */
+    public function callApi(RequestBase $request): Result
+    {
+        try {
+            $method         = $request->verb();
+            $uri            = $request->path();
+            $attributes     = $request->attributes();
+            $responseClass  = $request->responseType;
+            $authenticated  = $request->authenticated;
+            $client         = $request->client ?? null;
+            $isCollection   = $request->isCollection;
+
+            $response = $this->request($method, $uri, $attributes, $authenticated, $client);
+
+            if ($isCollection) {
+                $result = (new Collection($response, $responseClass));
+            } else {
+                $result = (new Item($response, $responseClass))->getClassAs();
+            }
+
+            return new Result(true, $result);
+        } catch (GuzzleException $e) {
+            return ExceptionHandler::render($e);
+        } catch (Exception $e) {
+            return ExceptionHandler::render($e);
+        }
+    }
+
+    /**
+     * @param RequestBase $request
+     *
+     * @return PromiseInterface|Result
+     */
+    public function callApiPromise(RequestBase $request)
+    {
+        try {
+            $method        = $request->verb();
+            $uri           = $request->path();
+            $attributes    = $request->attributes();
+            $authenticated = $request->authenticated;
+            $client        = $request->client ?? null;
+
+            return $this->requestPromise($method, $uri, $attributes, $authenticated, $client);
+        } catch (GuzzleException $e) {
+            return ExceptionHandler::render($e);
+        } catch (Exception $e) {
+            return ExceptionHandler::render($e);
+        }
+    }
+
+    /**
+     * @param string      $method
+     * @param string      $uri
+     * @param array       $attributes
+     * @param bool        $authenticated
+     * @param Client|null $customClient
+     *
+     * @return mixed
+     *
+     * @throws GuzzleException
+     */
+    public function request(string $method, string $uri, array $attributes = [], bool $authenticated = true, Client $customClient = null)
+    {
+        try {
+            $client   = $customClient ?? $this->getHttpClient($authenticated);
+            $response = $client->request($method, $uri, $attributes);
+
+            $parseResponse = (object) json_decode($response->getBody(), true);
+
+            if (0 !== $parseResponse->code || is_null($parseResponse->response)) {
+                throw new IamportException($parseResponse, new Request($method, $uri));
+            }
+
+            return $parseResponse->response;
+        } catch (Exception $e) {
+            ExceptionHandler::report($e);
+        }
+    }
+
+    /**
+     * @param string      $method
+     * @param string      $uri
+     * @param array       $attributes
+     * @param bool        $authenticated
+     * @param Client|null $customClient
+     *
+     * @return PromiseInterface
+     */
+    public function requestPromise(string $method, string $uri, array $attributes = [], bool $authenticated = true, Client $customClient = null): PromiseInterface
+    {
+        try {
+            $client   = $customClient ?? $this->getHttpClient($authenticated);
+
+            return $client->requestAsync($method, $uri, $attributes);
+        } catch (Exception $e) {
+            ExceptionHandler::report($e);
+        }
+    }
+
+    /**
+     * @param HandlerStack $handlerStack
+     *
+     * @return Client
+     */
+    public function getCustomHttpClient(HandlerStack $handlerStack): Client
+    {
+        $handlerStack->push(new DefaultRequestMiddleware());
+
+        return new Client([
+            'handler'  => $handlerStack,
+            'base_uri' => Endpoint::API_BASE_URL,
+        ]);
+    }
+
+    /**
+     * @param bool $authenticated
+     *
+     * @return Client
+     *
+     * @throws Exception
+     */
+    protected function getHttpClient(bool $authenticated): Client
+    {
+        $stack = HandlerStack::create();
+        $stack->push(new DefaultRequestMiddleware());
+
+        if ($authenticated) {
+            $token = $this->requestAccessToken(false);
+            $stack->push(new TokenMiddleware($token));
+        }
+
+        return new Client([
+            'handler'  => $stack,
+            'base_uri' => Endpoint::API_BASE_URL,
+        ]);
+    }
+
+    /**
      * @param bool $force
      *
      * @return string|null
      *
-     * @throws IamportAuthException
      * @throws Exception
      */
-    public function requestAccessToken(bool $force): ?string
+    public function requestAccessToken(bool $force = false): ?string
     {
         if (!$this->isTokenExpired() && !$force) {
             return $this->accessToken;
@@ -115,152 +247,8 @@ class Iamport
             $this->expireTimestamp = time() + $auth->getRemaindSeconds();
 
             return $this->accessToken;
-        } catch (ConnectException $e) {
-            throw new Exception('RequestTrait Error(HTTP STATUS : '.$e->getcode().')', $e->getHandlerContext()['errno']);
-        } catch (Exception $e) {
-            $errorResponse = json_decode($e->getResponse()->getBody());
-            throw new IamportAuthException('[API인증오류] '.$errorResponse->message, $errorResponse->code);
-        }
-    }
-
-    /**
-     * @param RequestBase $request
-     *
-     * @return Result
-     */
-    public function callApi(RequestBase $request): Result
-    {
-        try {
-            $method        = $request->verb();
-            $uri           = $request->path();
-            $attributes    = $request->attributes();
-            $responseClass  = $request->responseType;
-            $authenticated = $request->authenticated;
-            $isCollection  = $request->isCollection;
-
-            $response = $this->request($method, $uri, $attributes, $authenticated);
-
-            if($isCollection){
-                $result = (new Collection($response, $responseClass));
-            } else {
-                $result = (new Item($response, $responseClass))->getClassAs();
-            }
-
-            return new Result(true, $result);
-        } catch (Exception $e) {
-            return Handler::render($e);
-        }
-    }
-
-    /**
-     * @param RequestBase $request
-     *
-     * @return PromiseInterface|Result
-     */
-    public function callApiPromise(RequestBase $request)
-    {
-        try {
-            $method        = $request->verb();
-            $uri           = $request->path();
-            $attributes    = $request->attributes();
-            $authenticated = $request->authenticated;
-
-            return $this->requestPromise($method, $uri, $attributes, $authenticated);
-        } catch (Exception $e) {
-            return Handler::render($e);
-        }
-    }
-
-    /**
-     * @param string $method
-     * @param string $uri
-     * @param array  $attributes
-     * @param bool   $authenticated
-     *
-     * @return object|array
-     *
-     * @throws Exception
-     */
-    public function request(string $method, string $uri, array $attributes = [], bool $authenticated = true)
-    {
-        try {
-            $client   = $this->getHttpClient($authenticated);
-            $response = $client->request($method, $uri, $attributes);
-
-            $parseResponse = (object) json_decode($response->getBody(), true);
-            if (0 !== $parseResponse->code) {
-                throw new IamportRequestException($parseResponse);
-            }
-            if (!$parseResponse->response) {
-                throw new Exception('API서버로부터 응답이 올바르지 않습니다. '.$parseResponse, 1);
-            }
-
-            return $parseResponse->response;
         } catch (GuzzleException $e) {
-            Handler::report($e);
-        } catch (Exception $e) {
-            Handler::report($e);
+            ExceptionHandler::report($e);
         }
-    }
-
-    /**
-     * @param string $method
-     * @param string $uri
-     * @param array  $attributes
-     * @param bool   $authenticated
-     *
-     * @return PromiseInterface
-     *
-     * @throws IamportAuthException
-     * @throws IamportRequestException
-     */
-    public function requestPromise(string $method, string $uri, array $attributes = [], bool $authenticated = true): PromiseInterface
-    {
-        try {
-            $client   = $this->getHttpClient($authenticated);
-            $promise  = $client->requestAsync($method, $uri, $attributes);
-
-            $promise->then(
-                function (ResponseInterface $response) {
-                    $parseResponse = json_decode($response->getBody());
-                    if (0 !== $parseResponse->code) {
-                        throw new IamportRequestException($parseResponse);
-                    }
-                    if (!$parseResponse->response) {
-                        throw new Exception('API서버로부터 응답이 올바르지 않습니다. '.$parseResponse, 1);
-                    }
-                },
-                function (RequestException $e) {
-                    throw new IamportRequestException($e);
-                }
-            );
-
-            return $promise;
-        } catch (Exception $e) {
-            Handler::report($e);
-        }
-    }
-
-    /**
-     * @param bool $authenticated
-     *
-     * @return Client
-     *
-     * @throws IamportAuthException
-     */
-    protected function getHttpClient(bool $authenticated): Client
-    {
-        $stack = HandlerStack::create();
-        $stack->push(new DefaultRequestMiddleware());
-
-        if ($authenticated) {
-            $token = $this->requestAccessToken(false);
-            $stack->push(new TokenMiddleware($token));
-        }
-
-        return new Client([
-            'handler'  => $stack,
-            'base_uri' => Endpoint::API_BASE_URL,
-        ]);
     }
 }
