@@ -3,6 +3,7 @@
 namespace Iamport\RestClient\Request;
 
 use Iamport\RestClient\Enum\Endpoint;
+use Iamport\RestClient\Response;
 
 /**
  * Class CancelPayment.
@@ -71,7 +72,7 @@ class CancelPayment extends RequestBase
      */
     public function __construct()
     {
-        $this->responseType = 'Payment';
+        $this->responseClass = Response\Payment::class;
     }
 
     /**

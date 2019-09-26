@@ -14,7 +14,7 @@ abstract class RequestBase
      *
      * @var string
      */
-    public $responseType = '';
+    public $responseClass = '';
 
     /**
      * @var bool
@@ -34,11 +34,11 @@ abstract class RequestBase
     public $client = null;
 
     /**
-     * @param string $responseType
+     * @param string $responseClass
      */
-    public function setResponseType(string $responseType): void
+    public function setResponseClass(string $responseClass): void
     {
-        $this->responseType = $responseType;
+        $this->responseClass = $responseClass;
     }
 
     /**

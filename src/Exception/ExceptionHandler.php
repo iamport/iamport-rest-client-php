@@ -50,18 +50,9 @@ final class ExceptionHandler
                 $exception->getHandlerContext()
             );
         } elseif ($exception instanceof ServerException) {
-            $hasReport = true;
-            throw new ServerException(
-                '[ServerException] API 서버 오류입니다 (5xx codes). ',
-                $exception->getRequest(),
-                $exception->getResponse(),
-                $exception,
-                $exception->getHandlerContext()
-            );
-        } elseif ($exception instanceof ClientException) {
             $hasIamportResponse = json_decode($exception->getResponse()->getBody());
+            $hasReport = true;
             if ($hasIamportResponse) {
-                $hasReport = true;
                 throw new IamportException(
                     $hasIamportResponse,
                     $exception->getRequest(),
@@ -70,7 +61,26 @@ final class ExceptionHandler
                     $exception->getHandlerContext()
                 );
             } else {
-                $hasReport = true;
+                throw new ServerException(
+                    '[ServerException] API 서버 오류입니다 (5xx codes). ',
+                    $exception->getRequest(),
+                    $exception->getResponse(),
+                    $exception,
+                    $exception->getHandlerContext()
+                );
+            }
+        } elseif ($exception instanceof ClientException) {
+            $hasIamportResponse = json_decode($exception->getResponse()->getBody());
+            $hasReport = true;
+            if ($hasIamportResponse) {
+                throw new IamportException(
+                    $hasIamportResponse,
+                    $exception->getRequest(),
+                    $exception->getResponse(),
+                    $exception,
+                    $exception->getHandlerContext()
+                );
+            } else {
                 throw new ClientException(
                     '[ClientException] 클라이언트 오류입니다 (4xx codes). ',
                     $exception->getRequest(),

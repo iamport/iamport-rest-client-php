@@ -3,6 +3,7 @@
 namespace Iamport\RestClient\Request;
 
 use Iamport\RestClient\Enum\Endpoint;
+use Iamport\RestClient\Response;
 
 /**
  * Class SubscribeAgain.
@@ -104,7 +105,7 @@ class SubscribeAgain extends RequestBase
         $this->merchant_uid = $merchant_uid;
         $this->amount       = $amount;
         $this->name         = $name;
-        $this->responseType = 'Payment';
+        $this->responseClass = Response\Payment::class;
     }
 
     /**

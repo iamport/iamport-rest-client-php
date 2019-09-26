@@ -16,9 +16,9 @@ class Collection
      * Collection constructor.
      *
      * @param $response
-     * @param string $responseType
+     * @param string $responseClass
      */
-    public function __construct(array $response, string $responseType)
+    public function __construct(array $response, string $responseClass)
     {
         $this->total    = $response['total'];
         $this->previous = $response['previous'];
@@ -26,7 +26,7 @@ class Collection
 
         $this->items = [];
         foreach ($response['list'] as $row) {
-            $this->items[] = (new Item($row, $responseType))->getClassAs();
+            $this->items[] = (new Item($row, $responseClass))->getClassAs();
         }
     }
 

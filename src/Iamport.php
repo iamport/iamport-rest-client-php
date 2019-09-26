@@ -86,7 +86,7 @@ class Iamport
             $method         = $request->verb();
             $uri            = $request->path();
             $attributes     = $request->attributes();
-            $responseClass  = $request->responseType;
+            $responseClass  = $request->responseClass;
             $authenticated  = $request->authenticated;
             $client         = $request->client ?? null;
             $isCollection   = $request->isCollection;

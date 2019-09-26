@@ -3,6 +3,7 @@
 namespace Iamport\RestClient\Request;
 
 use Iamport\RestClient\Enum\Endpoint;
+use Iamport\RestClient\Response;
 
 /**
  * Class EscrowLogis.
@@ -46,7 +47,7 @@ class EscrowLogis extends RequestBase
      */
     public function __construct()
     {
-        $this->responseType = 'EscrowLogis';
+        $this->responseClass = Response\EscrowLogis::class;
     }
 
     /**

@@ -26,12 +26,12 @@ class Item
      * Item constructor.
      *
      * @param array $response
-     * @param string $responseType
+     * @param $responseClass
      */
-    public function __construct(array $response, string $responseType)
+    public function __construct(array $response, $responseClass)
     {
         $this->response = $response;
-        $this->clazz =  self::NAMESPACE . $responseType;
+        $this->clazz = $responseClass;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Iamport\RestClient\Request;
 
 use Iamport\RestClient\Enum\Endpoint;
+use Iamport\RestClient\Response;
 
 /**
  * Class SubscribeOnetime.
@@ -140,7 +141,7 @@ class SubscribeOnetime extends RequestBase
             $this->pwd_2digit = $cardInfo->pwd_2digit;
         }
 
-        $this->responseType = 'Payment';
+        $this->responseClass = Response\Payment::class;
     }
 
     /**

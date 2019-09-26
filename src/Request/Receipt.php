@@ -3,6 +3,7 @@
 namespace Iamport\RestClient\Request;
 
 use Iamport\RestClient\Enum\Endpoint;
+use Iamport\RestClient\Response;
 
 /**
  * Class Receipt.
@@ -70,7 +71,7 @@ class Receipt extends RequestBase
      */
     public function __construct()
     {
-        $this->responseType = 'Receipt';
+        $this->responseClass = Response\Receipt::class;
     }
 
     /**

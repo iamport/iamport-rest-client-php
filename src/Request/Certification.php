@@ -3,6 +3,7 @@
 namespace Iamport\RestClient\Request;
 
 use Iamport\RestClient\Enum\Endpoint;
+use Iamport\RestClient\Response;
 
 /**
  * Class Certification.
@@ -28,7 +29,7 @@ class Certification extends RequestBase
      */
     public function __construct()
     {
-        $this->responseType = 'Certification';
+        $this->responseClass = Response\Certification::class;
     }
 
     /**

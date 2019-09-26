@@ -3,6 +3,7 @@
 namespace Iamport\RestClient\Request;
 
 use Iamport\RestClient\Enum\Endpoint;
+use Iamport\RestClient\Response;
 
 /**
  * Class SubscribeSchedule.
@@ -68,7 +69,7 @@ class SubscribeSchedule extends RequestBase
     public function __construct(string $customer_uid)
     {
         $this->customer_uid = $customer_uid;
-        $this->responseType = 'Schedule';
+        $this->responseClass = Response\Schedule::class;
     }
 
     /**
