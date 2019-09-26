@@ -5,14 +5,57 @@ namespace Iamport\RestClient\Response;
 /**
  * Class AuthResponse.
  */
-class AuthResponse extends ResponseBase
+class AuthResponse
 {
     /**
-     * @return mixed
+     * @var string
      */
-    public function getAccessToken()
+    protected $access_token;
+
+    /**
+     * @var int
+     */
+    protected $now;
+
+    /**
+     * @var int
+     */
+    protected $expired_at;
+
+    /**
+     * ResponseBase constructor.
+     *
+     * @param $resultBody
+     */
+    public function __construct($resultBody)
     {
-        return $this->responseBody->access_token;
+        $this->access_token = $resultBody->access_token;
+        $this->now = $resultBody->now;
+        $this->expired_at = $resultBody->expired_at;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccessToken(): string
+    {
+        return $this->access_token;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNow(): int
+    {
+        return $this->now;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExpiredAt(): int
+    {
+        return $this->expired_at;
     }
 
     /**
@@ -20,6 +63,6 @@ class AuthResponse extends ResponseBase
      */
     public function getRemaindSeconds()
     {
-        return $this->responseBody->expired_at - $this->responseBody->now;
+        return $this->expired_at - $this->now;
     }
 }

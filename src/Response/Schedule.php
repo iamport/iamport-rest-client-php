@@ -19,7 +19,7 @@ class Schedule
     protected $merchant_uid;
 
     /**
-     * @var number
+     * @var int
      */
     protected $schedule_at;
 
@@ -100,9 +100,9 @@ class Schedule
     }
 
     /**
-     * @return number
+     * @return int
      */
-    public function getScheduleAt(): number
+    public function getScheduleAt(): int
     {
         return $this->schedule_at;
     }

@@ -7,7 +7,6 @@ namespace Iamport\RestClient\Response;
  */
 class Item
 {
-
     /**
      *
      */

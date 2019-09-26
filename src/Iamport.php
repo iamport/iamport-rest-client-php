@@ -149,7 +149,7 @@ class Iamport
             $parseResponse = (object) json_decode($response->getBody(), true);
 
             if (0 !== $parseResponse->code || is_null($parseResponse->response)) {
-                throw new IamportException($parseResponse, new Request($method, $uri));
+                throw new IamportException($parseResponse, new Request($method, $uri), null);
             }
 
             return $parseResponse->response;
