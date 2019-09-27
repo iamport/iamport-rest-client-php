@@ -529,7 +529,7 @@ class Payment
      */
     public function getCustomData()
     {
-        return $this->custom_data;
+        return json_decode($this->custom_data);
     }
 
     /**
