@@ -32,7 +32,7 @@ $stack   = HandlerStack::create();
 $client  = $iamport->getCustomHttpClient($stack);
 
 // imp_uid 로 SMS본인인증된 결과를 조회
-$certifications    = Certification::view('$impUid');
+$certifications    = Certification::view($impUid);
 $getCertifications = $iamport->callApi($certifications);
 
 // imp_uid 로 SMS본인인증된 결과를 아임포트에서 삭제
