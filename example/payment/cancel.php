@@ -15,13 +15,7 @@ $cancelRequestAmount = filter_input(INPUT_POST, 'cancel_request_amount', FILTER_
 // TODO : 아래 가맹점 DB 접근 코드는 예시를 돕고자 작성된 샘플코드로 실제 가맹점의 환경에 맞게 직접 작성하셔야 됩니다.
 // 가맹점 DB에서 환불할 결제 정보 조회
 $pdo          = new PDO('dsn', 'db username', 'db password');
-$pdoStatement = $pdo->prepare(
-    'SELECT 
-    imp_uid,
-    amount, 
-    cancel_amount 
-FROM payments WHERE merchant_uid = :merchant_uid'
-);
+$pdoStatement = $pdo->prepare('SELECT imp_uid, amount, cancel_amount FROM payments WHERE merchant_uid = :merchant_uid');
 $pdoStatement->bindValue(':merchant_uid', $merchant_uid);
 $pdoStatement->execute();
 $data = $pdoStatement->fetch(PDO::FETCH_ASSOC);

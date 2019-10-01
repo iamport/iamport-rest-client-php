@@ -13,9 +13,9 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 // 파라메터 목록 참조 :  https://api.iamport.kr/#!/escrow.logis/escrow_logis_save
 $sender   = new EscrowLogisPerson('홍길동', '010-1234-5678', '서울시 강남구 삼성동', '15411');
 $receiver = new EscrowLogisPerson('김길동', '010-1234-5678', '서울시 마포구 연희동', '16211');
-$invoice  = new EscrowLogisInvoice('시옷', '123456', '1568785782');
+$invoice  = new EscrowLogisInvoice('시옷', '123456', '2019-01-24 14:02:01');
 
-$escrow = EscrowLogis::register('아임포트 거래 고유 번호(imp_uid)', $sender, $receiver, $invoice);
+$request = EscrowLogis::register('아임포트 거래 고유 번호(imp_uid)', $sender, $receiver, $invoice);
 $result = $iamport->callApi($request);
 
 if ($result->getSuccess()) {

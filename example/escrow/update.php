@@ -15,7 +15,7 @@ $sender   = new EscrowLogisPerson('홍길동', '010-1234-5678', '서울시 강�
 $receiver = new EscrowLogisPerson('김길동', '010-1234-5678', '서울시 마포구 연희동', '16211');
 $invoice  = new EscrowLogisInvoice('시옷', '123456', '1568785782');
 
-$escrow = EscrowLogis::update('아임포트 거래 고유 번호(imp_uid)', $sender, $receiver, $invoice);
+$request = EscrowLogis::update('아임포트 거래 고유 번호(imp_uid)', $sender, $receiver, $invoice);
 $result = $iamport->callApi($request);
 
 if ($result->getSuccess()) {

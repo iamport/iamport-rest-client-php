@@ -24,7 +24,7 @@ class EscrowLogisInvoice
     protected $invoice;
 
     /**
-     * @var int 발송일시 UNIX TIMESTAMP
+     * @var string 발송일시
      */
     protected $sent_at;
 
@@ -33,13 +33,14 @@ class EscrowLogisInvoice
      *
      * @param string $company
      * @param string $invoice
-     * @param int    $sent_at
+     * @param string $sent_at Y-m-d H:i:s 형태의 문자열
      */
-    public function __construct(string $company, string $invoice, int $sent_at)
+    public function __construct(string $company, string $invoice, string $sent_at)
     {
+        date_default_timezone_set('Asia/Seoul');
         $this->company = $company;
         $this->invoice = $invoice;
-        $this->sent_at = $sent_at;
+        $this->setSentAt($sent_at);
     }
 
     /**
@@ -59,10 +60,10 @@ class EscrowLogisInvoice
     }
 
     /**
-     * @param int $sent_at
+     * @param string $sent_at
      */
-    public function setSentAt(int $sent_at): void
+    public function setSentAt(string $sent_at): void
     {
-        $this->sent_at = $sent_at;
+        $this->sent_at = strtotime($sent_at);
     }
 }
