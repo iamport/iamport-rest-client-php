@@ -252,8 +252,8 @@ class Payment
         $this->vbank_name               = $response['vbank_name'];
         $this->vbank_num                = $response['vbank_num'];
         $this->vbank_holder             = $response['vbank_holder'];
-        $this->vbank_date               = $this->timestampToDate($response['vbank_date']);
-        $this->vbank_issued_at          = $this->timestampToDate($response['vbank_issued_at']);
+        $this->vbank_date               = $response['vbank_date'];
+        $this->vbank_issued_at          = $response['vbank_issued_at'];
         $this->name                     = $response['name'];
         $this->amount                   = $response['amount'];
         $this->cancel_amount            = $response['cancel_amount'];
@@ -266,9 +266,9 @@ class Payment
         $this->custom_data              = $response['custom_data'];
         $this->user_agent               = $response['user_agent'];
         $this->status                   = $response['status'];
-        $this->paid_at                  = $this->timestampToDate($response['paid_at']);
-        $this->failed_at                = $this->timestampToDate($response['failed_at']);
-        $this->cancelled_at             = $this->timestampToDate($response['cancelled_at']);
+        $this->paid_at                  = $response['paid_at'];
+        $this->failed_at                = $response['failed_at'];
+        $this->cancelled_at             = $response['cancelled_at'];
         $this->fail_reason              = $response['fail_reason'];
         $this->cancel_reason            = $response['cancel_reason'];
         $this->receipt_url              = $response['receipt_url'];
@@ -442,7 +442,7 @@ class Payment
      */
     public function getVbankDate()
     {
-        return $this->vbank_date;
+        return $this->timestampToDate($this->vbank_date);
     }
 
     /**
@@ -450,7 +450,8 @@ class Payment
      */
     public function getVbankIssuedAt()
     {
-        return $this->vbank_issued_at;
+        return $this->timestampToDate($this->vbank_issued_at);
+
     }
 
     /**
@@ -554,7 +555,7 @@ class Payment
      */
     public function getPaidAt()
     {
-        return $this->paid_at;
+        return $this->timestampToDate($this->paid_at);
     }
 
     /**
@@ -562,7 +563,7 @@ class Payment
      */
     public function getFailedAt()
     {
-        return $this->failed_at;
+        return $this->timestampToDate($this->failed_at);
     }
 
     /**
@@ -570,7 +571,7 @@ class Payment
      */
     public function getCancelledAt()
     {
-        return $this->cancelled_at;
+        return $this->timestampToDate($this->cancelled_at);
     }
 
     /**

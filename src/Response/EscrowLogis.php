@@ -17,12 +17,12 @@ class EscrowLogis
     protected $invoice;
 
     /**
-     * @var int
+     * @var mixed
      */
     protected $sent_at;
 
     /**
-     * @var int
+     * @var mixed
      */
     protected $applied_at;
 
@@ -35,7 +35,39 @@ class EscrowLogis
     {
         $this->company     = $response['company'];
         $this->invoice     = $response['invoice'];
-        $this->sent_at     = $this->timestampToDate($response['sent_at']);
-        $this->applied_at  = $this->timestampToDate($response['applied_at']);
+        $this->sent_at     = $response['sent_at'];
+        $this->applied_at  = $response['applied_at'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getCompany(): string
+    {
+        return $this->company;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInvoice(): string
+    {
+        return $this->invoice;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSentAt()
+    {
+        return $this->timestampToDate($this->sent_at);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAppliedAt()
+    {
+        return $this->timestampToDate($this->applied_at);
     }
 }

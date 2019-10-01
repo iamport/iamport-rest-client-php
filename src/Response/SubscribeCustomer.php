@@ -55,12 +55,12 @@ class SubscribeCustomer
     protected $customer_postcode;
 
     /**
-     * @var int
+     * @var mixed
      */
     protected $inserted;
 
     /**
-     * @var int
+     * @var mixed
      */
     protected $updated;
 
@@ -80,8 +80,8 @@ class SubscribeCustomer
         $this->customer_email    = $response['customer_email'];
         $this->customer_addr     = $response['customer_addr'];
         $this->customer_postcode = $response['customer_postcode'];
-        $this->inserted          = $this->timestampToDate($response['inserted']);
-        $this->updated           = $this->timestampToDate($response['updated']);
+        $this->inserted          = $response['inserted'];
+        $this->updated           = $response['updated'];
     }
 
     /**
@@ -157,18 +157,18 @@ class SubscribeCustomer
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getInserted(): int
+    public function getInserted()
     {
-        return $this->inserted;
+        return $this->timestampToDate($this->inserted);
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getUpdated(): int
+    public function getUpdated()
     {
-        return $this->updated;
+        return $this->timestampToDate($this->updated);
     }
 }

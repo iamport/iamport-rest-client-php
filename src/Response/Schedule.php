@@ -19,7 +19,7 @@ class Schedule
     protected $merchant_uid;
 
     /**
-     * @var int
+     * @var mixed
      */
     protected $schedule_at;
 
@@ -72,7 +72,7 @@ class Schedule
     {
         $this->customer_uid = $response['customer_uid'];
         $this->merchant_uid = $response['merchant_uid'];
-        $this->schedule_at = $this->timestampToDate($response['schedule_at']);
+        $this->schedule_at = $response['schedule_at'];
         $this->amount = $response['amount'];
         $this->name = $response['name'];
         $this->buyer_name = $response['buyer_name'];
@@ -100,11 +100,11 @@ class Schedule
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getScheduleAt(): int
+    public function getScheduleAt()
     {
-        return $this->schedule_at;
+        return $this->timestampToDate($this->schedule_at);
     }
 
     /**
