@@ -8,7 +8,7 @@ use Iamport\RestClient\Request\Certification;
 $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f');
 
 // imp_uid 로 SMS본인인증된 결과를 조회
-$request = Certification::view('imp_974178690904');
+$request = Certification::view('조회할 거래 고유번호(imp_uid)');
 $result  = $iamport->callApi($request);
 
 if ($result->getSuccess()) {
@@ -28,7 +28,7 @@ if ($result->getSuccess()) {
     }
 
     // 1인 1계정 허용 로직
-    // DB에서 unique_key 조회 후 가입여부 검사
+    // TODO: 가맹점 DB에서 unique_key 조회 후 가입여부 검사 ( 아래 코드는 예시를 돕고자 작성된 샘플코드로 실제 가맹점의 환경에 맞게 직접 작성하셔야 됩니다. )
     $pdoStatement = $pdo->prepare('SELECT * FROM users WHERE unique_key = :unique_key');
     $pdoStatement->bindValue(':unique_key', $certification->unique_key);
     $pdoStatement->execute();

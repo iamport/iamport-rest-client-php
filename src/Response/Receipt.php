@@ -68,8 +68,8 @@ class Receipt
         $this->amount       = $response['amount'];
         $this->vat          = $response['vat'];
         $this->receipt_url  = $response['receipt_url'];
-        $this->applied_at   = $response['applied_at'];
-        $this->cancelled_at = $response['cancelled_at'];
+        $this->applied_at   = $this->timestampToDate($response['applied_at']);
+        $this->cancelled_at = $this->timestampToDate($response['cancelled_at']);
     }
 
     /**

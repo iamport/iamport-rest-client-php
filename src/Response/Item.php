@@ -30,6 +30,7 @@ class Item
      */
     public function __construct(array $response, $responseClass)
     {
+        date_default_timezone_set('Asia/Seoul');
         $this->response = $response;
         $this->clazz = $responseClass;
     }

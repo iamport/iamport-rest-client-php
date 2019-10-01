@@ -27,7 +27,7 @@ if ($result->getSuccess()) {
      */
     dump('Custom Data :', $payment->custom_data);
 
-    // TODO : 가맹점 DB에서 결제되어야 하는 금액 조회 ( 아래 코드는 예시를 돕고자 작성된 샘플코드로 실제 가맹점의 환경에 맞게 직접 작성하셔야 됩니다.
+    // TODO : 가맹점 DB에서 결제되어야 하는 금액 조회 ( 아래 코드는 예시를 돕고자 작성된 샘플코드로 실제 가맹점의 환경에 맞게 직접 작성하셔야 됩니다. )
     $pdo          = new PDO('dsn', 'db username', 'db password');
     $pdoStatement = $pdo->prepare('SELECT amount FROM payments WHERE merchant_uid = :merchant_uid');
     $pdoStatement->bindValue(':merchant_uid', $payment->merchant_uid);

@@ -80,8 +80,8 @@ class SubscribeCustomer
         $this->customer_email    = $response['customer_email'];
         $this->customer_addr     = $response['customer_addr'];
         $this->customer_postcode = $response['customer_postcode'];
-        $this->inserted          = $response['inserted'];
-        $this->updated           = $response['updated'];
+        $this->inserted          = $this->timestampToDate($response['inserted']);
+        $this->updated           = $this->timestampToDate($response['updated']);
     }
 
     /**

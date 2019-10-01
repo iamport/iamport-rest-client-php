@@ -87,10 +87,10 @@ class Certification
         $this->pg_provider      = $response['pg_provider'];
         $this->name             = $response['name'];
         $this->gender           = $response['gender'];
-        $this->birth            = $response['birth'];
+        $this->birth            = $this->timestampToDate($response['birth'], 'Y-m-d');
         $this->foreigner        = $response['foreigner'];
         $this->certified        = $response['certified'];
-        $this->certified_at     = $response['certified_at'];
+        $this->certified_at     = $this->timestampToDate($response['certified_at']);
         $this->unique_key       = $response['unique_key'];
         $this->unique_in_site   = $response['unique_in_site'];
         $this->origin           = $response['origin'];

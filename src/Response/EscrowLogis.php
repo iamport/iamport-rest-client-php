@@ -35,7 +35,7 @@ class EscrowLogis
     {
         $this->company     = $response['company'];
         $this->invoice     = $response['invoice'];
-        $this->sent_at     = $response['sent_at'];
-        $this->applied_at  = $response['applied_at'];
+        $this->sent_at     = $this->timestampToDate($response['sent_at']);
+        $this->applied_at  = $this->timestampToDate($response['applied_at']);
     }
 }

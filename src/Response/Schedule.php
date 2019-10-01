@@ -72,7 +72,7 @@ class Schedule
     {
         $this->customer_uid = $response['customer_uid'];
         $this->merchant_uid = $response['merchant_uid'];
-        $this->schedule_at = $response['schedule_at'];
+        $this->schedule_at = $this->timestampToDate($response['schedule_at']);
         $this->amount = $response['amount'];
         $this->name = $response['name'];
         $this->buyer_name = $response['buyer_name'];
