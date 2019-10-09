@@ -15,17 +15,25 @@ class Collection
     /**
      * Collection constructor.
      *
-     * @param $response
+     * @param array  $response
      * @param string $responseClass
+     * @param bool   $isPaged
      */
-    public function __construct(array $response, string $responseClass)
+    public function __construct(array $response, string $responseClass, bool $isPaged)
     {
-        $this->total    = $response['total'];
-        $this->previous = $response['previous'];
-        $this->next     = $response['next'];
-
         $this->items = [];
-        foreach ($response['list'] as $row) {
+        $collection = $response;
+
+        if ($isPaged) {
+            $this->total    = $response['total'];
+            $this->previous = $response['previous'];
+            $this->next     = $response['next'];
+            $collection = $response['list'];
+        }
+
+
+
+        foreach ($collection as $row) {
             $this->items[] = (new Item($row, $responseClass))->getClassAs();
         }
     }

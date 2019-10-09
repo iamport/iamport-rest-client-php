@@ -22,6 +22,11 @@ abstract class RequestBase
     public $isCollection = false;
 
     /**
+     * @var bool
+     */
+    public $isPaged = false;
+
+    /**
      * 토큰 포함 여부
      *
      * @var bool

@@ -93,6 +93,7 @@ class Payment extends RequestBase
         $instance               = new self();
         $instance->merchant_uid = $merchant_uid;
         $instance->isCollection = true;
+        $instance->isPaged      = true;
 
         return $instance;
     }
@@ -152,16 +153,16 @@ class Payment extends RequestBase
     public function path(): string
     {
         if (!is_null($this->imp_uid)) {
-            return Endpoint::PAYMENTS.$this->imp_uid;
+            return Endpoint::PAYMENTS . $this->imp_uid;
         } elseif (!is_null($this->merchant_uid)) {
             if ($this->isCollection) {
-                $endPoint = Endpoint::PAYMENTS_FIND_ALL.$this->merchant_uid;
+                $endPoint = Endpoint::PAYMENTS_FIND_ALL . $this->merchant_uid;
             } else {
-                $endPoint = Endpoint::PAYMENTS_FIND.$this->merchant_uid;
+                $endPoint = Endpoint::PAYMENTS_FIND . $this->merchant_uid;
             }
 
             if (in_array($this->payment_status, ['ready', 'paid', 'cancelled', 'failed'])) {
-                $endPoint .= '/'.$this->payment_status;
+                $endPoint .= '/' . $this->payment_status;
             }
 
             return $endPoint;

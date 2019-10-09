@@ -7,10 +7,6 @@ namespace Iamport\RestClient\Response;
  */
 class Item
 {
-    /**
-     *
-     */
-    private const NAMESPACE = 'Iamport\\RestClient\\Response\\';
 
     /**
      * @var array

@@ -90,11 +90,12 @@ class Iamport
             $authenticated  = $request->authenticated;
             $client         = $request->client ?? null;
             $isCollection   = $request->isCollection;
+            $isPaged        = $request->isPaged;
 
             $response = $this->request($method, $uri, $attributes, $authenticated, $client);
 
             if ($isCollection) {
-                $result = (new Collection($response, $responseClass));
+                $result = (new Collection($response, $responseClass, $isPaged));
             } else {
                 $result = (new Item($response, $responseClass))->getClassAs();
             }
