@@ -7,9 +7,24 @@ namespace Iamport\RestClient\Response;
  */
 class Collection
 {
+    /**
+     * @var mixed
+     */
     protected $total;
+
+    /**
+     * @var mixed
+     */
     protected $previous;
+
+    /**
+     * @var mixed
+     */
     protected $next;
+
+    /**
+     * @var array
+     */
     protected $items;
 
     /**
@@ -21,20 +36,22 @@ class Collection
      */
     public function __construct(array $response, string $responseClass, bool $isPaged)
     {
-        $this->items = [];
-        $collection = $response;
+        $this->items   = [];
 
         if ($isPaged) {
+            $collection     = $response['list'];
             $this->total    = $response['total'];
             $this->previous = $response['previous'];
             $this->next     = $response['next'];
-            $collection = $response['list'];
+        } else {
+            $collection = $response;
+            unset($this->total);
+            unset($this->previous);
+            unset($this->next);
         }
 
-
-
-        foreach ($collection as $row) {
-            $this->items[] = (new Item($row, $responseClass))->getClassAs();
+        foreach ($collection as $item) {
+            $this->items[] = (new Item($item, $responseClass))->getClassAs();
         }
     }
 
@@ -68,5 +85,33 @@ class Collection
     public function getItems()
     {
         return $this->items;
+    }
+
+    /**
+     * @param $method
+     * @param $args
+     *
+     * @return Collection|null
+     */
+    public function __call($method, $args)
+    {
+        $iamport = $args[0];
+        $request = $args[1];
+
+        if ($method === 'previous' && isset($this->previous)) {
+            if ($this->getPrevious() === 0) {
+                return null;
+            }
+            $request->page = $this->getPrevious();
+        }
+
+        if ($method === 'next' && isset($this->next)) {
+            if ($this->getNext() === 0) {
+                return null;
+            }
+            $request->page = $this->getNext();
+        }
+
+        return ($iamport->callApi($request))->getData();
     }
 }
