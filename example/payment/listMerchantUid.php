@@ -29,6 +29,7 @@ if ($result->getSuccess()) {
     // items배열은 Response\Payment item Model을 담고 있습니다.
     foreach ($payments->getItems() as $payment) {
         // TODO: $payment->{property} 로 결제 데이터 접근
+        //       $payment->getAttributes({property}) 로 원본 데이터 접근
     }
 } else {
     $error = $result->getError();

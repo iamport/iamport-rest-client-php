@@ -141,6 +141,11 @@ if ($result->getSuccess()) {
     // __get을 통해 API의 Response Model의 값들을 모두 property처럼 접근할 수 있습니다.
     // https://api.iamport.kr/#!/payments/getPaymentByImpUid 의 Response Model.
     $imp_uid = $payment_data->imp_uid;
+    
+    // Response 객체에서 편의를 위해 자체적으로 변환해주는 값들의 경우 ( ex: Unix timestamp -> Y-m-d H:is )
+    // 변환값이 아닌 원본 property 접근은 getAttributes()를 사용합니다.
+    $paid_at = $payment_data->paid_at;
+    $original_paid_at = $payment->getAttributes('paid_at');
 
     if ( 결제검증 로직 ) {
         // 결제 성공 처리
