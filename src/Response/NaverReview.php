@@ -1,0 +1,174 @@
+<?php
+
+namespace Iamport\RestClient\Response;
+
+/**
+ * Class NaverReview.
+ */
+class NaverReview
+{
+    use ResponseTrait;
+
+    /**
+     * @var string 네이버페이 구매평 고유 ID ,
+     */
+    protected $review_id;
+
+    /**
+     * @var string 네이버페이 구매만족도. 1, 2, 3, 4, 5 (점) ,
+     */
+    protected $score;
+
+    /**
+     * @var string 네이버페이 일반 구매평 내용 또는 프리미엄 구매평 제목 ,
+     */
+    protected $title;
+
+    /**
+     * @var string 네이버페이 프리미엄 구매평 내용(일반 구매평인 경우 없음) ,
+     */
+    protected $content;
+
+    /**
+     * @var string 네이버페이 상품주문번호 ,
+     */
+    protected $product_order_id;
+
+    /**
+     * @var string 네이버페이 상품주문의 상품 고유번호 ,
+     */
+    protected $product_id;
+
+    /**
+     * @var string 네이버페이 상품주문의 상품명 ,
+     */
+    protected $product_name;
+
+    /**
+     * @var string 네이버페이 상품주문의 상품옵션명 ,
+     */
+    protected $product_option_name;
+
+    /**
+     * @var string 네이버페이 구매평 작성자 아이디 ,
+     */
+    protected $writer;
+
+    /**
+     * @var int 네이버페이 구매평 작성시각 unix timestamp ,
+     */
+    protected $created_at;
+
+    /**
+     * @var int 네이버페이 구매평 수정시각 unix timestamp
+     */
+    protected $modified_at;
+
+    /**
+     * NaverReview constructor.
+     *
+     * @param array $response
+     */
+    public function __construct(array $response)
+    {
+        $this->review_id           = $response['review_id'];
+        $this->score               = $response['score'];
+        $this->title               = $response['title'];
+        $this->content             = $response['content'];
+        $this->product_order_id    = $response['product_order_id'];
+        $this->product_id          = $response['product_id'];
+        $this->product_name        = $response['product_name'];
+        $this->product_option_name = $response['product_option_name'];
+        $this->writer              = $response['writer'];
+        $this->created_at          = $response['created_at'];
+        $this->modified_at         = $response['modified_at'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getReviewId(): string
+    {
+        return $this->review_id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScore(): string
+    {
+        return $this->score;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent(): string
+    {
+        return $this->content;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductOrderId(): string
+    {
+        return $this->product_order_id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductId(): string
+    {
+        return $this->product_id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductName(): string
+    {
+        return $this->product_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductOptionName(): string
+    {
+        return $this->product_option_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWriter(): string
+    {
+        return $this->writer;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCreatedAt(): int
+    {
+        return $this->timestampToDate($this->created_at);
+    }
+
+    /**
+     * @return int
+     */
+    public function getModifiedAt(): int
+    {
+        return $this->timestampToDate($this->modified_at);
+    }
+}

@@ -23,28 +23,8 @@ use Iamport\RestClient\Response\TokenResponse;
 /**
  * Class Iamport.
  */
-class Iamport
+class Iamport extends IamportBase
 {
-    const EXPIRE_BUFFER = 30;
-
-    /**
-     * @var string
-     */
-    private $impKey          = null;
-
-    /**
-     * @var string
-     */
-    private $impSecret       = null;
-    /**
-     * @var string|null
-     */
-    private $accessToken     = null;
-    /**
-     * @var int
-     */
-    private $expireTimestamp = 0;
-
     /**
      * Iamport constructor.
      *
@@ -53,22 +33,13 @@ class Iamport
      */
     public function __construct(string $impKey, string $impSecret)
     {
-        $this->impKey    = $impKey;
-        $this->impSecret = $impSecret;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getAccessToken(): ?string
-    {
-        return $this->accessToken;
+        parent::__construct($impKey,$impSecret);
     }
 
     /**
      * @return bool
      */
-    public function isTokenExpired(): bool
+    protected function isTokenExpired(): bool
     {
         $now = time();
 

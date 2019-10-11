@@ -11,7 +11,7 @@ use Iamport\RestClient\Enum\NaverClaimType;
 use Iamport\RestClient\Enum\NaverOrderStatus;
 
 /**
- * Class NaverProductOrder.
+ * Class NaverInquiry.
  */
 class NaverProductOrder
 {
@@ -98,7 +98,7 @@ class NaverProductOrder
     protected $individual_code;
 
     /**
-     * NaverProductOrder constructor.
+     * NaverInquiry constructor.
      *
      * @param array $response
      */
@@ -252,7 +252,7 @@ class NaverProductOrder
      */
     public function getShippingDue()
     {
-        return ($this->shipping_due === 0) ?? $this->timestampToDate($this->shipping_due);
+        return $this->timestampToDate($this->shipping_due);
     }
 
     /**

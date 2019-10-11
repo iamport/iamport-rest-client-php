@@ -30,4 +30,7 @@ class Endpoint extends Enum
     public const RECEIPT_EXTERNAL            = '/receipts/external/';
     public const VBANKS                      = '/vbanks/';
     public const VBANKS_HOLDER               = '/vbanks/holder';
+    public const NAVER_PRODUCT_ORDERS        = '/naver/product-orders';
+    public const NAVER_CASH_AMOUNT           = '/naver/cash-amount';
+    public const NAVER_REVIEWS               = '/naver/reviews';
 }
