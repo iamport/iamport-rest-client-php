@@ -63,6 +63,14 @@ abstract class RequestBase
     }
 
     /**
+     * @return bool
+     */
+    public function valid(): bool
+    {
+        return true;
+    }
+
+    /**
      * @return string
      */
     abstract public function path(): string;

@@ -3,7 +3,7 @@
 namespace Iamport\RestClient\Enum;
 
 /**
- * Class Endpoint.
+ * Class NaverClaimAdminCancel.
  */
 class NaverClaimAdminCancel extends Enum
 {

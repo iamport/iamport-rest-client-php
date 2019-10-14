@@ -9,6 +9,10 @@ use Iamport\RestClient\Response;
  * Class NaverInquiry.
  *
  * @property string $imp_uid
+ * @property string $product_order_id
+ * @property string $from
+ * @property string $to
+ * @property string $review_type general, premium
  */
 class NaverInquiry extends RequestBase
 {
@@ -57,7 +61,7 @@ class NaverInquiry extends RequestBase
     }
 
     /**
-     * 네이버페이 상품주문번호로 단건 조회.
+     * 네이버페이 상품주문번호로 단 건 조회.
      *
      * @param string $productOrderId
      *

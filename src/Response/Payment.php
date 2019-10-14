@@ -392,7 +392,7 @@ class Payment
     /**
      * @return mixed|null
      */
-    public function getCardNumber(): ?mixed
+    public function getCardNumber()
     {
         return $this->card_number;
     }
@@ -400,7 +400,7 @@ class Payment
     /**
      * @return mixed|null
      */
-    public function getCardType(): ?mixed
+    public function getCardType()
     {
         return $this->card_type;
     }
