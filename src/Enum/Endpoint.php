@@ -42,4 +42,6 @@ class Endpoint extends Enum
     public const NAVER_REJECT_RETURN      = '/naver/reject-return';
     public const NAVER_WITHHOLD_RETURN    = '/naver/withhold-return';
     public const NAVER_RESOLVE_RETURN     = '/naver/resolve-return';
+    public const NAVER_POINT              = '/naver/point';
+    public const NAVER_CONFIRM            = '/naver/confirm';
 }

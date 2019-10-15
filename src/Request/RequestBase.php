@@ -10,6 +10,13 @@ use GuzzleHttp\Client;
 abstract class RequestBase
 {
     /**
+     * 하나의 Requset에서 여러개의 instance를 생성할 경우 구분값
+     *
+     * @var string
+     */
+    protected $instanceType;
+
+    /**
      * response 유형
      *
      * @var string

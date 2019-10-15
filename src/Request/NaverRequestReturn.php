@@ -63,6 +63,7 @@ class NaverRequestReturn extends RequestBase
         }
         $this->delivery_method = $delivery_method;
         $this->responseClass = Response\NaverProductOrder::class;
+        $this->instanceType  = 'request';
     }
 
     /**
