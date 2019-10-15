@@ -451,7 +451,6 @@ class Payment
     public function getVbankIssuedAt()
     {
         return $this->timestampToDate($this->vbank_issued_at);
-
     }
 
     /**

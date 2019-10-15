@@ -2,6 +2,9 @@
 
 namespace Iamport\RestClient\Response;
 
+/**
+ * Class NaverOrderer.
+ */
 class NaverOrderer
 {
     /**

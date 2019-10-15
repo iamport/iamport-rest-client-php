@@ -10,6 +10,7 @@ class Endpoint extends Enum
     public const API_BASE_URL             = 'https://api.iamport.kr';
     public const TOKEN                    = '/users/getToken';
     public const PAYMENTS                 = '/payments/';
+    public const BALANCE                  = '/balance';
     public const PAYMENTS_PREPARE         = '/payments/prepare';
     public const PAYMENTS_STATUS          = '/payments/status/';
     public const PAYMENTS_FIND            = '/payments/find/';

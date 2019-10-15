@@ -2,6 +2,9 @@
 
 namespace Iamport\RestClient\Response;
 
+/**
+ * Class NaverCashAmount.
+ */
 class NaverCashAmount
 {
     use ResponseTrait;
