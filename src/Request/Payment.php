@@ -54,7 +54,6 @@ class Payment extends RequestBase
      */
     public function __construct()
     {
-
     }
 
     /**

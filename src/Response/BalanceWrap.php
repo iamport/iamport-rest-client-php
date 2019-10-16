@@ -104,5 +104,4 @@ class BalanceWrap
     {
         return $this->histories;
     }
-
 }

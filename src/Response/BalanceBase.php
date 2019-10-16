@@ -87,5 +87,4 @@ class BalanceBase
     {
         return $this->timestampToDate($this->created);
     }
-
 }
