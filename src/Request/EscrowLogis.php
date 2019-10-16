@@ -131,11 +131,17 @@ class EscrowLogis extends RequestBase
     }
 
     /**
+     * 에스크로 결제 건에 대한 배송정보 등록
+     * [POST] /escrows/logis/{imp_uid}
+     *
+     * 에스크로 결제 건에 대해서 POST /escrows/logis/{imp_uid} 로 등록된 배송정보를 수정
+     * [PUT] /escrows/logis/{imp_uid}
+     *
      * @return string
      */
     public function path(): string
     {
-        return Endpoint::ESCROW.$this->imp_uid;
+        return Endpoint::ESCROW . $this->imp_uid;
     }
 
     /**

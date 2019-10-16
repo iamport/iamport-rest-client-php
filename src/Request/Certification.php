@@ -81,7 +81,7 @@ class Certification extends RequestBase
      */
     public function path(): string
     {
-        return Endpoint::CERTIFICATIONS.$this->imp_uid;
+        return Endpoint::CERTIFICATIONS . $this->imp_uid;
     }
 
     /**

@@ -199,7 +199,7 @@ class Receipt extends RequestBase
      */
     public function path(): string
     {
-        return Endpoint::RECEIPT.$this->imp_uid;
+        return Endpoint::RECEIPT . $this->imp_uid;
     }
 
     /**

@@ -191,7 +191,7 @@ class NaverOrder extends RequestBase
 
     public function valid(): bool
     {
-        switch ($this->instanceType){
+        switch ($this->instanceType) {
             case 'ship':
             case 'exchange':
                 if (!NaverDeliveryMethod::validation($this->delivery_method)) {
@@ -234,7 +234,7 @@ class NaverOrder extends RequestBase
      */
     public function path(): string
     {
-        switch ($this->instanceType){
+        switch ($this->instanceType) {
             case 'cancel':
                 return Endpoint::PAYMENTS . $this->imp_uid . Endpoint::NAVER_CANCEL;
                 break;

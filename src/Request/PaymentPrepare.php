@@ -26,6 +26,11 @@ class PaymentPrepare extends RequestBase
     protected $amount;
 
     /**
+     * @var string HTTP verb
+     */
+    private $verb;
+
+    /**
      * PaymentPrepare constructor.
      */
     public function __construct()
@@ -47,6 +52,7 @@ class PaymentPrepare extends RequestBase
         $instance->amount         = $amount;
         $instance->responseClass  = Response\PaymentPrepare::class;
         $instance->instanceType   = 'store';
+        $instance->verb           = 'POST';
 
         return $instance;
     }
@@ -64,12 +70,22 @@ class PaymentPrepare extends RequestBase
         $instance->merchant_uid   = $merchantUid;
         $instance->responseClass  = Response\PaymentPrepare::class;
         $instance->instanceType   = 'view';
+        $instance->verb           = 'GET';
 
         unset($instance->amount);
 
         return $instance;
     }
 
+    /**
+     * 인증방식의 결제를 진행할 때 결제금액 위변조시 결제진행자체를 block하기 위해 결제예정금액을 사전등록
+     * [POST] /payments/prepare
+     *
+     * /payments/prepare로 이미 등록되어있는 사전등록 결제정보를 조회
+     * [GET] /payments/prepare/{merchant_uid}
+     *
+     * @return string
+     */
     public function path(): string
     {
         if ($this->instanceType === 'store') {
@@ -79,6 +95,9 @@ class PaymentPrepare extends RequestBase
         }
     }
 
+    /**
+     * @return array
+     */
     public function attributes(): array
     {
         if ($this->instanceType === 'store') {
@@ -90,17 +109,11 @@ class PaymentPrepare extends RequestBase
         }
     }
 
+    /**
+     * @return string
+     */
     public function verb(): string
     {
-        switch ($this->instanceType) {
-            case 'store':
-                return 'POST';
-                break;
-            case 'view':
-                return 'GET';
-                break;
-            default:
-                return '';
-        }
+        return $this->verb;
     }
 }

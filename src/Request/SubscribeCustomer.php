@@ -256,7 +256,7 @@ class SubscribeCustomer extends RequestBase
      */
     public function path(): string
     {
-        return Endpoint::SBCR_CUSTOMERS.$this->customer_uid;
+        return Endpoint::SBCR_CUSTOMERS . $this->customer_uid;
     }
 
     /**

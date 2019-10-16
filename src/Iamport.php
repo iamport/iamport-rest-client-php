@@ -33,7 +33,7 @@ class Iamport extends IamportBase
      */
     public function __construct(string $impKey, string $impSecret)
     {
-        parent::__construct($impKey,$impSecret);
+        parent::__construct($impKey, $impSecret);
     }
 
     /**
