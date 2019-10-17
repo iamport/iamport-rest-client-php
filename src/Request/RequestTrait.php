@@ -15,7 +15,7 @@ trait RequestTrait
      */
     public function __set($name, $value)
     {
-        $setter = 'set'.$this->toCamel($name);
+        $setter = 'set' . $this->toCamel($name);
         if (method_exists($this, $setter)) {
             $this->$setter($value);
         }
@@ -50,7 +50,6 @@ trait RequestTrait
     }
 
     /**
-     *
      * @return array
      */
     public function toArray()
@@ -59,11 +58,23 @@ trait RequestTrait
         $array = [];
         foreach ($vars as $key => $value) {
             // formdata에 불필표한 데이터 제외하고 배열로 전환
-            if (!in_array($key, ['instanceType','verb', 'responseType', 'authenticated','isCollection','responseClass','isPaged','client']) ) {
+            if (!in_array($key, ['instanceType', 'verb', 'responseType', 'authenticated', 'isCollection', 'responseClass', 'isPaged', 'client'])) {
                 $array[ltrim($key, '_')] = $value;
             }
         }
 
         return $array;
+    }
+
+    /**
+     * 배열에 넘겨진 property unset
+     *
+     * @param array $array
+     */
+    public function unsetArray(array $array)
+    {
+        for ($i = 0; $i < count($array); ++$i) {
+            unset($this->{$array[$i]});
+        }
     }
 }
