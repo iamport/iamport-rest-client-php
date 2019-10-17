@@ -5,9 +5,9 @@ namespace Iamport\RestClient\Enum\Naver;
 use Iamport\RestClient\Enum\Enum;
 
 /**
- * Class NaverDeliveryMethod.
+ * Class DeliveryMethod.
  */
-class NaverDeliveryMethod extends Enum
+class DeliveryMethod extends Enum
 {
     public const DELIVERY        = 'DELIVERY';
     public const GDFW_ISSUE_SVC  = 'GDFW_ISSUE_SVC';

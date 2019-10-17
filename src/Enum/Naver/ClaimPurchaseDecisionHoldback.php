@@ -7,7 +7,7 @@ use Iamport\RestClient\Enum\Enum;
 /**
  * Class Endpoint.
  */
-class NaverClaimPurchaseDecisionHoldback extends Enum
+class ClaimPurchaseDecisionHoldback extends Enum
 {
     public const PURCHASE_DECISION_HOLDBACK              = 'PURCHASE_DECISION_HOLDBACK';
     public const PURCHASE_DECISION_HOLDBACK_REDELIVERING = 'PURCHASE_DECISION_HOLDBACK_REDELIVERING';

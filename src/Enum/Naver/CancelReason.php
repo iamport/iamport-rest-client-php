@@ -5,9 +5,9 @@ namespace Iamport\RestClient\Enum\Naver;
 use Iamport\RestClient\Enum\Enum;
 
 /**
- * Class NaverCancelReason.
+ * Class CancelReason.
  */
-class NaverCancelReason extends Enum
+class CancelReason extends Enum
 {
     public const PRODUCT_UNSATISFIED = 'PRODUCT_UNSATISFIED';
     public const DELAYED_DELIVERY    = 'DELAYED_DELIVERY';

@@ -7,7 +7,7 @@ use Iamport\RestClient\Enum\Enum;
 /**
  * Class Endpoint.
  */
-class NaverClaimReturn extends Enum
+class ClaimReturn extends Enum
 {
     public const RETURN_REQUEST = 'RETURN_REQUEST';
     public const COLLECTING     = 'COLLECTING';

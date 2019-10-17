@@ -7,7 +7,7 @@ use Iamport\RestClient\Enum\Enum;
 /**
  * Class Endpoint.
  */
-class NaverClaimCancel extends Enum
+class ClaimCancel extends Enum
 {
     public const CANCEL_REQUEST = 'CANCEL_REQUEST';
     public const CANCELING      = 'CANCELING';

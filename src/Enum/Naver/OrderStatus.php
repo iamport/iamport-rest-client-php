@@ -5,9 +5,9 @@ namespace Iamport\RestClient\Enum\Naver;
 use Iamport\RestClient\Enum\Enum;
 
 /**
- * Class NaverOrderStatus.
+ * Class OrderStatus.
  */
-class NaverOrderStatus extends Enum
+class OrderStatus extends Enum
 {
     public const PAYMENT_WAITING       = 'PAYMENT_WAITING';
     public const PAYED                 = 'PAYED';

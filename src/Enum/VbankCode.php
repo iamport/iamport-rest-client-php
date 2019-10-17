@@ -9,9 +9,9 @@ class VbankCode extends Enum
 {
     public const IBK      = '003';
     public const KB       = '004';
-    public const KEB     = '005';
+    public const KEB      = '005';
     public const NH       = '011';
-    public const WOORI   = '020';
+    public const WOORI    = '020';
     public const SC       = '023';
     public const CITY     = '027';
     public const DAEGU    = '031';

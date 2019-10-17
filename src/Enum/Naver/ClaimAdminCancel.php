@@ -5,9 +5,9 @@ namespace Iamport\RestClient\Enum\Naver;
 use Iamport\RestClient\Enum\Enum;
 
 /**
- * Class NaverClaimAdminCancel.
+ * Class ClaimAdminCancel.
  */
-class NaverClaimAdminCancel extends Enum
+class ClaimAdminCancel extends Enum
 {
     public const ADMIN_CANCELING   = 'ADMIN_CANCELING';
     public const ADMIN_CANCEL_DONE = 'ADMIN_CANCEL_DONE';

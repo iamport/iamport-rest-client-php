@@ -5,9 +5,9 @@ namespace Iamport\RestClient\Enum\Naver;
 use Iamport\RestClient\Enum\Enum;
 
 /**
- * Class NaverDeliveryCompany.
+ * Class DeliveryCompany.
  */
-class NaverDeliveryCompany extends Enum
+class DeliveryCompany extends Enum
 {
     public const CJGLS      = 'CJGLS';
     public const KGB        = 'KGB';
