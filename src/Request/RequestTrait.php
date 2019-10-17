@@ -67,11 +67,11 @@ trait RequestTrait
     }
 
     /**
-     * 배열에 넘겨진 property unset
+     * 배열에 넘겨진 property unset.
      *
      * @param array $array
      */
-    public function unsetArray(array $array)
+    public function unsetArray(array $array): void
     {
         for ($i = 0; $i < count($array); ++$i) {
             unset($this->{$array[$i]});

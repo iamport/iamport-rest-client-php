@@ -58,8 +58,10 @@ class NaverRequestReturn extends RequestBase
     public function __construct(string $imp_uid, string $delivery_method)
     {
         $this->imp_uid = $imp_uid;
-        if( !in_array($delivery_method, ['RETURN_DESIGNATED', 'RETURN_DELIVERY', 'RETURN_INDIVIDUAL'])){
-            throw new InvalidArgumentException('허용되지 않는 delivery_method 값 입니다. (RETURN_DESIGNATED, RETURN_DELIVERY, RETURN_INDIVIDUAL)');
+        if (!in_array($delivery_method, ['RETURN_DESIGNATED', 'RETURN_DELIVERY', 'RETURN_INDIVIDUAL'])) {
+            throw new InvalidArgumentException(
+                '허용되지 않는 delivery_method 값 입니다. (RETURN_DESIGNATED, RETURN_DELIVERY, RETURN_INDIVIDUAL)'
+            );
         }
         $this->delivery_method = $delivery_method;
         $this->responseClass = Response\NaverProductOrder::class;

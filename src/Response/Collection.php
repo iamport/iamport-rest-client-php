@@ -45,9 +45,7 @@ class Collection
             $this->next     = $response['next'];
         } else {
             $collection = $response;
-            unset($this->total);
-            unset($this->previous);
-            unset($this->next);
+            unset($this->total, $this->previous, $this->next);
         }
 
         foreach ($collection as $item) {

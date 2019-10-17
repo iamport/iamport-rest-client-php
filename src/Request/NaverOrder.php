@@ -71,11 +71,7 @@ class NaverOrder extends RequestBase
         $instance->imp_uid       = $impUid;
         $instance->responseClass = Response\NaverProductOrder::class;
         $instance->instanceType  = 'cancel';
-
-        unset($instance->delivery_method);
-        unset($instance->dispatched_at);
-        unset($instance->delivery_company);
-        unset($instance->tracking_number);
+        $instance->unsetArray(['delivery_method', 'dispatched_at', 'delivery_company', 'tracking_number']);
 
         return $instance;
     }
@@ -96,8 +92,7 @@ class NaverOrder extends RequestBase
         $instance->delivery_method  = $delivery_method;
         $instance->dispatched_at    = strtotime(date($dispatched_at));
         $instance->responseClass    = Response\NaverProductOrder::class;
-        $instance->instanceType  = 'ship';
-
+        $instance->instanceType     = 'ship';
         unset($instance->reason);
 
         return $instance;
@@ -117,10 +112,8 @@ class NaverOrder extends RequestBase
         $instance->imp_uid          = $imp_uid;
         $instance->delivery_method  = $delivery_method;
         $instance->responseClass    = Response\NaverProductOrder::class;
-        $instance->instanceType  = 'exchange';
-
-        unset($instance->reason);
-        unset($instance->dispatched_at);
+        $instance->instanceType     = 'exchange';
+        unset($instance->reason, $instance->dispatched_at);
 
         return $instance;
     }
@@ -130,13 +123,8 @@ class NaverOrder extends RequestBase
         $instance                   = new self();
         $instance->imp_uid          = $imp_uid;
         $instance->responseClass    = Response\NaverProductOrder::class;
-        $instance->instanceType  = 'place';
-
-        unset($instance->reason);
-        unset($instance->delivery_method);
-        unset($instance->dispatched_at);
-        unset($instance->delivery_company);
-        unset($instance->tracking_number);
+        $instance->instanceType     = 'place';
+        $instance->unsetArray(['reason', 'delivery_method', 'dispatched_at', 'delivery_company', 'tracking_number']);
 
         return $instance;
     }

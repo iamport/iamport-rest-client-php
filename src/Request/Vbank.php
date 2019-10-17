@@ -2,8 +2,11 @@
 
 namespace Iamport\RestClient\Request;
 
+use Iamport\RestClient\Enum\BankCode;
 use Iamport\RestClient\Enum\Endpoint;
+use Iamport\RestClient\Enum\VbankCode;
 use Iamport\RestClient\Response;
+use InvalidArgumentException;
 
 /**
  * Class Vbank.
@@ -134,6 +137,11 @@ class Vbank extends RequestBase
         $instance                 = new self();
         $instance->merchant_uid   = $merchantUid;
         $instance->amount         = $amount;
+        if (!in_array($vbankCode, VbankCode::getAll())) {
+            throw new InvalidArgumentException(
+                '허용되지 않는 은행코드 입니다. ( VbankCode::getAll()로 허용 가능한 값을 확인해주세요. )'
+            );
+        }
         $instance->vbank_code     = $vbankCode;
         $instance->vbank_due      = strtotime(date($vbankDue));
         $instance->vbank_holder   = $vbankHolder;
@@ -200,6 +208,11 @@ class Vbank extends RequestBase
     public static function view(string $bankCode, string $bankNum)
     {
         $instance                     = new self();
+        if (!in_array($bankCode, BankCode::getAll())) {
+            throw new InvalidArgumentException(
+                '올바르지 않는 은행코드 입니다. ( BankCode::getAll()로 허용 가능한 값을 확인해주세요. )'
+            );
+        }
         $instance->bank_code          = $bankCode;
         $instance->bank_num           = $bankNum;
         $instance->responseClass      = Response\VbankHolder::class;
