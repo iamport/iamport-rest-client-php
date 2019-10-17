@@ -79,7 +79,7 @@ class PaymentPrepare extends RequestBase
 
     /**
      * 인증방식의 결제를 진행할 때 결제금액 위변조시 결제진행자체를 block하기 위해 결제예정금액을 사전등록
-     * [POST] /payments/prepare
+     * [POST] /payments/prepare.
      *
      * /payments/prepare로 이미 등록되어있는 사전등록 결제정보를 조회
      * [GET] /payments/prepare/{merchant_uid}

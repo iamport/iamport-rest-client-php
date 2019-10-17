@@ -2,6 +2,8 @@
 
 namespace Iamport\RestClient\Response;
 
+use Iamport\RestClient\Request\PaymentCancel;
+
 /**
  * Class Payment.
  */
@@ -272,9 +274,11 @@ class Payment
         $this->fail_reason              = $response['fail_reason'];
         $this->cancel_reason            = $response['cancel_reason'];
         $this->receipt_url              = $response['receipt_url'];
-        $this->cancel_history           = $response['cancel_history'];
         $this->cancel_receipt_urls      = $response['cancel_receipt_urls'];
         $this->cash_receipt_issued      = $response['cash_receipt_issued'];
+        foreach ($response['cancel_history'] as $item) {
+            $this->cancel_history[] = new PaymentCancel($item);
+        };
     }
 
     /**
