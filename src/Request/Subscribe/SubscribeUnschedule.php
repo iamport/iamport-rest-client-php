@@ -1,9 +1,10 @@
 <?php
 
-namespace Iamport\RestClient\Request;
+namespace Iamport\RestClient\Request\Subscribe;
 
 use Iamport\RestClient\Enum\Endpoint;
-use Iamport\RestClient\Response;
+use Iamport\RestClient\Request\RequestBase;
+use Iamport\RestClient\Request\RequestTrait;
 
 /**
  * Class SubscribeUnschedule.
@@ -32,8 +33,8 @@ class SubscribeUnschedule extends RequestBase
      */
     public function __construct(string $customer_uid)
     {
-        $this->customer_uid = $customer_uid;
-        $this->responseClass = Response\Schedule::class;
+        $this->customer_uid  = $customer_uid;
+        $this->responseClass = Schedule::class;
     }
 
     /**

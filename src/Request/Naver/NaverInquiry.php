@@ -1,9 +1,13 @@
 <?php
 
-namespace Iamport\RestClient\Request;
+namespace Iamport\RestClient\Request\Naver;
 
 use Iamport\RestClient\Enum\Endpoint;
-use Iamport\RestClient\Response;
+use Iamport\RestClient\Request\RequestBase;
+use Iamport\RestClient\Request\RequestTrait;
+use Iamport\RestClient\Response\Naver\NaverCashAmount;
+use Iamport\RestClient\Response\Naver\NaverProductOrder;
+use Iamport\RestClient\Response\Naver\NaverReview;
 
 /**
  * Class NaverInquiry.
@@ -55,7 +59,7 @@ class NaverInquiry extends RequestBase
         $instance                = new self();
         $instance->imp_uid       = $impUid;
         $instance->isCollection  = true;
-        $instance->responseClass = Response\NaverProductOrder::class;
+        $instance->responseClass = NaverProductOrder::class;
 
         return $instance;
     }
@@ -71,7 +75,7 @@ class NaverInquiry extends RequestBase
     {
         $instance                   = new self();
         $instance->product_order_id = $productOrderId;
-        $instance->responseClass    = Response\NaverProductOrder::class;
+        $instance->responseClass    = NaverProductOrder::class;
 
         return $instance;
     }
@@ -87,7 +91,7 @@ class NaverInquiry extends RequestBase
     {
         $instance                = new self();
         $instance->imp_uid       = $impUid;
-        $instance->responseClass = Response\NaverCashAmount::class;
+        $instance->responseClass = NaverCashAmount::class;
 
         return $instance;
     }
@@ -108,7 +112,7 @@ class NaverInquiry extends RequestBase
         $instance->from          = strtotime(date($from));
         $instance->to            = strtotime(date($to));
         $instance->review_type   = $reviewType;
-        $instance->responseClass = Response\NaverReview::class;
+        $instance->responseClass = NaverReview::class;
 
         return $instance;
     }
@@ -146,15 +150,15 @@ class NaverInquiry extends RequestBase
      */
     public function path(): string
     {
-        if ($this->responseClass === Response\NaverProductOrder::class) {
+        if ($this->responseClass === NaverProductOrder::class) {
             if ($this->isCollection) {
                 return Endpoint::PAYMENTS . $this->imp_uid . Endpoint::NAVER_PRODUCT_ORDERS;
             } else {
                 return Endpoint::NAVER_PRODUCT_ORDERS . '/' . $this->product_order_id;
             }
-        } elseif ($this->responseClass === Response\NaverReview::class) {
+        } elseif ($this->responseClass === NaverReview::class) {
             return Endpoint::NAVER_REVIEWS;
-        } elseif ($this->responseClass === Response\NaverCashAmount::class) {
+        } elseif ($this->responseClass === NaverCashAmount::class) {
             return Endpoint::PAYMENTS . $this->imp_uid . Endpoint::NAVER_CASH_AMOUNT;
         }
     }
@@ -164,7 +168,7 @@ class NaverInquiry extends RequestBase
      */
     public function attributes(): array
     {
-        if ($this->responseClass === Response\NaverReview::class) {
+        if ($this->responseClass === NaverReview::class) {
             return [
                 'query' => [
                     'from'        => $this->from,

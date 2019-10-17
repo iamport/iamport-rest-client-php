@@ -1,6 +1,8 @@
 <?php
 
-namespace Iamport\RestClient\Response;
+namespace Iamport\RestClient\Response\Naver;
+
+use Iamport\RestClient\Response\ResponseTrait;
 
 /**
  * Class NaverReview.

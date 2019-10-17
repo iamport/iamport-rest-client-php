@@ -1,53 +1,54 @@
 <?php
 
+namespace Iamport\RestClient\Enum\Naver;
 
-namespace Iamport\RestClient\Enum;
+use Iamport\RestClient\Enum\Enum;
 
 /**
  * Class NaverDeliveryCompany.
  */
 class NaverDeliveryCompany extends Enum
 {
-    public const CJGLS = 'CJGLS';
-    public const KGB = 'KGB';
-    public const DONGBU = 'DONGBU';
-    public const EPOST = 'EPOST';
+    public const CJGLS      = 'CJGLS';
+    public const KGB        = 'KGB';
+    public const DONGBU     = 'DONGBU';
+    public const EPOST      = 'EPOST';
     public const REGISTPOST = 'REGISTPOST';
-    public const HANJIN = 'HANJIN';
-    public const HYUNDAI = 'HYUNDAI';
-    public const KGBLS = 'KGBLS';
-    public const INNOGIS = 'INNOGIS';
-    public const DAESIN = 'DAESIN';
-    public const ILYANG = 'ILYANG';
-    public const KDEXP = 'KDEXP';
-    public const CHUNIL = 'CHUNIL';
-    public const CH1 = 'CH1';
-    public const HDEXP = 'HDEXP';
-    public const CVSNET = 'CVSNET';
-    public const DHL = 'DHL';
-    public const FEDEX = 'FEDEX';
-    public const GSMNTON = 'GSMNTON';
-    public const WARPEX = 'WARPEX';
-    public const WIZWA = 'WIZWA';
-    public const EMS = 'EMS';
-    public const DHLDE = 'DHLDE';
+    public const HANJIN     = 'HANJIN';
+    public const HYUNDAI    = 'HYUNDAI';
+    public const KGBLS      = 'KGBLS';
+    public const INNOGIS    = 'INNOGIS';
+    public const DAESIN     = 'DAESIN';
+    public const ILYANG     = 'ILYANG';
+    public const KDEXP      = 'KDEXP';
+    public const CHUNIL     = 'CHUNIL';
+    public const CH1        = 'CH1';
+    public const HDEXP      = 'HDEXP';
+    public const CVSNET     = 'CVSNET';
+    public const DHL        = 'DHL';
+    public const FEDEX      = 'FEDEX';
+    public const GSMNTON    = 'GSMNTON';
+    public const WARPEX     = 'WARPEX';
+    public const WIZWA      = 'WIZWA';
+    public const EMS        = 'EMS';
+    public const DHLDE      = 'DHLDE';
     public const ACIEXPRESS = 'ACIEXPRESS';
-    public const EZUSA = 'EZUSA';
-    public const PANTOS = 'PANTOS';
-    public const UPS = 'UPS';
-    public const HLCGLOBAL = 'HLCGLOBAL';
-    public const KOREXG = 'KOREXG';
-    public const TNT = 'TNT';
-    public const SWGEXP = 'SWGEXP';
-    public const DAEWOON = 'DAEWOON';
-    public const USPS = 'USPS';
-    public const IPARCEL = 'IPARCEL';
-    public const KUNYOUNG = 'KUNYOUNG';
-    public const HPL = 'HPL';
-    public const DADREAM = 'DADREAM';
-    public const SLX = 'SLX';
-    public const SFEXPRESS = 'SFEXPRESS';
-    public const HONAM = 'HONAM';
+    public const EZUSA      = 'EZUSA';
+    public const PANTOS     = 'PANTOS';
+    public const UPS        = 'UPS';
+    public const HLCGLOBAL  = 'HLCGLOBAL';
+    public const KOREXG     = 'KOREXG';
+    public const TNT        = 'TNT';
+    public const SWGEXP     = 'SWGEXP';
+    public const DAEWOON    = 'DAEWOON';
+    public const USPS       = 'USPS';
+    public const IPARCEL    = 'IPARCEL';
+    public const KUNYOUNG   = 'KUNYOUNG';
+    public const HPL        = 'HPL';
+    public const DADREAM    = 'DADREAM';
+    public const SLX        = 'SLX';
+    public const SFEXPRESS  = 'SFEXPRESS';
+    public const HONAM      = 'HONAM';
 
     /**
      * Enum의 설명을 가져옵니다.

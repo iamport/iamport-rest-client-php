@@ -1,19 +1,20 @@
 <?php
 
+namespace Iamport\RestClient\Enum\Naver;
 
-namespace Iamport\RestClient\Enum;
+use Iamport\RestClient\Enum\Enum;
 
 /**
  * Class NaverDeliveryMethod.
  */
 class NaverDeliveryMethod extends Enum
 {
-    public const DELIVERY = 'DELIVERY';
-    public const GDFW_ISSUE_SVC = 'GDFW_ISSUE_SVC';
-    public const VISIT_RECEIPT = 'VISIT_RECEIPT';
+    public const DELIVERY        = 'DELIVERY';
+    public const GDFW_ISSUE_SVC  = 'GDFW_ISSUE_SVC';
+    public const VISIT_RECEIPT   = 'VISIT_RECEIPT';
     public const DIRECT_DELIVERY = 'DIRECT_DELIVERY';
-    public const QUICK_SVC = 'QUICK_SVC';
-    public const NOTHING = 'NOTHING';
+    public const QUICK_SVC       = 'QUICK_SVC';
+    public const NOTHING         = 'NOTHING';
 
     /**
      * Enum의 설명을 가져옵니다.

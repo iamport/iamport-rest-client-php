@@ -1,14 +1,16 @@
 <?php
 
-namespace Iamport\RestClient\Enum;
+namespace Iamport\RestClient\Enum\Naver;
+
+use Iamport\RestClient\Enum\Enum;
 
 /**
  * Class NaverClaimAdminCancel.
  */
 class NaverClaimAdminCancel extends Enum
 {
-    public const ADMIN_CANCELING        = 'ADMIN_CANCELING';
-    public const ADMIN_CANCEL_DONE      = 'ADMIN_CANCEL_DONE';
+    public const ADMIN_CANCELING   = 'ADMIN_CANCELING';
+    public const ADMIN_CANCEL_DONE = 'ADMIN_CANCEL_DONE';
 
     /**
      * Enum의 설명을 가져옵니다.

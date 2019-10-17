@@ -1,20 +1,22 @@
 <?php
 
-namespace Iamport\RestClient\Enum;
+namespace Iamport\RestClient\Enum\Naver;
+
+use Iamport\RestClient\Enum\Enum;
 
 /**
- * Class Endpoint.
+ * Class NaverOrderStatus.
  */
 class NaverOrderStatus extends Enum
 {
-    public const PAYMENT_WAITING = 'PAYMENT_WAITING';
-    public const PAYED = 'PAYED';
-    public const DELIVERING = 'DELIVERING';
-    public const DELIVERED = 'DELIVERED';
-    public const PURCHASE_DECIDED = 'PURCHASE_DECIDED';
-    public const EXCHANGED = 'EXCHANGED';
-    public const CANCELED = 'CANCELED';
-    public const RETURNED = 'RETURNED';
+    public const PAYMENT_WAITING       = 'PAYMENT_WAITING';
+    public const PAYED                 = 'PAYED';
+    public const DELIVERING            = 'DELIVERING';
+    public const DELIVERED             = 'DELIVERED';
+    public const PURCHASE_DECIDED      = 'PURCHASE_DECIDED';
+    public const EXCHANGED             = 'EXCHANGED';
+    public const CANCELED              = 'CANCELED';
+    public const RETURNED              = 'RETURNED';
     public const CANCELED_BY_NOPAYMENT = 'CANCELED_BY_NOPAYMENT';
 
     /**

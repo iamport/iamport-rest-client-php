@@ -1,15 +1,17 @@
 <?php
 
-namespace Iamport\RestClient\Enum;
+namespace Iamport\RestClient\Enum\Naver;
+
+use Iamport\RestClient\Enum\Enum;
 
 /**
  * Class NaverCancelReason.
  */
 class NaverCancelReason extends Enum
 {
-    public const PRODUCT_UNSATISFIED        = 'PRODUCT_UNSATISFIED';
-    public const DELAYED_DELIVERY           = 'DELAYED_DELIVERY';
-    public const SOLD_OUT                   = 'SOLD_OUT';
+    public const PRODUCT_UNSATISFIED = 'PRODUCT_UNSATISFIED';
+    public const DELAYED_DELIVERY    = 'DELAYED_DELIVERY';
+    public const SOLD_OUT            = 'SOLD_OUT';
 
     /**
      * Enum의 설명을 가져옵니다.

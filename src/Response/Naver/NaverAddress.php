@@ -1,6 +1,6 @@
 <?php
 
-namespace Iamport\RestClient\Response;
+namespace Iamport\RestClient\Response\Naver;
 
 class NaverAddress
 {

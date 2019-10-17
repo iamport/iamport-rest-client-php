@@ -1,6 +1,8 @@
 <?php
 
-namespace Iamport\RestClient\Enum;
+namespace Iamport\RestClient\Enum\Naver;
+
+use Iamport\RestClient\Enum\Enum;
 
 /**
  * Class Endpoint.

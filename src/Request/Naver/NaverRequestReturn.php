@@ -1,16 +1,18 @@
 <?php
 
-namespace Iamport\RestClient\Request;
+namespace Iamport\RestClient\Request\Naver;
 
 use Iamport\RestClient\Enum\Endpoint;
-use Iamport\RestClient\Response;
+use Iamport\RestClient\Request\RequestBase;
+use Iamport\RestClient\Request\RequestTrait;
+use Iamport\RestClient\Response\Naver\NaverProductOrder;
 use InvalidArgumentException;
 
 /**
  * Class NaverRequestReturn.
  *
  * @property string $imp_uid
- * @property array $product_order_id
+ * @property array  $product_order_id
  * @property string $reason
  * @property string $delivery_method
  * @property string $delivery_company
@@ -52,6 +54,7 @@ class NaverRequestReturn extends RequestBase
 
     /**
      * NaverRequestReturn constructor.
+     *
      * @param string $imp_uid
      * @param string $delivery_method
      */
@@ -64,8 +67,8 @@ class NaverRequestReturn extends RequestBase
             );
         }
         $this->delivery_method = $delivery_method;
-        $this->responseClass = Response\NaverProductOrder::class;
-        $this->instanceType  = 'request';
+        $this->responseClass   = NaverProductOrder::class;
+        $this->instanceType    = 'request';
     }
 
     /**
@@ -102,7 +105,7 @@ class NaverRequestReturn extends RequestBase
 
     /**
      * 주문형-네이버페이 상품주문들을 반품요청합니다
-     * [POST] /payments/{imp_uid}/naver/request-return
+     * [POST] /payments/{imp_uid}/naver/request-return.
      *
      * @return string
      */

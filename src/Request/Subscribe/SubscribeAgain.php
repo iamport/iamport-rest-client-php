@@ -1,35 +1,37 @@
 <?php
 
-namespace Iamport\RestClient\Request;
+namespace Iamport\RestClient\Request\Subscribe;
 
 use Iamport\RestClient\Enum\Endpoint;
+use Iamport\RestClient\Request\RequestBase;
+use Iamport\RestClient\Request\RequestTrait;
 use Iamport\RestClient\Response;
 
 /**
- * Class SubscribeOnetime.
+ * Class SubscribeAgain.
  *
+ * @property string $customer_uid
  * @property string $merchant_uid
  * @property float  $amount
- * @property float  $tax_free
- * @property string $card_number
- * @property string $expiry
- * @property string $birth
- * @property string $pwd_2digit
- * @property string $customer_uid
- * @property string $pg
  * @property string $name
+ * @property float  $tax_free
  * @property string $buyer_name
  * @property string $buyer_email
  * @property string $buyer_tel
  * @property string $buyer_addr
  * @property string $buyer_postcode
- * @property string $card_quota
+ * @property int    $card_quota
  * @property string $custom_data
  * @property string $notice_url
  */
-class SubscribeOnetime extends RequestBase
+class SubscribeAgain extends RequestBase
 {
     use RequestTrait;
+
+    /**
+     * @var string 고객 고유번호
+     */
+    protected $customer_uid;
 
     /**
      * @var string 가맹점 거래 고유번호
@@ -37,49 +39,19 @@ class SubscribeOnetime extends RequestBase
     protected $merchant_uid;
 
     /**
-     * @var float 결제금액
+     * @var string 결제금액
      */
     protected $amount;
-
-    /**
-     * @var float amount 중 면세공급가액
-     */
-    protected $tax_free;
-
-    /**
-     * @var string 카드번호(dddd-dddd-dddd-dddd)
-     */
-    protected $card_number;
-
-    /**
-     * @var string 카드 유효기간(YYYY-MM)
-     */
-    protected $expiry;
-
-    /**
-     * @var string 생년월일6자리(법인카드의 경우 사업자등록번호10자리)
-     */
-    protected $birth;
-
-    /**
-     * @var string 카드비밀번호 앞 2자리
-     */
-    protected $pwd_2digit;
-
-    /**
-     * @var string 구매자 고유 번호
-     */
-    protected $customer_uid;
-
-    /**
-     * @var string API 방식 비인증 PG설정이 2개 이상인 경우 지정
-     */
-    protected $pg;
 
     /**
      * @var string 주문명
      */
     protected $name;
+
+    /**
+     * @var string amount 중 면세공급가액
+     */
+    protected $tax_free;
 
     /**
      * @var string 주문자명
@@ -122,82 +94,20 @@ class SubscribeOnetime extends RequestBase
     protected $notice_url;
 
     /**
-     * SubscribeOnetime constructor.
+     * SubscribeAgain constructor.
      *
-     * @param string   $merchant_uid
-     * @param float    $amount
-     * @param CardInfo $cardInfo
+     * @param string $customer_uid
+     * @param string $merchant_uid
+     * @param string $amount
+     * @param string $name
      */
-    public function __construct(string $merchant_uid, float $amount, CardInfo $cardInfo)
+    public function __construct(string $customer_uid, string $merchant_uid, string $amount, string $name)
     {
+        $this->customer_uid = $customer_uid;
         $this->merchant_uid = $merchant_uid;
         $this->amount       = $amount;
-
-        $this->card_number = $cardInfo->card_number;
-        $this->expiry      = $cardInfo->expiry;
-        $this->birth       = $cardInfo->birth;
-
-        if (!is_null($cardInfo->pwd_2digit)) {
-            $this->pwd_2digit = $cardInfo->pwd_2digit;
-        }
-
+        $this->name         = $name;
         $this->responseClass = Response\Payment::class;
-    }
-
-    /**
-     * @param string $merchant_uid
-     */
-    public function setMerchantUid(string $merchant_uid): void
-    {
-        $this->merchant_uid = $merchant_uid;
-    }
-
-    /**
-     * @param float $amount
-     */
-    public function setAmount(float $amount): void
-    {
-        $this->amount = $amount;
-    }
-
-    /**
-     * @param float $tax_free
-     */
-    public function setTaxFree(float $tax_free): void
-    {
-        $this->tax_free = $tax_free;
-    }
-
-    /**
-     * @param string $card_number
-     */
-    public function setCardNumber(string $card_number): void
-    {
-        $this->card_number = $card_number;
-    }
-
-    /**
-     * @param string $expiry
-     */
-    public function setExpiry(string $expiry): void
-    {
-        $this->expiry = $expiry;
-    }
-
-    /**
-     * @param string $birth
-     */
-    public function setBirth(string $birth): void
-    {
-        $this->birth = $birth;
-    }
-
-    /**
-     * @param string $pwd_2digit
-     */
-    public function setPwd2digit(string $pwd_2digit): void
-    {
-        $this->pwd_2digit = $pwd_2digit;
     }
 
     /**
@@ -209,11 +119,19 @@ class SubscribeOnetime extends RequestBase
     }
 
     /**
-     * @param string $pg
+     * @param string $merchant_uid
      */
-    public function setPg(string $pg): void
+    public function setMerchantUid(string $merchant_uid): void
     {
-        $this->pg = $pg;
+        $this->merchant_uid = $merchant_uid;
+    }
+
+    /**
+     * @param string $amount
+     */
+    public function setAmount(string $amount): void
+    {
+        $this->amount = $amount;
     }
 
     /**
@@ -222,6 +140,14 @@ class SubscribeOnetime extends RequestBase
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    /**
+     * @param string $tax_free
+     */
+    public function setTaxFree(string $tax_free): void
+    {
+        $this->tax_free = $tax_free;
     }
 
     /**
@@ -289,14 +215,14 @@ class SubscribeOnetime extends RequestBase
     }
 
     /**
-     * 빌링키 발급과 결제 요청을 동시에 처리.
-     * [POST] /subscribe/payments/onetime.
+     * 저장된 빌링키로 재결제.
+     * [POST] /subscribe/payments/again.
      *
      * @return string
      */
     public function path(): string
     {
-        return Endpoint::SBCR_PAYMENTS_ONETIME;
+        return Endpoint::SBCR_PAYMENTS_AGAIN;
     }
 
     /**

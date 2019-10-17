@@ -1,14 +1,15 @@
 <?php
 
-namespace Iamport\RestClient\Response;
+namespace Iamport\RestClient\Response\Naver;
 
-use Iamport\RestClient\Enum\NaverClaimAdminCancel;
-use Iamport\RestClient\Enum\NaverClaimCancel;
-use Iamport\RestClient\Enum\NaverClaimExchange;
-use Iamport\RestClient\Enum\NaverClaimPurchaseDecisionHoldback;
-use Iamport\RestClient\Enum\NaverClaimReturn;
-use Iamport\RestClient\Enum\NaverClaimType;
-use Iamport\RestClient\Enum\NaverOrderStatus;
+use Iamport\RestClient\Enum\Naver\NaverClaimAdminCancel;
+use Iamport\RestClient\Enum\Naver\NaverClaimCancel;
+use Iamport\RestClient\Enum\Naver\NaverClaimExchange;
+use Iamport\RestClient\Enum\Naver\NaverClaimPurchaseDecisionHoldback;
+use Iamport\RestClient\Enum\Naver\NaverClaimReturn;
+use Iamport\RestClient\Enum\Naver\NaverClaimType;
+use Iamport\RestClient\Enum\Naver\NaverOrderStatus;
+use Iamport\RestClient\Response\ResponseTrait;
 
 /**
  * Class NaverInquiry.

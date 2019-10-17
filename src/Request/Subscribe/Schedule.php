@@ -1,6 +1,8 @@
 <?php
 
-namespace Iamport\RestClient\Request;
+namespace Iamport\RestClient\Request\Subscribe;
+
+use Iamport\RestClient\Request\RequestTrait;
 
 /**
  * Class Schedule.

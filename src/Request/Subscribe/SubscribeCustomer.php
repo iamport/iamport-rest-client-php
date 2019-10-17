@@ -1,8 +1,11 @@
 <?php
 
-namespace Iamport\RestClient\Request;
+namespace Iamport\RestClient\Request\Subscribe;
 
 use Iamport\RestClient\Enum\Endpoint;
+use Iamport\RestClient\Request\CardInfo;
+use Iamport\RestClient\Request\RequestBase;
+use Iamport\RestClient\Request\RequestTrait;
 use Iamport\RestClient\Response;
 
 /**
@@ -89,7 +92,7 @@ class SubscribeCustomer extends RequestBase
      */
     public function __construct()
     {
-        $this->responseClass = Response\SubscribeCustomer::class;
+        $this->responseClass = SubscribeCustomer::class;
     }
 
     /**

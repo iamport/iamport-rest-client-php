@@ -1,8 +1,10 @@
 <?php
 
-namespace Iamport\RestClient\Request;
+namespace Iamport\RestClient\Request\Naver;
 
 use Iamport\RestClient\Enum\Endpoint;
+use Iamport\RestClient\Request\RequestBase;
+use Iamport\RestClient\Request\RequestTrait;
 
 /**
  * Class NaverPayment.

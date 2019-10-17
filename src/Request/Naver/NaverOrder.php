@@ -1,12 +1,14 @@
 <?php
 
-namespace Iamport\RestClient\Request;
+namespace Iamport\RestClient\Request\Naver;
 
 use Iamport\RestClient\Enum\Endpoint;
-use Iamport\RestClient\Enum\NaverCancelReason;
-use Iamport\RestClient\Enum\NaverDeliveryCompany;
-use Iamport\RestClient\Enum\NaverDeliveryMethod;
-use Iamport\RestClient\Response;
+use Iamport\RestClient\Enum\Naver\NaverCancelReason;
+use Iamport\RestClient\Enum\Naver\NaverDeliveryCompany;
+use Iamport\RestClient\Enum\Naver\NaverDeliveryMethod;
+use Iamport\RestClient\Request\RequestBase;
+use Iamport\RestClient\Request\RequestTrait;
+use Iamport\RestClient\Response\Naver\NaverProductOrder;
 
 /**
  * Class NaverRequestReturn.
@@ -69,7 +71,7 @@ class NaverOrder extends RequestBase
     {
         $instance                = new self();
         $instance->imp_uid       = $impUid;
-        $instance->responseClass = Response\NaverProductOrder::class;
+        $instance->responseClass = NaverProductOrder::class;
         $instance->instanceType  = 'cancel';
         $instance->unsetArray(['delivery_method', 'dispatched_at', 'delivery_company', 'tracking_number']);
 
@@ -91,7 +93,7 @@ class NaverOrder extends RequestBase
         $instance->imp_uid          = $imp_uid;
         $instance->delivery_method  = $delivery_method;
         $instance->dispatched_at    = strtotime(date($dispatched_at));
-        $instance->responseClass    = Response\NaverProductOrder::class;
+        $instance->responseClass    = NaverProductOrder::class;
         $instance->instanceType     = 'ship';
         unset($instance->reason);
 
@@ -111,7 +113,7 @@ class NaverOrder extends RequestBase
         $instance                   = new self();
         $instance->imp_uid          = $imp_uid;
         $instance->delivery_method  = $delivery_method;
-        $instance->responseClass    = Response\NaverProductOrder::class;
+        $instance->responseClass    = NaverProductOrder::class;
         $instance->instanceType     = 'exchange';
         unset($instance->reason, $instance->dispatched_at);
 
@@ -122,7 +124,7 @@ class NaverOrder extends RequestBase
     {
         $instance                   = new self();
         $instance->imp_uid          = $imp_uid;
-        $instance->responseClass    = Response\NaverProductOrder::class;
+        $instance->responseClass    = NaverProductOrder::class;
         $instance->instanceType     = 'place';
         $instance->unsetArray(['reason', 'delivery_method', 'dispatched_at', 'delivery_company', 'tracking_number']);
 
