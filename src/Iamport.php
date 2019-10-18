@@ -61,12 +61,12 @@ class Iamport extends IamportBase
             $authenticated  = $request->authenticated;
             $client         = $request->client ?? null;
             $isCollection   = $request->isCollection;
-            $isPaged        = $request->isPaged;
 
-            $response = $this->request($method, $uri, $attributes, $authenticated, $client);
+            $parseResponse = $this->request($method, $uri, $attributes, $authenticated, $client);
+            $response      = $parseResponse->response;
 
             if ($isCollection) {
-                $result = (new Collection($response, $responseClass, $isPaged));
+                $result = (new Collection($response, $request, $parseResponse->isMultiStatus));
             } else {
                 $result = (new Item($response, $responseClass))->getClassAs();
             }
@@ -115,8 +115,9 @@ class Iamport extends IamportBase
     public function request(string $method, string $uri, array $attributes = [], bool $authenticated = true, Client $customClient = null)
     {
         try {
-            $client   = $customClient ?? $this->getHttpClient($authenticated);
-            $response = $client->request($method, $uri, $attributes);
+            $client     = $customClient ?? $this->getHttpClient($authenticated);
+            $response   = $client->request($method, $uri, $attributes);
+            $statusCode = $response->getStatusCode();
 
             $parseResponse = (object) json_decode($response->getBody(), true);
 
@@ -124,7 +125,13 @@ class Iamport extends IamportBase
                 throw new IamportException($parseResponse, new Request($method, $uri), null);
             }
 
-            return $parseResponse->response;
+            /** @var bool $isMultiStatus */
+            $parseResponse->isMultiStatus = false;
+            if ($statusCode === 207) {
+                $parseResponse->isMultiStatus = true;
+            }
+
+            return $parseResponse;
         } catch (Exception $e) {
             ExceptionHandler::report($e);
         }

@@ -14,7 +14,7 @@ abstract class RequestBase
      *
      * @var string
      */
-    protected $instanceType;
+    public $instanceType;
 
     /**
      * response 유형

@@ -20,14 +20,14 @@ class Payment extends RequestBase
     use RequestTrait;
 
     /**
+     * @var array 아임포트 고유번호 (배열)
+     */
+    public $imp_uids = [];
+
+    /**
      * @var string 아임포트 고유번호
      */
     protected $imp_uid;
-
-    /**
-     * @var array 아임포트 고유번호 (배열)
-     */
-    protected $arrayImpUid = [];
 
     /**
      * @var string 가맹점에서 전달한 거래 고유번호
@@ -65,10 +65,10 @@ class Payment extends RequestBase
      */
     public static function withImpUid(string $impUid)
     {
-        $instance               = new self();
-        $instance->imp_uid      = $impUid;
+        $instance                = new self();
+        $instance->imp_uid       = $impUid;
         $instance->responseClass = Response\Payment::class;
-        $instance->instanceType = 'withImpUid';
+        $instance->instanceType  = 'withImpUid';
 
         return $instance;
     }
@@ -82,10 +82,10 @@ class Payment extends RequestBase
      */
     public static function withMerchantUid(string $merchant_uid)
     {
-        $instance               = new self();
-        $instance->merchant_uid = $merchant_uid;
+        $instance                = new self();
+        $instance->merchant_uid  = $merchant_uid;
         $instance->responseClass = Response\Payment::class;
-        $instance->instanceType = 'withMerchantUid';
+        $instance->instanceType  = 'withMerchantUid';
 
         return $instance;
     }
@@ -99,12 +99,12 @@ class Payment extends RequestBase
      */
     public static function listMerchantUid(string $merchant_uid)
     {
-        $instance               = new self();
-        $instance->merchant_uid = $merchant_uid;
-        $instance->isCollection = true;
-        $instance->isPaged      = true;
+        $instance                = new self();
+        $instance->merchant_uid  = $merchant_uid;
+        $instance->isCollection  = true;
+        $instance->isPaged       = true;
         $instance->responseClass = Response\Payment::class;
-        $instance->instanceType = 'listMerchantUid';
+        $instance->instanceType  = 'listMerchantUid';
 
         return $instance;
     }
@@ -119,7 +119,7 @@ class Payment extends RequestBase
     public static function list(array $imp_uids)
     {
         $instance                = new self();
-        $instance->arrayImpUid   = $imp_uids;
+        $instance->imp_uids      = $imp_uids;
         $instance->isCollection  = true;
         $instance->responseClass = Response\Payment::class;
         $instance->instanceType  = 'list';
@@ -246,7 +246,7 @@ class Payment extends RequestBase
             case 'list':
                 return [
                     'query' => [
-                        'imp_uid' => $this->arrayImpUid,
+                        'imp_uid' => $this->imp_uids,
                     ],
                 ];
                 break;

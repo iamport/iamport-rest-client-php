@@ -233,7 +233,6 @@ class Payment
      */
     public function __construct(array $response)
     {
-
         $this->imp_uid                  = $response['imp_uid'];
         $this->merchant_uid             = $response['merchant_uid'];
         $this->pay_method               = $response['pay_method'];
@@ -275,10 +274,22 @@ class Payment
         $this->cancel_reason            = $response['cancel_reason'];
         $this->receipt_url              = $response['receipt_url'];
         $this->cancel_receipt_urls      = $response['cancel_receipt_urls'];
-        $this->cash_receipt_issued      = $response['cash_receipt_issued'];
-        foreach ($response['cancel_history'] as $item) {
-            $this->cancel_history[] = new PaymentCancel($item);
-        };
+
+        if (!is_null($response['cancel_history'])) {
+            foreach ($response['cancel_history'] as $item) {
+                $this->cancel_history[] = new PaymentCancel($item);
+            }
+        } else {
+            $this->cancel_history = [];
+        }
+
+        if (!is_null($response['cash_receipt_issued'])) {
+            foreach ($response['cash_receipt_issued'] as $item) {
+                $this->cash_receipt_issued[] = $item;
+            }
+        } else {
+            $this->cash_receipt_issued = [];
+        }
     }
 
     /**

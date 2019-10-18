@@ -2,11 +2,19 @@
 
 namespace Iamport\RestClient\Response;
 
+use Iamport\RestClient\Request\RequestBase;
+use Iamport\RestClient\Response\Naver\NaverProductOrder;
+
 /**
  * Class Collection.
  */
 class Collection
 {
+    /**
+     * @var RequestBase
+     */
+    protected $request;
+
     /**
      * @var mixed
      */
@@ -28,15 +36,24 @@ class Collection
     protected $items;
 
     /**
+     * @var array
+     */
+    protected $failed;
+
+    /**
      * Collection constructor.
      *
-     * @param array  $response
-     * @param string $responseClass
-     * @param bool   $isPaged
+     * @param array       $response
+     * @param RequestBase $request
+     * @param bool        $isMultiStatus
      */
-    public function __construct(array $response, string $responseClass, bool $isPaged)
+    public function __construct(array $response, RequestBase $request, bool $isMultiStatus)
     {
         $this->items   = [];
+        $this->request = $request;
+
+        $responseClass = $this->request->responseClass;
+        $isPaged       = $this->request->isPaged;
 
         if ($isPaged) {
             $collection     = $response['list'];
@@ -45,7 +62,20 @@ class Collection
             $this->next     = $response['next'];
         } else {
             $collection = $response;
-            unset($this->total, $this->previous, $this->next);
+            unset($this->total, $this->previous, $this->next, $this->request);
+        }
+
+        if ($isMultiStatus) {
+            $diffColumn = 'imp_uid';
+            if ($request->responseClass === Payment::class) {
+                $diffColumn = 'imp_uid';
+            } elseif ($request->responseClass === NaverProductOrder::class) {
+                $diffColumn = 'product_order_id';
+            }
+            $imp_uid      = array_column($collection, $diffColumn);
+            $this->failed = array_values(array_diff($request->imp_uids, $imp_uid));
+        } else {
+            unset($this->failed);
         }
 
         foreach ($collection as $item) {
@@ -94,22 +124,21 @@ class Collection
     public function __call($method, $args)
     {
         $iamport = $args[0];
-        $request = $args[1];
 
         if ($method === 'previous' && isset($this->previous)) {
             if ($this->getPrevious() === 0) {
                 return null;
             }
-            $request->page = $this->getPrevious();
+            $this->request->page = $this->getPrevious();
         }
 
         if ($method === 'next' && isset($this->next)) {
             if ($this->getNext() === 0) {
                 return null;
             }
-            $request->page = $this->getNext();
+            $this->request->page = $this->getNext();
         }
 
-        return ($iamport->callApi($request))->getData();
+        return ($iamport->callApi($this->request))->getData();
     }
 }
