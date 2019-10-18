@@ -134,6 +134,7 @@ class Vbank extends RequestBase
      */
     public static function store(string $merchantUid, int $amount, string $vbankCode, string $vbankDue, string $vbankHolder)
     {
+        date_default_timezone_set('Asia/Seoul');
         $instance                 = new self();
         $instance->merchant_uid   = $merchantUid;
         $instance->amount         = $amount;
@@ -258,6 +259,7 @@ class Vbank extends RequestBase
      */
     public function setVbankDue(string $vbank_due): void
     {
+        date_default_timezone_set('Asia/Seoul');
         $this->vbank_due = strtotime(date($vbank_due));
     }
 

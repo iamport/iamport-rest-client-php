@@ -96,6 +96,7 @@ class NaverInquiry extends RequestBase
      */
     public static function reviews(string $from, string $to, string $reviewType)
     {
+        date_default_timezone_set('Asia/Seoul');
         $instance                = new self();
         $instance->from          = strtotime(date($from));
         $instance->to            = strtotime(date($to));

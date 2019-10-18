@@ -89,6 +89,7 @@ class NaverOrder extends RequestBase
      */
     public static function ship(string $imp_uid, string $delivery_method, string $dispatched_at)
     {
+        date_default_timezone_set('Asia/Seoul');
         $instance                   = new self();
         $instance->imp_uid          = $imp_uid;
         $instance->delivery_method  = $delivery_method;
