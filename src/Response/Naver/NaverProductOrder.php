@@ -2,13 +2,13 @@
 
 namespace Iamport\RestClient\Response\Naver;
 
-use Iamport\RestClient\Enum\Naver\NaverClaimAdminCancel;
-use Iamport\RestClient\Enum\Naver\NaverClaimCancel;
-use Iamport\RestClient\Enum\Naver\NaverClaimExchange;
-use Iamport\RestClient\Enum\Naver\NaverClaimPurchaseDecisionHoldback;
-use Iamport\RestClient\Enum\Naver\NaverClaimReturn;
-use Iamport\RestClient\Enum\Naver\NaverClaimType;
-use Iamport\RestClient\Enum\Naver\NaverOrderStatus;
+use Iamport\RestClient\Enum\Naver\ClaimAdminCancel;
+use Iamport\RestClient\Enum\Naver\ClaimCancel;
+use Iamport\RestClient\Enum\Naver\ClaimExchange;
+use Iamport\RestClient\Enum\Naver\ClaimPurchaseDecisionHoldback;
+use Iamport\RestClient\Enum\Naver\ClaimReturn;
+use Iamport\RestClient\Enum\Naver\ClaimType;
+use Iamport\RestClient\Enum\Naver\OrderStatus;
 use Iamport\RestClient\Response\ResponseTrait;
 
 /**
@@ -136,7 +136,7 @@ class NaverProductOrder
      */
     public function getProductOrderStatus(): string
     {
-        return NaverOrderStatus::getDescription($this->product_order_status);
+        return OrderStatus::getDescription($this->product_order_status);
     }
 
     /**
@@ -144,7 +144,7 @@ class NaverProductOrder
      */
     public function getClaimType(): string
     {
-        return NaverClaimType::getDescription($this->claim_type);
+        return ClaimType::getDescription($this->claim_type);
     }
 
     /**
@@ -153,16 +153,16 @@ class NaverProductOrder
     public function getClaimStatus(): string
     {
         switch ($this->claim_type) {
-            case NaverClaimType::CANCEL:
-                return NaverClaimCancel::getDescription($this->claim_status);
-            case NaverClaimType::RETURN:
-                return NaverClaimReturn::getDescription($this->claim_status);
-            case NaverClaimType::EXCHANGE:
-                return NaverClaimExchange::getDescription($this->claim_status);
-            case NaverClaimType::PURCHASE_DECISION_HOLDBACK:
-                return NaverClaimPurchaseDecisionHoldback::getDescription($this->claim_status);
-            case NaverClaimType::ADMIN_CANCEL:
-                return NaverClaimAdminCancel::getDescription($this->claim_status);
+            case ClaimType::CANCEL:
+                return ClaimCancel::getDescription($this->claim_status);
+            case ClaimType::RETURN:
+                return ClaimReturn::getDescription($this->claim_status);
+            case ClaimType::EXCHANGE:
+                return ClaimExchange::getDescription($this->claim_status);
+            case ClaimType::PURCHASE_DECISION_HOLDBACK:
+                return ClaimPurchaseDecisionHoldback::getDescription($this->claim_status);
+            case ClaimType::ADMIN_CANCEL:
+                return ClaimAdminCancel::getDescription($this->claim_status);
             default:
                 return null;
         }

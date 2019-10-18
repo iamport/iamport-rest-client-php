@@ -3,15 +3,15 @@
 namespace Iamport\RestClient\Request\Naver;
 
 use Iamport\RestClient\Enum\Endpoint;
-use Iamport\RestClient\Enum\Naver\NaverCancelReason;
-use Iamport\RestClient\Enum\Naver\NaverDeliveryCompany;
-use Iamport\RestClient\Enum\Naver\NaverDeliveryMethod;
+use Iamport\RestClient\Enum\Naver\CancelReason;
+use Iamport\RestClient\Enum\Naver\DeliveryCompany;
+use Iamport\RestClient\Enum\Naver\DeliveryMethod;
 use Iamport\RestClient\Request\RequestBase;
 use Iamport\RestClient\Request\RequestTrait;
 use Iamport\RestClient\Response\Naver\NaverProductOrder;
 
 /**
- * Class NaverRequestReturn.
+ * Class NaverReturn.
  *
  * @property string $imp_uid
  * @property array  $product_order_id
@@ -38,12 +38,12 @@ class NaverOrder extends RequestBase
     /**
      * @var string 취소 사유 코드
      */
-    protected $reason = NaverCancelReason::PRODUCT_UNSATISFIED;
+    protected $reason = CancelReason::PRODUCT_UNSATISFIED;
 
     /**
      * @var string 배송방법 코드
      */
-    protected $delivery_method = NaverDeliveryMethod::DELIVERY;
+    protected $delivery_method = DeliveryMethod::DELIVERY;
 
     /**
      * @var string 발송일 unix timestamp
@@ -184,16 +184,16 @@ class NaverOrder extends RequestBase
         switch ($this->instanceType) {
             case 'ship':
             case 'exchange':
-                if (!NaverDeliveryMethod::validation($this->delivery_method)) {
+                if (!DeliveryMethod::validation($this->delivery_method)) {
                     return false;
                 }
 
-                if ($this->delivery_method === NaverDeliveryMethod::DELIVERY) {
+                if ($this->delivery_method === DeliveryMethod::DELIVERY) {
                     if (is_null($this->delivery_company) || is_null($this->tracking_number)) {
                         return false;
                     }
 
-                    if (!NaverDeliveryCompany::validation($this->delivery_company)) {
+                    if (!DeliveryCompany::validation($this->delivery_company)) {
                         return false;
                     }
 

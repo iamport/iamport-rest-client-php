@@ -16,7 +16,7 @@ use Iamport\RestClient\Response\Naver\NaverReview;
  * @property string $product_order_id
  * @property string $from
  * @property string $to
- * @property string $review_type general, premium
+ * @property string $review_type      [general, premium]
  */
 class NaverInquiry extends RequestBase
 {
@@ -60,6 +60,8 @@ class NaverInquiry extends RequestBase
         $instance->imp_uid       = $impUid;
         $instance->isCollection  = true;
         $instance->responseClass = NaverProductOrder::class;
+        $instance->instanceType  = 'list';
+        $instance->unsetArray(['project_order_id', 'from', 'to', 'review_type']);
 
         return $instance;
     }
@@ -76,29 +78,15 @@ class NaverInquiry extends RequestBase
         $instance                   = new self();
         $instance->product_order_id = $productOrderId;
         $instance->responseClass    = NaverProductOrder::class;
-
-        return $instance;
-    }
-
-    /**
-     * 네이버페이 현금영수증 발급가능 금액 조회 API
-     *
-     * @param string $impUid
-     *
-     * @return NaverInquiry
-     */
-    public static function cashReceipt(string $impUid)
-    {
-        $instance                = new self();
-        $instance->imp_uid       = $impUid;
-        $instance->responseClass = NaverCashAmount::class;
+        $instance->instanceType     = 'single';
+        $instance->unsetArray(['imp_uid', 'from', 'to', 'review_type']);
 
         return $instance;
     }
 
     /**
      * 네이버페이 구매평 조회 API
-     * TODO: 로컬 api 서버에서 Internal Server Error 던져주는데 실제 api.iamport.kr 혹은fake 데이터 생기면 테스트 요망
+     * TODO: 로컬 api 서버에서 Internal Server Error 던져주는데 실제 api.iamport.kr 혹은fake 데이터 생기면 테스트 요망.
      *
      * @param string $from
      * @param string $to
@@ -113,6 +101,26 @@ class NaverInquiry extends RequestBase
         $instance->to            = strtotime(date($to));
         $instance->review_type   = $reviewType;
         $instance->responseClass = NaverReview::class;
+        $instance->instanceType  = 'reviews';
+        $instance->unsetArray(['imp_uid', 'product_order_id']);
+
+        return $instance;
+    }
+
+    /**
+     * 네이버페이 현금영수증 발급가능 금액 조회 API.
+     *
+     * @param string $impUid
+     *
+     * @return NaverInquiry
+     */
+    public static function cashReceipt(string $impUid)
+    {
+        $instance                = new self();
+        $instance->imp_uid       = $impUid;
+        $instance->responseClass = NaverCashAmount::class;
+        $instance->instanceType  = 'cashReceipt';
+        $instance->unsetArray(['product_order_id', 'from', 'to', 'review_type']);
 
         return $instance;
     }
@@ -150,16 +158,19 @@ class NaverInquiry extends RequestBase
      */
     public function path(): string
     {
-        if ($this->responseClass === NaverProductOrder::class) {
-            if ($this->isCollection) {
+        switch ($this->instanceType) {
+            case 'list':
                 return Endpoint::PAYMENTS . $this->imp_uid . Endpoint::NAVER_PRODUCT_ORDERS;
-            } else {
+                break;
+            case 'single':
                 return Endpoint::NAVER_PRODUCT_ORDERS . '/' . $this->product_order_id;
-            }
-        } elseif ($this->responseClass === NaverReview::class) {
-            return Endpoint::NAVER_REVIEWS;
-        } elseif ($this->responseClass === NaverCashAmount::class) {
-            return Endpoint::PAYMENTS . $this->imp_uid . Endpoint::NAVER_CASH_AMOUNT;
+                break;
+            case 'reviews':
+                return Endpoint::NAVER_REVIEWS;
+                break;
+            case 'cashReceipt':
+                return Endpoint::PAYMENTS . $this->imp_uid . Endpoint::NAVER_CASH_AMOUNT;
+                break;
         }
     }
 
@@ -168,7 +179,7 @@ class NaverInquiry extends RequestBase
      */
     public function attributes(): array
     {
-        if ($this->responseClass === NaverReview::class) {
+        if ($this->instanceType === 'reviews') {
             return [
                 'query' => [
                     'from'        => $this->from,
