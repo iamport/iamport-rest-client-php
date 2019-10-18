@@ -2,8 +2,6 @@
 
 namespace Iamport\RestClient\Response;
 
-use Iamport\RestClient\Request\PaymentCancel;
-
 /**
  * Class Payment.
  */

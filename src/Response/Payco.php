@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Iamport\RestClient\Response;
 
 use Iamport\RestClient\Enum\PaycoStatus;
@@ -34,5 +33,4 @@ class Payco
     {
         return PaycoStatus::getDescription($this->status);
     }
-
 }

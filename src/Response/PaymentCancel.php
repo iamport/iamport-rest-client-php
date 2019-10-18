@@ -1,8 +1,6 @@
 <?php
 
-namespace Iamport\RestClient\Request;
-
-use Iamport\RestClient\Response\ResponseTrait;
+namespace Iamport\RestClient\Response;
 
 /**
  * Class PaymentCancel.
@@ -89,5 +87,4 @@ class PaymentCancel
     {
         return $this->receipt_url;
     }
-
 }
