@@ -3,16 +3,16 @@
 namespace Iamport\RestClient\Response;
 
 /**
- * Class Receipt.
+ * Class ExternalReceipt.
  */
-class Receipt
+class ExternalReceipt
 {
     use ResponseTrait;
 
     /**
      * @var string
      */
-    protected $imp_uid;
+    protected $merchant_uid;
 
     /**
      * @var string
@@ -25,7 +25,7 @@ class Receipt
     protected $apply_num;
 
     /**
-     * @var string
+     * @var string [person, company]
      */
     protected $type;
 
@@ -61,23 +61,23 @@ class Receipt
      */
     public function __construct(array $response)
     {
-        $this->imp_uid      = $response['imp_uid'];
-        $this->receipt_tid  = $response['receipt_tid'];
-        $this->apply_num    = $response['apply_num'];
-        $this->type         = $response['type'];
-        $this->amount       = $response['amount'];
-        $this->vat          = $response['vat'];
-        $this->receipt_url  = $response['receipt_url'];
-        $this->applied_at   = $response['applied_at'];
-        $this->cancelled_at = $response['cancelled_at'];
+        $this->merchant_uid      = $response['merchant_uid'];
+        $this->receipt_tid       = $response['receipt_tid'];
+        $this->apply_num         = $response['apply_num'];
+        $this->type              = $response['type'];
+        $this->amount            = $response['amount'];
+        $this->vat               = $response['vat'];
+        $this->receipt_url       = $response['receipt_url'];
+        $this->applied_at        = $response['applied_at'];
+        $this->cancelled_at      = $response['cancelled_at'];
     }
 
     /**
      * @return string
      */
-    public function getImpUid(): string
+    public function getMerchantUid(): string
     {
-        return $this->imp_uid;
+        return $this->merchant_uid;
     }
 
     /**
