@@ -138,7 +138,7 @@ class Vbank extends RequestBase
         $instance                 = new self();
         $instance->merchant_uid   = $merchantUid;
         $instance->amount         = $amount;
-        if (!in_array($vbankCode, VbankCode::getAll())) {
+        if (VbankCode::validation($vbankCode)) {
             throw new InvalidArgumentException(
                 '허용되지 않는 은행코드 입니다. ( VbankCode::getAll()로 허용 가능한 값을 확인해주세요. )'
             );
@@ -209,9 +209,9 @@ class Vbank extends RequestBase
     public static function view(string $bankCode, string $bankNum)
     {
         $instance                     = new self();
-        if (!in_array($bankCode, BankCode::getAll())) {
+        if (BankCode::validation($bankCode)) {
             throw new InvalidArgumentException(
-                '올바르지 않는 은행코드 입니다. ( BankCode::getAll()로 허용 가능한 값을 확인해주세요. )'
+                '허용되지 않는 은행코드 입니다. ( BankCode::getAll()로 허용 가능한 값을 확인해주세요. )'
             );
         }
         $instance->bank_code          = $bankCode;

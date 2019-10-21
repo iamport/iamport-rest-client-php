@@ -80,7 +80,7 @@ class NaverReturn extends RequestBase
     {
         $instance          = new self();
         $instance->imp_uid = $imp_uid;
-        if (!in_array($delivery_method, ReturnDeliveryMethod::getAll())) {
+        if (ReturnDeliveryMethod::validation($delivery_method)) {
             throw new InvalidArgumentException(
                 '허용되지 않는 delivery_method 값 입니다. ( ReturnDeliveryMethod::getAll()로 허용 가능한 값을 확인해주세요. )'
             );
@@ -237,7 +237,7 @@ class NaverReturn extends RequestBase
                     if (is_null($this->delivery_company) || $this->delivery_company === '') {
                         return false;
                     } else {
-                        if (!in_array($this->delivery_company, DeliveryCompany::getAll())) {
+                        if (DeliveryCompany::validation($this->delivery_company)) {
                             return false;
                         }
                     }
@@ -246,13 +246,13 @@ class NaverReturn extends RequestBase
                     }
                     return true;
                 }
-                if (!in_array($this->reason, ReturnReason::getAll())) {
+                if (ReturnReason::validation($this->reason)) {
                     return false;
                 }
                 return true;
                 break;
             case 'withhold':
-                if (!in_array($this->reason, RejectHoldReason::getAll())) {
+                if (RejectHoldReason::validation($this->reason)) {
                     return false;
                 }
                 break;
