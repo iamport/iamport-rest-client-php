@@ -66,14 +66,7 @@ class Collection
         }
 
         if ($isMultiStatus) {
-            $diffColumn = 'imp_uid';
-            if ($request->responseClass === Payment::class) {
-                $diffColumn = 'imp_uid';
-            } elseif ($request->responseClass === NaverProductOrder::class) {
-                $diffColumn = 'product_order_id';
-            }
-            $imp_uid      = array_column($collection, $diffColumn);
-            $this->failed = array_values(array_diff($request->imp_uids, $imp_uid));
+            $this->setFailed($request, $collection);
         } else {
             unset($this->failed);
         }
@@ -113,6 +106,28 @@ class Collection
     public function getItems()
     {
         return $this->items;
+    }
+
+    /**
+     * @param RequestBase $request
+     * @param array $collection
+     */
+    public function setFailed(RequestBase $request, array $collection): void
+    {
+        $diffColumn    = 'imp_uid';
+        $originKeyName = '';
+        if ($request->responseClass === Payment::class) {
+            $diffColumn    = 'imp_uid';
+            $originKeyName = $diffColumn . 's';
+        } elseif ($request->responseClass === SubscribeCustomer::class) {
+            $diffColumn    = 'customer_uid';
+            $originKeyName = $diffColumn . 's';
+        } elseif ($request->responseClass === NaverProductOrder::class) {
+            $originKeyName = $diffColumn = 'product_order_id';
+        }
+
+        $diffArray      = array_column($collection, $diffColumn);
+        $this->failed   = array_values(array_diff($request->{$originKeyName}, $diffArray));
     }
 
     /**

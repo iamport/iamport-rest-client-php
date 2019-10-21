@@ -71,6 +71,7 @@ class NaverOrder extends RequestBase
     {
         $instance                = new self();
         $instance->imp_uid       = $impUid;
+        $instance->isCollection  = true;
         $instance->responseClass = NaverProductOrder::class;
         $instance->instanceType  = 'cancel';
         $instance->unsetArray(['delivery_method', 'dispatched_at', 'delivery_company', 'tracking_number']);
@@ -94,6 +95,7 @@ class NaverOrder extends RequestBase
         $instance->imp_uid          = $imp_uid;
         $instance->delivery_method  = $delivery_method;
         $instance->dispatched_at    = strtotime(date($dispatched_at));
+        $instance->isCollection     = true;
         $instance->responseClass    = NaverProductOrder::class;
         $instance->instanceType     = 'ship';
         unset($instance->reason);
@@ -109,13 +111,14 @@ class NaverOrder extends RequestBase
      *
      * @return NaverOrder
      */
-    public static function exchange(string $imp_uid, string $delivery_method)
+    public static function shipExchange(string $imp_uid, string $delivery_method)
     {
         $instance                   = new self();
         $instance->imp_uid          = $imp_uid;
         $instance->delivery_method  = $delivery_method;
+        $instance->isCollection     = true;
         $instance->responseClass    = NaverProductOrder::class;
-        $instance->instanceType     = 'exchange';
+        $instance->instanceType     = 'shipExchange';
         unset($instance->reason, $instance->dispatched_at);
 
         return $instance;
@@ -125,6 +128,7 @@ class NaverOrder extends RequestBase
     {
         $instance                   = new self();
         $instance->imp_uid          = $imp_uid;
+        $instance->isCollection     = true;
         $instance->responseClass    = NaverProductOrder::class;
         $instance->instanceType     = 'place';
         $instance->unsetArray(['reason', 'delivery_method', 'dispatched_at', 'delivery_company', 'tracking_number']);
@@ -184,7 +188,7 @@ class NaverOrder extends RequestBase
     {
         switch ($this->instanceType) {
             case 'ship':
-            case 'exchange':
+            case 'shipExchange':
                 if (!DeliveryMethod::validation($this->delivery_method)) {
                     return false;
                 }
@@ -232,7 +236,7 @@ class NaverOrder extends RequestBase
             case 'ship':
                 return Endpoint::PAYMENTS . $this->imp_uid . Endpoint::NAVER_SHIP;
                 break;
-            case 'exchange':
+            case 'shipExchange':
                 return Endpoint::PAYMENTS . $this->imp_uid . Endpoint::NAVER_SHIP_EXCHANGED;
                 break;
             case 'place':

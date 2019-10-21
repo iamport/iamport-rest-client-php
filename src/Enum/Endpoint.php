@@ -26,7 +26,7 @@ class Endpoint extends Enum
     public const SBCR_PAYMENTS_AGAIN      = '/subscribe/payments/again/';
     public const SBCR_PAYMENTS_SCHEDULE   = '/subscribe/payments/schedule/';
     public const SBCR_PAYMENTS_UNSCHEDULE = '/subscribe/payments/unschedule/';
-    public const SBCR_CUSTOMERS           = '/subscribe/customers/';
+    public const SBCR_CUSTOMERS           = '/subscribe/customers';
     public const RECEIPT                  = '/receipts/';
     public const RECEIPT_EXTERNAL         = '/receipts/external/';
     public const VBANKS                   = '/vbanks';

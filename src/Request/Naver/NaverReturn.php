@@ -82,7 +82,7 @@ class NaverReturn extends RequestBase
         $instance->imp_uid = $imp_uid;
         if (!in_array($delivery_method, ReturnDeliveryMethod::getAll())) {
             throw new InvalidArgumentException(
-                '허용되지 않는 delivery_method 값 입니로다. ( ReturnDeliveryMethod::getAll()로 허용 가능한 값을 확인해주세요. )'
+                '허용되지 않는 delivery_method 값 입니다. ( ReturnDeliveryMethod::getAll()로 허용 가능한 값을 확인해주세요. )'
             );
         }
         $instance->delivery_method = $delivery_method;
@@ -171,7 +171,9 @@ class NaverReturn extends RequestBase
         $instance->isCollection    = true;
         $instance->responseClass   = NaverProductOrder::class;
         $instance->instanceType    = 'resolve';
-        $instance->unsetArray(['reason', 'delivery_method', 'delivery_company', 'tracking_number', 'extra_charge', 'memo']);
+        $instance->unsetArray([
+            'reason', 'delivery_method', 'delivery_company', 'tracking_number', 'extra_charge', 'memo'
+        ]);
 
         return $instance;
     }

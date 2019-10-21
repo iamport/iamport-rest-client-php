@@ -271,7 +271,7 @@ class Payment
         $this->fail_reason              = $response['fail_reason'];
         $this->cancel_reason            = $response['cancel_reason'];
         $this->receipt_url              = $response['receipt_url'];
-        $this->cancel_receipt_urls      = $response['cancel_receipt_urls'];
+        $this->cash_receipt_issued      = $response['cash_receipt_issued'];
 
         if (!is_null($response['cancel_history'])) {
             foreach ($response['cancel_history'] as $item) {
@@ -281,12 +281,12 @@ class Payment
             $this->cancel_history = [];
         }
 
-        if (!is_null($response['cash_receipt_issued'])) {
-            foreach ($response['cash_receipt_issued'] as $item) {
-                $this->cash_receipt_issued[] = $item;
+        if (!is_null($response['cancel_receipt_urls'])) {
+            foreach ($response['cancel_receipt_urls'] as $item) {
+                $this->cancel_receipt_urls[] = $item;
             }
         } else {
-            $this->cash_receipt_issued = [];
+            $this->cancel_receipt_urls = [];
         }
     }
 

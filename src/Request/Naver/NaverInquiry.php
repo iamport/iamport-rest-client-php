@@ -8,6 +8,7 @@ use Iamport\RestClient\Request\RequestTrait;
 use Iamport\RestClient\Response\Naver\NaverCashAmount;
 use Iamport\RestClient\Response\Naver\NaverProductOrder;
 use Iamport\RestClient\Response\Naver\NaverReview;
+use InvalidArgumentException;
 
 /**
  * Class NaverInquiry.
@@ -90,7 +91,7 @@ class NaverInquiry extends RequestBase
      *
      * @param string $from
      * @param string $to
-     * @param string $reviewType
+     * @param string $reviewType [ general, premium ]
      *
      * @return NaverInquiry
      */
@@ -100,7 +101,13 @@ class NaverInquiry extends RequestBase
         $instance                = new self();
         $instance->from          = strtotime(date($from));
         $instance->to            = strtotime(date($to));
+        if (!in_array($reviewType, ['general', 'premium'])) {
+            throw new InvalidArgumentException(
+                '허용되지 않는 reviewType 값 입니다. [ general(일반구매평) 혹은 premium(프리미엄 구매평)만 가능합니다. ]'
+            );
+        }
         $instance->review_type   = $reviewType;
+        $instance->isCollection  = true;
         $instance->responseClass = NaverReview::class;
         $instance->instanceType  = 'reviews';
         $instance->unsetArray(['imp_uid', 'product_order_id']);

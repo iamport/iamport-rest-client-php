@@ -33,6 +33,11 @@ class SubscribeCustomer extends RequestBase
     private $verb;
 
     /**
+     * @var array 구매자 고유 번호목록
+     */
+    public $customer_uids = [];
+
+    /**
      * @var string 구매자 고유 번호
      */
     protected $customer_uid;
@@ -92,13 +97,10 @@ class SubscribeCustomer extends RequestBase
      */
     public function __construct()
     {
-        $this->responseClass = SubscribeCustomer::class;
     }
 
     /**
-     * SubscribeCustomer GET constructor.
      * 비인증결제 빌링키 조회.
-     * [GET] /subscribe/customers/{$customerUid}.
      *
      * @param string $customer_uid
      *
@@ -106,17 +108,17 @@ class SubscribeCustomer extends RequestBase
      */
     public static function view(string $customer_uid)
     {
-        $instance               = new self();
-        $instance->customer_uid = $customer_uid;
-        $instance->verb         = 'GET';
+        $instance                = new self();
+        $instance->customer_uid  = $customer_uid;
+        $instance->responseClass = Response\SubscribeCustomer::class;
+        $instance->instanceType  = 'view';
+        $instance->verb          = 'GET';
 
         return $instance;
     }
 
     /**
-     * SubscribeCustomer POST constructor.
      * 비인증결제 빌링키 등록(수정).
-     * [POST] /subscribe/customers/{customer_uid}.
      *
      * @param string   $customer_uid
      * @param CardInfo $cardInfo
@@ -134,15 +136,15 @@ class SubscribeCustomer extends RequestBase
         if (!is_null($cardInfo->pwd_2digit)) {
             $instance->setPwd2digit($cardInfo->pwd_2digit);
         }
-        $instance->verb = 'POST';
+        $instance->responseClass = Response\SubscribeCustomer::class;
+        $instance->instanceType  = 'issue';
+        $instance->verb          = 'POST';
 
         return $instance;
     }
 
     /**
-     * SubscribeCustomer DELETE constructor.
      * 비인증결제 빌링키 삭제.
-     * [DELETE] /subscribe/customers/{$customerUid}.
      *
      * @param string $customer_uid
      *
@@ -150,9 +152,30 @@ class SubscribeCustomer extends RequestBase
      */
     public static function delete(string $customer_uid)
     {
-        $instance               = new self();
-        $instance->customer_uid = $customer_uid;
-        $instance->verb         = 'DELETE';
+        $instance                = new self();
+        $instance->customer_uid  = $customer_uid;
+        $instance->responseClass = Response\SubscribeCustomer::class;
+        $instance->instanceType  = 'delete';
+        $instance->verb          = 'DELETE';
+
+        return $instance;
+    }
+
+    /**
+     * 비인증결제 빌링키 목록조회.
+     *
+     * @param array $customer_uids
+     *
+     * @return SubscribeCustomer
+     */
+    public static function list(array $customer_uids)
+    {
+        $instance                 = new self();
+        $instance->customer_uids  = $customer_uids;
+        $instance->isCollection   = true;
+        $instance->responseClass  = Response\SubscribeCustomer::class;
+        $instance->instanceType   = 'list';
+        $instance->verb           = 'GET';
 
         return $instance;
     }
@@ -255,11 +278,18 @@ class SubscribeCustomer extends RequestBase
      * 구매자의 빌링키 정보 삭제(DB에서 빌링키를 삭제[delete] 합니다)
      * [DELETE] /subscribe/customers/{customer_uid}
      *
+     * 여러 개의 빌링키를 한 번에 조회.
+     * [GET] /subscribe/customers
+     *
      * @return string
      */
     public function path(): string
     {
-        return Endpoint::SBCR_CUSTOMERS . $this->customer_uid;
+        if ($this->instanceType === 'list') {
+            return Endpoint::SBCR_CUSTOMERS;
+        } else {
+            return Endpoint::SBCR_CUSTOMERS . '/' . $this->customer_uid;
+        }
     }
 
     /**
@@ -267,12 +297,25 @@ class SubscribeCustomer extends RequestBase
      */
     public function attributes(): array
     {
-        if ($this->verb === 'POST') {
-            return [
-                'body' => json_encode($this->toArray()),
-            ];
-        } else {
-            return [];
+        switch ($this->instanceType) {
+            case 'view':
+            case 'delete':
+                return  [];
+                break;
+            case 'issue':
+                return [
+                    'body' => json_encode($this->toArray()),
+                ];
+                break;
+            case 'list':
+                return [
+                    'query' => [
+                        'customer_uid' => $this->customer_uids,
+                    ],
+                ];
+                break;
+            default:
+                return [];
         }
     }
 

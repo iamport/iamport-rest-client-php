@@ -4,6 +4,7 @@ namespace Iamport\RestClient\Request;
 
 use Iamport\RestClient\Enum\Endpoint;
 use Iamport\RestClient\Response;
+use Iamport\RestClient\Response\BalanceWrap;
 
 /**
  * Class PaymentTransformer.
@@ -138,7 +139,7 @@ class Payment extends RequestBase
     {
         $instance                = new self();
         $instance->imp_uid       = $imp_uid;
-        $instance->responseClass = Response\BalanceWrap::class;
+        $instance->responseClass = BalanceWrap::class;
         $instance->instanceType  = 'balance';
 
         return $instance;
