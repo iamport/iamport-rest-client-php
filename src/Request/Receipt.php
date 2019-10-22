@@ -211,7 +211,7 @@ class Receipt extends RequestBase
     }
 
     /**
-     * 현금영수증 발급 취소.
+     * 아임포트와 별개로 결제된 현금거래건의 현금영수증 발급 취소.
      *
      * @param string $merchantUid
      *

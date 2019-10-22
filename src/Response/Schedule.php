@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Iamport\RestClient\Response;
-
 
 class Schedule
 {
@@ -14,7 +12,7 @@ class Schedule
     protected $customer_uid;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $merchant_uid;
 
@@ -70,16 +68,16 @@ class Schedule
      */
     public function __construct(array $response)
     {
-        $this->customer_uid = $response['customer_uid'];
-        $this->merchant_uid = $response['merchant_uid'];
-        $this->schedule_at = $response['schedule_at'];
-        $this->amount = $response['amount'];
-        $this->name = $response['name'];
-        $this->buyer_name = $response['buyer_name'];
-        $this->buyer_email = $response['buyer_email'];
-        $this->buyer_tel = $response['buyer_tel'];
-        $this->buyer_addr = $response['buyer_addr'];
-        $this->buyer_postcode = $response['buyer_postcode'];
+        $this->customer_uid    = $response['customer_uid'];
+        $this->merchant_uid    = $response['merchant_uid'];
+        $this->schedule_at     = $response['schedule_at'];
+        $this->amount          = $response['amount'];
+        $this->name            = $response['name'];
+        $this->buyer_name      = $response['buyer_name'];
+        $this->buyer_email     = $response['buyer_email'];
+        $this->buyer_tel       = $response['buyer_tel'];
+        $this->buyer_addr      = $response['buyer_addr'];
+        $this->buyer_postcode  = $response['buyer_postcode'];
         $this->schedule_status = $response['schedule_status'];
     }
 
@@ -170,5 +168,4 @@ class Schedule
     {
         return $this->schedule_status;
     }
-
 }
