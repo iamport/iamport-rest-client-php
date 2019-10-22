@@ -3,18 +3,23 @@
 namespace Iamport\RestClient\Request;
 
 use Iamport\RestClient\Enum\Endpoint;
+use Iamport\RestClient\Enum\PaymentSort;
 use Iamport\RestClient\Response;
 use Iamport\RestClient\Response\BalanceWrap;
+use InvalidArgumentException;
 
 /**
  * Class PaymentTransformer.
  *
  * @property string $imp_uid
- * @property array  $array_imp_uid
+ * @property array  $imp_uids
  * @property string $merchant_uid
  * @property string $payment_status
  * @property string $sorting
  * @property int    $page
+ * @property int    $limit
+ * @property mixed  $from
+ * @property mixed  $to
  */
 class Payment extends RequestBase
 {
@@ -51,6 +56,21 @@ class Payment extends RequestBase
     protected $page = 1;
 
     /**
+     * @var int 한 번에 조회할 결제건수
+     */
+    protected $limit = 20;
+
+    /**
+     * @var mixed 시간별 검색 시작 시각
+     */
+    protected $from;
+
+    /**
+     * @var mixed 시간별 검색 종료 시각
+     */
+    protected $to;
+
+    /**
      * Payment constructor.
      */
     public function __construct()
@@ -58,7 +78,7 @@ class Payment extends RequestBase
     }
 
     /**
-     * 아임포트 고유번호로 인스턴스 생성.
+     * 아임포트 고유번호로 결제내역을 조회.
      *
      * @param string $impUid
      *
@@ -75,7 +95,7 @@ class Payment extends RequestBase
     }
 
     /**
-     * 아임포트 고유번호로 인스턴스 생성.
+     * 가맹점지정 고유번호로 결제내역을 단건 조회 ( 정렬 기준에 따라 가장 첫 번째 건 반환 ).
      *
      * @param string $merchant_uid
      *
@@ -92,7 +112,7 @@ class Payment extends RequestBase
     }
 
     /**
-     * 거래 고유번호로 인스턴스 생성.
+     * 가맹점지정 고유번호로 결제내역을 조회.
      *
      * @param string $merchant_uid
      *
@@ -111,19 +131,19 @@ class Payment extends RequestBase
     }
 
     /**
-     * 아임포트 고유번호 배열로 결제내역을 한 번에 조.
+     * 아임포트 고유번호 배열로 결제내역을 한 번에 조회.
      *
      * @param array $imp_uids
      *
      * @return Payment
      */
-    public static function list(array $imp_uids)
+    public static function listImpUid(array $imp_uids)
     {
         $instance                = new self();
         $instance->imp_uids      = $imp_uids;
         $instance->isCollection  = true;
         $instance->responseClass = Response\Payment::class;
-        $instance->instanceType  = 'list';
+        $instance->instanceType  = 'listImpUid';
 
         return $instance;
     }
@@ -141,6 +161,24 @@ class Payment extends RequestBase
         $instance->imp_uid       = $imp_uid;
         $instance->responseClass = BalanceWrap::class;
         $instance->instanceType  = 'balance';
+
+        return $instance;
+    }
+
+    public static function listStatus(string $payment_status)
+    {
+        $instance                = new self();
+        if (!in_array($payment_status, ['all', 'ready', 'paid', 'cancelled', 'failed'])) {
+            throw new InvalidArgumentException(
+                '$payment_status로 가능한 값은 all, ready, paid, cancelled, failed 입니다. '
+            );
+        }
+        $instance->payment_status = $payment_status;
+        $instance->isCollection   = true;
+        $instance->isPaged        = true;
+        $instance->responseClass  = Response\Payment::class;
+        $instance->instanceType   = 'listStatus';
+        $instance->unsetArray(['imp_uids', 'imp_uid', 'merchant_uid']);
 
         return $instance;
     }
@@ -186,6 +224,46 @@ class Payment extends RequestBase
     }
 
     /**
+     * @param int $limit
+     */
+    public function setLimit(int $limit): void
+    {
+        $this->limit = $limit;
+    }
+
+    /**
+     * @param mixed $from
+     */
+    public function setFrom($from): void
+    {
+        $this->from = strtotime(date($from));
+    }
+
+    /**
+     * @param mixed $to
+     */
+    public function setTo($to): void
+    {
+        $this->to = strtotime(date($to));
+    }
+
+    public function valid(): bool
+    {
+        switch ($this->instanceType) {
+            case 'listStatus':
+                if (PaymentSort::validation($this->sorting)) {
+                    throw new InvalidArgumentException(
+                        '허용되지 않는 sorting 입니다. ( PaymentSort::getAll()로 허용 가능한 값을 확인해주세요. )'
+                    );
+                }
+                break;
+            default:
+                return true;
+        }
+    }
+
+
+    /**
      * imp_uid 로 주문정보 찾기(아임포트에서 생성된 거래고유번호).
      * [GET] /payments/{$impUid}.
      *
@@ -204,8 +282,10 @@ class Payment extends RequestBase
     {
         if ($this->instanceType === 'withImpUid') {
             return Endpoint::PAYMENTS . $this->imp_uid;
-        } elseif ($this->instanceType === 'list') {
+        } elseif ($this->instanceType === 'listImpUid') {
             return Endpoint::PAYMENTS;
+        } elseif ($this->instanceType === 'listStatus') {
+            return Endpoint::PAYMENTS_STATUS . $this->payment_status;
         } elseif ($this->instanceType === 'balance') {
             return Endpoint::PAYMENTS . $this->imp_uid . EndPoint::BALANCE;
         } else {
@@ -244,12 +324,30 @@ class Payment extends RequestBase
                     ],
                 ];
                 break;
-            case 'list':
+            case 'listImpUid':
                 return [
                     'query' => [
                         'imp_uid' => $this->imp_uids,
                     ],
                 ];
+                break;
+            case 'listStatus':
+                $result =  [
+                    'query' => [
+                        'sorting' => $this->sorting,
+                        'page'    => $this->page,
+                        'limit'   => $this->limit,
+                    ],
+                ];
+                if ($this->from !== null) {
+                    $result['query']['from'] = $this->from;
+                }
+
+                if ($this->to !== null) {
+                    $result['query']['to'] = $this->to;
+                }
+
+                return $result;
                 break;
             default:
                 return [];
