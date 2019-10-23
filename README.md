@@ -18,13 +18,12 @@ composer require iamport/rest-client
 
 ### Iamport
 
-- `callApi(Request)` - 성공/실패 여부와 무관하게 일관된 결과를 제공합니다.
+- `callApi(Request)` - 성공/실패 일관된 결과를 제공합니다.
 - `callApiPromise(Request)` - 성공시 promise객체를 반환합니다. 
 - `request(method, uri, attributes, authenticated, $client)` - api 호출 응답을 반환합니다.
 - `requestPromise(method, uri, attributes, authenticated, $client)` - 비동기 호출을 통해 promise 객체를 반환합니다. 
 - `requestAccessToken()` - 액세스 토큰을 발급합니다.
 - `getCustomHttpClient(HandlerStack)` - guzzle 클라이언트의 handler를 직접 생성하고 싶을 경우 호출합니다.
-
 
 ### Requset 
 Request 객체는 `API Endpoint`, `Http verb`, `request(form_data, query_string)` 데이터들이 미리 정의되어 있으며,
@@ -47,9 +46,12 @@ IDE를 사용할 경우 **타입 체크**, **값의 존재 여부**, **자동완
         
 **결제관련 기본 API**
 - Payment
-    - [Payment::getImpUid()](https://api.iamport.kr/#!/payments/getPaymentByImpUid)
-    - [Payment::getMerchantUid()](https://api.iamport.kr/#!/payments/getPaymentByMerchantUid)
+    - [Payment::withImpUid()](https://api.iamport.kr/#!/payments/getPaymentByImpUid)
+    - [Payment::withMerchantUid()](https://api.iamport.kr/#!/payments/getPaymentByMerchantUid)
     - [Payment::listMerchantUid()](https://api.iamport.kr/#!/payments/getAllPaymentsByMerchantUid)
+    - [Payment::listImpUid()](https://api.iamport.kr/#!/payments/getPaymentListByImpUid)
+    - [Payment::balance()](https://api.iamport.kr/#!/payments/balanceByImpUid)
+    - [Payment::listStatus()](https://api.iamport.kr/#!/payments/getPaymentsByStatus)
 - CancelPayment
     - [CancelPayment::withImpUid()](https://api.iamport.kr/#!/payments/cancelPayment)
     - [CancelPayment::withMerchantUid()](https://api.iamport.kr/#!/payments/cancelPayment)
@@ -61,24 +63,84 @@ IDE를 사용할 경우 **타입 체크**, **값의 존재 여부**, **자동완
     - [SubscribeSchedule()](https://api.iamport.kr/#!/subscribe/schedule)
 - SubscribeUnschedule
     - [SubscribeUnschedule()](https://api.iamport.kr/#!/subscribe/unschedule)
+- SubscribeInquiry
+    - [withMerchantUid()](https://api.iamport.kr/#!/subscribe/getScheduleByMid)    
+    - [withCustomerUid()](https://api.iamport.kr/#!/subscribe/findSchedulesByCustomer)    
+
+**결제 사전정보 등록&검증 API**
+- PaymentPrepare
+    - [PaymentPrepare::view()](https://api.iamport.kr/#!/payments.validation/getPaymentPrepareByMerchantUid)
+    - [PaymentPrepare::store()](https://api.iamport.kr/#!/payments.validation/preparePayment)
 
 **비인증 결제 빌링키 관리 API**
 - SubscribeCustomer
     - [SubscribeCustomer::view()](https://api.iamport.kr/#!/subscribe.customer/customer_view)
     - [SubscribeCustomer::issue()](https://api.iamport.kr/#!/subscribe.customer/customer_save)
     - [SubscribeCustomer::delete()](https://api.iamport.kr/#!/subscribe.customer/customer_delete)
+    - [SubscribeCustomer::list()](https://api.iamport.kr/#!/subscribe.customer/customer_view_multiple)
+    - [SubscribeCustomer::payments()](https://api.iamport.kr/#!/subscribe.customer/customer_payments)
+    - [SubscribeCustomer::schedules()](https://api.iamport.kr/#!/subscribe.customer/findSchedulesByCustomer)
+
+**카카오페이 전용 API**
+- Kakaopay
+    - [Kakaopay()](https://api.iamport.kr/#!/kakao/getOrders)
+
+**PAYCO 전용 API**
+- Payco
+    - [Payco()](https://api.iamport.kr/#!/payco/changeOrderStatus)    
+    
+**네이버페이 전용 API**
+- NaverInquiry
+    - [NaverInquiry::single()](https://api.iamport.kr/#!/naver/getProductOrderSingle)
+    - [NaverInquiry::list()](https://api.iamport.kr/#!/naver/getProductOrders)
+    - [NaverInquiry::reviews()](https://api.iamport.kr/#!/naver/getReviews)
+    - [NaverInquiry::cashReceipt()](https://api.iamport.kr/#!/naver/queryCashAmount)
+    
+- NaverOrder
+    - [NaverOrder::cancel()](https://api.iamport.kr/#!/naver/naverCancelProductOrder)
+    - [NaverOrder::ship()](https://api.iamport.kr/#!/naver/naverShipProductOrder)
+    - [NaverOrder::shipExchange()](https://api.iamport.kr/#!/naver/naverShipProductOrder_0)
+    - [NaverOrder::place()](https://api.iamport.kr/#!/naver/naverPlaceProductOrder)
+
+- NaverPayment
+    - [NaverPayment::point()](https://api.iamport.kr/#!/naver/naverDepositPoint)
+    - [NaverPayment::confirm()](https://api.iamport.kr/#!/naver/naverConfirmPayment)
+
+- NaverReturn
+    - [NaverPayment::request()](https://api.iamport.kr/#!/naver/naverRequestReturnProductOrder)
+    - [NaverPayment::approve()](https://api.iamport.kr/#!/naver/naverApproveReturnProductOrder)
+    - [NaverPayment::reject()](https://api.iamport.kr/#!/naver/naverRejectReturnProductOrder)
+    - [NaverPayment::withhold()](https://api.iamport.kr/#!/naver/naverWithholdReturnProductOrder)
+    - [NaverPayment::resolve()](https://api.iamport.kr/#!/naver/naverResolveReturnProductOrder)
 
 **현금영수증 발급/관리 API**
 - Receipt
     - [Receipt::view()](https://api.iamport.kr/#!/receipts/getReceipt)
     - [Receipt::issue()](https://api.iamport.kr/#!/receipts/issueReceipt)
     - [Receipt::cancel()](https://api.iamport.kr/#!/receipts/revokeReceipt)
+    - [Receipt::viewExternal()](https://api.iamport.kr/#!/receipts/getExternalReceipt)
+    - [Receipt::issueExternal()](https://api.iamport.kr/#!/receipts/issueExternalReceipt)
+    - [Receipt::cancelExternal()](https://api.iamport.kr/#!/receipts/revokeExternalReceipt)
+    
+**가상계좌 관리 API**
+- Vbank
+    - [Vbank::view()](https://api.iamport.kr/#!/vbanks/queryBankHolder)
+    - [Vbank::store()](https://api.iamport.kr/#!/vbanks/createVbank)
+    - [Vbank::delete()](https://api.iamport.kr/#!/vbanks/revokeVbank)
+    - [Vbank::edit()](https://api.iamport.kr/#!/vbanks/modifyVbank)
+    
+**카드사/은행정보 API**
+- Code
+    - [Code::cards()](https://api.iamport.kr/#!/codes/allCardCodes)    
+    - [Code::card()](https://api.iamport.kr/#!/codes/cardCodes)    
+    - [Code::banks()](https://api.iamport.kr/#!/codes/allBankCodes)    
+    - [Code::bank()](https://api.iamport.kr/#!/codes/bankCodes)    
 
 ### Result
 
 `callApi()`를 사용할 경우 최종적으로 통신의 성공/실패 유무와 무관하게 아래와 같이 일관된 구조의 `Result` 객체를 반환합니다.
 
-```javascript
+```html
 Result {
     success: 성공/실패유무 (boolean)
     data : 응답 데이터 (Requset 객체)
@@ -117,7 +179,7 @@ Result {
     }
   } 
 }
-``` 
+```
 
 ### Usage
 
@@ -269,10 +331,141 @@ $result = $iamport->request(
 
 ```
 
-
 ## Detail
 
-보다 자세한 예제는 [테스트 코드 - tests/IamportTest.php](tests/IamportTest.php) 혹은 [샘플코드 - example/example.php](tests/IamportTest.php)를 참조해주세요
+### Mutator & Accessor 
+`Requset`와 `Response`객체를 사용할경우 인스턴스 변수에 직접 접근하지 않고
+`Accessor`, `Mutator` 메소드를 통해 값을 가져오거나 설정합니다. 
+이 중 날짜와 배송방법코드, 은행코드 등의 변환이 필요한 값들은 자동으로 변환하여 가져오거나 설정합니다.
+
+#### Mutator
+보통 `Setter`라고도 불리며 `Requset`객체에 값을 설정합니다.
+
+예를 들어 `Payment::list()`의 `from`, `to` 값은 `unix timestamp`로 전달해야 하지만 아래와 같이 `Y-m-d H:i:s` 포맷의 
+문자열로 전달하면 `Payment Requset` 객체의 `Mutator`가 해당값을 `timestamp`로 변환하여 값을 전달합니다.
+```php
+$requset = Payment::list('paid');
+$request->to = '2019-10-23 09:25:00';
+```
+이러한 변경과정을 커스터마이징 하고 싶다면 Requset 객체의 Mutator 메소드를 오버라이드 하여 사용합니다.
+
+#### Accessor
+보통 `Getter`라고도 불리며 `Response` 객체의 값을 가져옵니다.
+`$response->{변수명}`처럼 일반적인 방법으로 값에 접근할 경우 변환된 값이 출력되며,
+원본 값이 필요한 경우에는 `$response->getAttributes({변수명})` 메소드를 사용하면 변환되지 않은 값에 접근 가능합니다.  
+
+```php
+$request = NaverInquiry::single('201901');
+$response = $iamport->callApi($request);
+$data = $response->getData();
+
+# 변환된 값 출력
+echo $data->product_order_status;   // 취소 완료
+echo $data->shipping_due;           // 2018-08-23 23:59:59
+
+# 원본 값 출력   
+echo $data->getAttributes('product_order_status');  // CANCELED_BY_NOPAYMENT
+echo $data->getAttributes('shipping_due');          // 1535036399
+```
+
+### 207 Response
+몇몇 API들은 여러개의 응답결과중 일부만 실패하는 경우 오류가 아닌 207 응답이 발생합니다.
+
+예를 들어 아래와 같이 3건의 결제내역을 요청했을때 1개의 imp_uid 결제내역만 조회에 실패했을 경우
+4xx, 5xx 등의 에러코드가 아닌 성공한 2건의 결제내역만 응답받기 때문에 실패건을 감지하지 못하고 후속처리 과정에서
+실수가 발생할 여지가 있습니다.
+ 
+```php
+Payment:listImpUid([
+    'imp_uid1',     
+    'imp_uid2', 
+    'wrong_imp_uid', // 잘못된 imp_uid
+]);
+
+// API 호출 과정 생략..
+
+// 응답결과
+Collection {
+  items: array:2 [
+    0 => Payment {
+      imp_uid: "imp_uid1"
+      .. 생략
+    }
+    1 => Payment {
+      imp_uid: "imp_uid2"  
+    }
+  ]
+}
+
+```
+
+특히 단순 조회가 아닌 네이버페이의 상품 발송처리와 같은 로직을 실행할경우에 가맹점은 
+실패한건에 대해 재시도를 해야하는 등의 추가처리가 필요합니다.
+
+이러한 과정의 편의를 돕기 위해 `Collection` 객체는 207 응답이 발생하는경우 아래와 같이 실패건에 관한 데이터를 전달하며,
+`Collection`의 `getFailed()` 메소드를 통해 얻을 수 있습니다. 
+
+```php
+Collection {
+  items: array:2 [
+    0 => Payment {
+      imp_uid: "imp_uid1"
+      .. 생략
+    }
+    1 => Payment {
+      imp_uid: "imp_uid2"
+      .. 생략
+    }
+  ],
+  failed: array:1 [
+    0 => "wrong_imp_uid"
+  ]
+}
+
+$data = $response->getData();
+
+// 성공한 응답데이터 출력
+echo $data->getItems());
+
+// 실패한 건의 고유 ID 목록
+echo $data->getFailed());
+```
+
+> 207 응답을 지원하는 Response 목록과 실패시 돌려주는 고유값은 다음과 같습니다.
+
+- Payment : imp_uid
+- SubscribeCustomer : customer_uid
+- NaverProductOrder : product_order_id
+ 
+
+### next() & previous()
+
+Paged 형태로 제공되는 `Collection`인 경우 limit값이 존재하여 다른 page를 조회하려면
+page 변수를 새로 할당하여 다시 API 통신을 해야 합니다.
+
+이러한 번거로움을 해결하기 위해 이전, 다음 데이터를 손쉽게 가져올 수 있는 `next()`, `previous()`메소드를 제공합니다.
+이전, 다음 데이터가 존재하지 않을 경우엔 `null`을 반환합니다.
+
+```php
+$iamport = new Iamport($impKey, $impSecret);
+
+$request = Payment::listMerchantUid('merchant_uid');
+$response = $iamport->callApi($request);
+$data = $response->getData();
+
+// 다른 page 데이터 조회
+$request->page = 2
+$response = $iamport->callApi($request);
+$nextData = $response->getData();
+
+// next(), previous()를 이용한 조회
+$previousData = $data->previous($iamport);
+$nextData = $data->next($iamport);
+```
+
+## Example
+
+보다 자세한 예제는 [테스트 코드 - tests/IamportTest.php](tests/IamportTest.php) 혹은 [샘플코드](example)를 참조해주세요
 
 ## Links
 - [아임포트 API](https://api.iamport.kr)

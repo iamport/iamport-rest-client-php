@@ -7,6 +7,9 @@ use Iamport\RestClient\Response\Naver\NaverProductOrder;
 
 /**
  * Class Collection.
+ *
+ * @method next
+ * @method previous
  */
 class Collection
 {
@@ -109,8 +112,16 @@ class Collection
     }
 
     /**
+     * @return array
+     */
+    public function getFailed()
+    {
+        return $this->failed;
+    }
+
+    /**
      * @param RequestBase $request
-     * @param array $collection
+     * @param array       $collection
      */
     public function setFailed(RequestBase $request, array $collection): void
     {
@@ -138,22 +149,24 @@ class Collection
      */
     public function __call($method, $args)
     {
-        $iamport = $args[0];
+        if (in_array($method, ['previous', 'next'])) {
+            $iamport = $args[0];
 
-        if ($method === 'previous' && isset($this->previous)) {
-            if ($this->getPrevious() === 0) {
-                return null;
+            if ($method === 'previous' && isset($this->previous)) {
+                if ($this->getPrevious() === 0) {
+                    return null;
+                }
+                $this->request->page = $this->getPrevious();
             }
-            $this->request->page = $this->getPrevious();
-        }
 
-        if ($method === 'next' && isset($this->next)) {
-            if ($this->getNext() === 0) {
-                return null;
+            if ($method === 'next' && isset($this->next)) {
+                if ($this->getNext() === 0) {
+                    return null;
+                }
+                $this->request->page = $this->getNext();
             }
-            $this->request->page = $this->getNext();
-        }
 
-        return ($iamport->callApi($this->request))->getData();
+            return ($iamport->callApi($this->request))->getData();
+        }
     }
 }

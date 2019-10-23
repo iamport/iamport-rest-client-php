@@ -11,7 +11,7 @@ use Iamport\RestClient\Request\RequestTrait;
 use Iamport\RestClient\Response\Naver\NaverProductOrder;
 
 /**
- * Class NaverReturn.
+ * Class NaverOrder.
  *
  * @property string $imp_uid
  * @property array  $product_order_id
