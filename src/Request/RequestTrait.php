@@ -74,7 +74,7 @@ trait RequestTrait
      *
      * @param array $array
      */
-    public function unsetArray(array $array): void
+    private function unsetArray(array $array): void
     {
         for ($i = 0; $i < count($array); ++$i) {
             unset($this->{$array[$i]});

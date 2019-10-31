@@ -2,6 +2,8 @@
 
 namespace Iamport\RestClient\Response;
 
+use GuzzleHttp\Psr7\Request;
+use Iamport\RestClient\Exception\IamportException;
 use Iamport\RestClient\Request\RequestBase;
 use Iamport\RestClient\Response\Naver\NaverProductOrder;
 
@@ -74,8 +76,16 @@ class Collection
             unset($this->failed);
         }
 
-        foreach ($collection as $item) {
-            $this->items[] = (new Item($item, $responseClass))->getClassAs();
+        if (is_null($collection) || empty($collection)) {
+            $iamportResponse = [
+                'code' => 404,
+                'message' => '검색된 데이터가 없습니다.',
+            ];
+            throw new IamportException((object)$iamportResponse, new Request($request->verb(), $request->path()));
+        } else {
+            foreach ($collection as $item) {
+                $this->items[] = (new Item($item, $responseClass))->getClassAs();
+            }
         }
     }
 

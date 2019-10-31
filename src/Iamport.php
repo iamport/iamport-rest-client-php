@@ -65,6 +65,7 @@ class Iamport extends IamportBase
             $parseResponse = $this->request($method, $uri, $attributes, $authenticated, $client);
             $response      = $parseResponse->response;
 
+            // TODO: NaverPayment::point, NaverPayment::confirm String형 데이트 분기처리 필요 (테스트 데이터필요)
             if ($isCollection) {
                 $result = (new Collection($response, $request, $parseResponse->isMultiStatus));
             } else {
