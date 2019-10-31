@@ -7,6 +7,8 @@ namespace Iamport\RestClient\Response;
  */
 class Balance
 {
+    use ResponseTrait;
+
     /**
      * @var int 면세 공급가액 (환불시 마이너스 차감된 최종 금액 반환)
      */

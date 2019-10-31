@@ -260,6 +260,7 @@ class SubscribeCustomer extends RequestBase
         $instance->from           = strtotime(date($from));
         $instance->to             = strtotime(date($to));
         $instance->isCollection   = true;
+        $instance->isPaged        = true;
         $instance->responseClass  = Response\Schedule::class;
         $instance->instanceType   = 'schedules';
         $instance->verb           = 'GET';
@@ -444,14 +445,17 @@ class SubscribeCustomer extends RequestBase
                 ];
                 break;
             case 'schedules':
-                return [
+                $result =  [
                     'query' => [
                         'page'            => $this->page,
                         'from'            => $this->from,
                         'to'              => $this->to,
-                        'schedule-status' => $this->schedule_status,
                     ],
                 ];
+                if ($this->schedule_status !== null) {
+                    $result['query']['schedule-status'] = $this->schedule_status;
+                }
+                return $result;
                 break;
             default:
                 return [];

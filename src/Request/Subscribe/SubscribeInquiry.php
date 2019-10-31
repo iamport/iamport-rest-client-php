@@ -98,6 +98,7 @@ class SubscribeInquiry extends RequestBase
         $instance->to             = strtotime(date($to));
         $instance->responseClass  = Response\Schedule::class;
         $instance->isCollection   = true;
+        $instance->isPaged        = true;
         $instance->instanceType   = 'withCustomerUid';
         unset($instance->merchant_uid);
 
