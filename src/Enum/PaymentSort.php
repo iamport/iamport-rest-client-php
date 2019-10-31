@@ -7,12 +7,12 @@ namespace Iamport\RestClient\Enum;
  */
 class PaymentSort extends Enum
 {
-    public const STARTED_DESC =  'STARTED_DESC';
-    public const STARTED_ASC  =  'STARTED_ASC';
-    public const PAID_DESC    =  'PAID_DESC';
-    public const PAID_ASC     =  'PAID_ASC';
-    public const UPDATED_DESC =  'UPDATED_DESC';
-    public const UPDATED_ASC  =  'UPDATED_ASC';
+    public const STARTED_DESC =  '-started';
+    public const STARTED_ASC  =  'started';
+    public const PAID_DESC    =  '-paid';
+    public const PAID_ASC     =  'paid';
+    public const UPDATED_DESC =  '-updated';
+    public const UPDATED_ASC  =  'updated';
 
     /**
      * Enum의 설명을 가져옵니다.

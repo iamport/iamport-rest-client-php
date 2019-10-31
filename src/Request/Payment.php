@@ -144,6 +144,7 @@ class Payment extends RequestBase
         $instance->isCollection  = true;
         $instance->responseClass = Response\Payment::class;
         $instance->instanceType  = 'listImpUid';
+        $instance->unsetArray(['merchant_uid', 'payment_status', 'sorting', 'page', 'limit', 'from', 'to']);
 
         return $instance;
     }

@@ -87,25 +87,20 @@ class NaverInquiry extends RequestBase
 
     /**
      * 네이버페이 구매평 조회 API
-     * TODO: 로컬 api 서버에서 Internal Server Error 던져주는데 실제 api.iamport.kr 혹은fake 데이터 생기면 테스트 요망.
+     * TODO: 로컬 테스트 서버에서 Internal Server Error 던져주는데 실제 api.iamport.kr 혹은fake 데이터 생기면 테스트 요망.
      *
      * @param string $from
      * @param string $to
-     * @param string $reviewType [ general, premium ]
+     * @param string $reviewType
      *
      * @return NaverInquiry
      */
-    public static function reviews(string $from, string $to, string $reviewType)
+    public static function reviews(string $from, string $to, string $reviewType = 'general')
     {
         date_default_timezone_set('Asia/Seoul');
         $instance                = new self();
         $instance->from          = strtotime(date($from));
         $instance->to            = strtotime(date($to));
-        if (!in_array($reviewType, ['general', 'premium'])) {
-            throw new InvalidArgumentException(
-                '허용되지 않는 reviewType 값 입니다. [ general(일반구매평) 혹은 premium(프리미엄 구매평)만 가능합니다. ]'
-            );
-        }
         $instance->review_type   = $reviewType;
         $instance->isCollection  = true;
         $instance->responseClass = NaverReview::class;
@@ -122,12 +117,12 @@ class NaverInquiry extends RequestBase
      *
      * @return NaverInquiry
      */
-    public static function cashReceipt(string $impUid)
+    public static function cashAmount(string $impUid)
     {
         $instance                = new self();
         $instance->imp_uid       = $impUid;
         $instance->responseClass = NaverCashAmount::class;
-        $instance->instanceType  = 'cashReceipt';
+        $instance->instanceType  = 'cashAmount';
         $instance->unsetArray(['product_order_id', 'from', 'to', 'review_type']);
 
         return $instance;
@@ -147,6 +142,19 @@ class NaverInquiry extends RequestBase
     public function setProductOrderId(string $product_order_id): void
     {
         $this->product_order_id = $product_order_id;
+    }
+
+    /**
+     * @param string $reviewType
+     */
+    public function setReviewType(string $reviewType): void
+    {
+        if (!in_array($reviewType, ['general', 'premium'])) {
+            throw new InvalidArgumentException(
+                '허용되지 않는 reviewType 값 입니다. [ general(일반구매평) 혹은 premium(프리미엄 구매평)만 가능합니다. ]'
+            );
+        }
+        $this->review_type = $reviewType;
     }
 
     /**
@@ -176,7 +184,7 @@ class NaverInquiry extends RequestBase
             case 'reviews':
                 return Endpoint::NAVER_REVIEWS;
                 break;
-            case 'cashReceipt':
+            case 'cashAmount':
                 return Endpoint::PAYMENTS . $this->imp_uid . Endpoint::NAVER_CASH_AMOUNT;
                 break;
         }
