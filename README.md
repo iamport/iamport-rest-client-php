@@ -64,8 +64,8 @@ IDE를 사용할 경우 **타입 체크**, **값의 존재 여부**, **자동완
 - SubscribeUnschedule
     - [SubscribeUnschedule()](https://api.iamport.kr/#!/subscribe/unschedule)
 - SubscribeInquiry
-    - [withMerchantUid()](https://api.iamport.kr/#!/subscribe/getScheduleByMid)    
-    - [withCustomerUid()](https://api.iamport.kr/#!/subscribe/findSchedulesByCustomer)    
+    - [SubscribeInquiry::withMerchantUid()](https://api.iamport.kr/#!/subscribe/getScheduleByMid)    
+    - [SubscribeInquiry::withCustomerUid()](https://api.iamport.kr/#!/subscribe/findSchedulesByCustomer)    
 
 **결제 사전정보 등록&검증 API**
 - PaymentPrepare
@@ -94,7 +94,7 @@ IDE를 사용할 경우 **타입 체크**, **값의 존재 여부**, **자동완
     - [NaverInquiry::single()](https://api.iamport.kr/#!/naver/getProductOrderSingle)
     - [NaverInquiry::list()](https://api.iamport.kr/#!/naver/getProductOrders)
     - [NaverInquiry::reviews()](https://api.iamport.kr/#!/naver/getReviews)
-    - [NaverInquiry::cashReceipt()](https://api.iamport.kr/#!/naver/queryCashAmount)
+    - [NaverInquiry::cashAmount()](https://api.iamport.kr/#!/naver/queryCashAmount)
     
 - NaverOrder
     - [NaverOrder::cancel()](https://api.iamport.kr/#!/naver/naverCancelProductOrder)
@@ -332,6 +332,39 @@ $result = $iamport->request(
 ```
 
 ## Detail
+
+### Enum
+배송방법코드, 택배사코드, 은행코드 등의 값들을 위한 `Enum` 클래스를 제공합니다.
+
+#### Enum 클래스에서 제공하는 메소드
+| method | 설명 |
+|--------|------|
+| `getAll()` | Enum에 정의된 모든 상수의 키와 값을 반환합니다.  |
+| `getValues()` | Enum에 정의된 모든 상수의 값을 반환합니다.   |
+| `getValue($key)` | Enum에 정의된 상수의 값을 키로 조회합니다. |
+| `getKey($value)` | Enum에 정의된 상수의 키를 값으로 조회합니다.  |
+| `getDescription($value)` | Enum에 정의된 값의 설명을 반환합니다.  |
+| `validation($value)` | Enum에 속한 값인지 체크합니다.  |
+
+#### 제공하는 Enum 클래스 목록
+- `BankCode` - 가상계좌 조회시 은행코드(금융결제원 표준코드3자리)
+- `VbankCode` - 가상계좌 발급시 허용가능한 은행코드(금융결제원 표준코드3자리)
+- `PaycoStatus` - Payco 주문상품의 상태 변경시 사용하는 상태
+- `PaymentSort` - 결제내역 조회시 정렬
+- `Naver` - 네이버페이 관련
+    - `CancelReason` - 상품주문들을 환불처리할때 취소사유코드
+    - `OrderStatus` - 상품 주문 상태
+    - `ClaimType` - 상품주문관련 클레임 유형
+    - `ClaimCancel` - 클레임 유형이 **취소**일때의 상태
+    - `ClaimReturn` - 클레임 유형이 **반품**일때의 상태
+    - `ClaimExchange` - 클레임 유형이 **교환**일때의 상태
+    - `ClaimPurchaseDecisionHoldback` - 클레임 유형이 **구매 확정 보류**일때의 상태
+    - `ClaimAdminCancel` - 클레임 유형이 **직권 취소**일때의 상태
+    - `DeliveryMethod` - 배송방법 코드
+    - `DeliveryCompany` - 배송방법코드가 **택배,등기,소포**일때 사용하는 택배사코드
+    - `ReturnDeliveryMethod` - 반품요청시 반품 사유 코드
+    - `ReturnReason` - 반품요청시 반품 배송방법 코드
+    - `RejectHoldReason` - 반품보류처리시 반품 보류 사유 코드
 
 ### Mutator & Accessor 
 `Requset`와 `Response`객체를 사용할경우 인스턴스 변수에 직접 접근하지 않고
