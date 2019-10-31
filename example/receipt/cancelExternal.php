@@ -3,20 +3,20 @@
 require_once '../../vendor/autoload.php';
 
 use Iamport\RestClient\Iamport;
-use Iamport\RestClient\Request\SubscribeCustomer;
+use Iamport\RestClient\Request\Receipt;
 
 $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f');
 
-// 비인증결제 빌링키 조회
-$request = SubscribeCustomer::view('구매자 고유번호(customerUid)');
+// 아임포트와 별개로 거래된 일반 현금결제에 대해서 발행된 현금영수증을 취소하는 API입니다
+$request = Receipt::cancel('취소할 가맹점 주문번호(merchant_uid)');
 $result  = $iamport->callApi($request);
 
 if ($result->getSuccess()) {
     /**
-     *	Response\SubscribeCustomer 를 가리킵니다. __get을 통해 API의 Item Model의 값들을 모두 property처럼 접근할 수 있습니다.
-     *	참고 : https://api.iamport.kr/#!/subscribe.customer/customer_view 의 Response Class Model.
+     *	Response\ExternalReceipt 를 가리킵니다. __get을 통해 API의 Item Model의 값들을 모두 property처럼 접근할 수 있습니다.
+     *	참고 : https://api.iamport.kr/#!/receipts/revokeExternalReceipt 의 Response Class Model.
      */
-    $customer = $result->getData();
+    $receipt = $result->getData();
 } else {
     $error = $result->getError();
     dump("아임포트 API 에러코드 : $error->code");

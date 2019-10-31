@@ -21,7 +21,7 @@ if ($result->getSuccess()) {
     // TODO: 조회한 인증정보에서 고객정보를 추출하여 가맹점 서비스에 필요한 로직을 작성합니다.
 
     // 연령 제한 로직
-    if (date('Y', $certification->birth) <= 1999) {
+    if (date('Y', $certification->getAttributes('birth')) <= 1999) {
         // 연령 만족
     } else {
         // 연령 미달

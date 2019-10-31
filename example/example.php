@@ -7,17 +7,19 @@ use Iamport\RestClient\Iamport;
 use Iamport\RestClient\Request\CancelPayment;
 use Iamport\RestClient\Request\CardInfo;
 use Iamport\RestClient\Request\Certification;
-use Iamport\RestClient\Request\EscrowLogis;
-use Iamport\RestClient\Request\EscrowLogisInvoice;
-use Iamport\RestClient\Request\EscrowLogisPerson;
+use Iamport\RestClient\Request\Escrow\EscrowLogis;
+use Iamport\RestClient\Request\Escrow\EscrowLogisInvoice;
+use Iamport\RestClient\Request\Escrow\EscrowLogisPerson;
+use Iamport\RestClient\Request\Naver\NaverInquiry;
 use Iamport\RestClient\Request\Payment;
 use Iamport\RestClient\Request\Receipt;
-use Iamport\RestClient\Request\Schedule;
-use Iamport\RestClient\Request\SubscribeAgain;
-use Iamport\RestClient\Request\SubscribeCustomer;
-use Iamport\RestClient\Request\SubscribeOnetime;
-use Iamport\RestClient\Request\SubscribeSchedule;
-use Iamport\RestClient\Request\SubscribeUnschedule;
+use Iamport\RestClient\Request\Subscribe\Schedule;
+use Iamport\RestClient\Request\Subscribe\SubscribeAgain;
+use Iamport\RestClient\Request\Subscribe\SubscribeCustomer;
+use Iamport\RestClient\Request\Subscribe\SubscribeInquiry;
+use Iamport\RestClient\Request\Subscribe\SubscribeOnetime;
+use Iamport\RestClient\Request\Subscribe\SubscribeSchedule;
+use Iamport\RestClient\Request\Subscribe\SubscribeUnschedule;
 
 $impKey      = 'imp_apikey';
 $impSecret   = 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f';
@@ -26,6 +28,21 @@ $merchantUid = 'merchant_1448280088556';
 $customerUid = 'customer_1234';
 
 $iamport = new Iamport($impKey, $impSecret);
+
+$request        = Payment::listStatus('all');
+$request->limit = 10;
+$request->from  = '2018-08-16 09:21:32';
+$request->to    = '2018-10-08 14:04:44';
+$request->sorting = 'started';
+
+$rs = $iamport->callApi($request);
+$data = $rs->getData();
+dump($data);
+foreach ($data->getItems() as $payment) {
+
+}
+
+die();
 
 // guzzle client 생성
 $stack   = HandlerStack::create();
@@ -156,8 +173,8 @@ $scheduleData->pwd_2digit  = '00';
 
 // 정기 예약 결제 정보 셋팅 - schedule
 // schedule 객체 생성 ( required )
-$schedule1 = new Schedule('1order_'.time(), time() + 100, 1100);
-$schedule2 = new Schedule('2order_'.time(), time() + 100, 1200);
+$schedule1 = new Schedule('1order_' . time(), time() + 100, 1100);
+$schedule2 = new Schedule('2order_' . time(), time() + 100, 1200);
 
 // 정기 예약 결제 정보 셋팅 - schedule
 // schedule 정보 셋팅 ( optional )

@@ -3,7 +3,8 @@
 require_once '../../vendor/autoload.php';
 
 use Iamport\RestClient\Iamport;
-use Iamport\RestClient\Request\SubscribeAgain;
+use Iamport\RestClient\Request\Subscribe\SubscribeAgain;
+
 
 $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f');
 
@@ -11,11 +12,8 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 $customerUid = filter_input(INPUT_POST, 'customer_uid', FILTER_SANITIZE_STRING);
 $amount      = filter_input(INPUT_POST, 'amount', FILTER_SANITIZE_STRING);
 
-// 저장된 빌링키로 재결제.
-
 // 새로 생성한 결제(재결제)용 주문 번호
 $merchantUid = 'order_monthly_0001';
-
 $request = new SubscribeAgain($customerUid, $merchantUid, $amount, '주문명');
 // 파라메터 목록 참조 :  https://api.iamport.kr/#!/subscribe/again
 $request->tax_free       = 100;

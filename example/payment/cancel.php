@@ -29,9 +29,9 @@ if ($cancelableAmount <= 0) {
 
 // 환불 고유번호(imp_uid 혹은 merchant_uid)로 승인된 결제를 취소 (환불고유번호는 imp_uid가 merchant_uid보다 우선시 됩니다)
 $request = CancelPayment::withImpUid($data['imp_uid']);
+// merchant_uid로 승인된 결제를 취소
 $request = CancelPayment::withMerchantUid($merchant_uid);
 
-// 파라메터 목록 참조 :  https://api.iamport.kr/#!/payments/cancelPayment
 $request->amount         = $cancelRequestAmount;  // 가맹점 클라이언트로부터 받은 환불금액
 $request->tax_free       = $data['tax_free'];
 $request->checksum       = $cancelableAmount;     // [권장] 환불 가능 금액 입력
@@ -42,15 +42,11 @@ $request->refund_account = '환불될 가상계좌 번호';
 $result                  = $iamport->callApi($request);
 
 if ($result->getSuccess()) {
-    /**
-     *	환불결과는 Response\Payment 를 가리킵니다. __get을 통해 API의 Item Model의 값들을 모두 property처럼 접근할 수 있습니다.
-     *	참고 : https://api.iamport.kr/#!/payments/cancelPayment 의 Response Class Model.
-     */
     $payment = $result->getData();
 } else {
     $error = $result->getError();
-    dump("아임포트 API 에러코드 : $error->code");
-    dump("아임포트 API 에러메시지 : $error->message");
+    dump('아임포트 API 에러코드 : ', $error->code);
+    dump('아임포트 API 에러메시지 : ', $error->message);
     // previous에는 에러 추적을 위해 아임포트 API 서버에서 응답하는 에러정보가 아닌 원본 Exception 객체가 담겨있습니다.
-    dump('원본 Exception :', $error->previous);
+    dump($error->previous);
 }

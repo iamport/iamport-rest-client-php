@@ -6,27 +6,17 @@ use Iamport\RestClient\Iamport;
 use Iamport\RestClient\Request\Payment;
 
 $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f');
-$request = Payment::listMerchantUid('검색할 주문 번호(merchant_uid)');
-$request->payment_status = 'paid';
-$request->sorting        = '-started';
-$request->page           = 1;
-$result                  = $iamport->callApi($request);
+$request = Payment::listImpUid(['imps_313576348178']);
+$result  = $iamport->callApi($request);
 
 if ($result->getSuccess()) {
-    $data = $result->getData();
-    $total = $data->getTotal();
-    $nextPage     = $data->getNext();
-    $previousPage = $data->getPrevious();
-    $payments     = $data->getItems();
-
+    $payments = $result->getData()->getItems();
     foreach ($payments as $payment) {
         $paid_at = $payment->paid_at;
         $original_paid_at = $payment->getAttributes('paid_at');
     }
-
-    // 이전, 다음 페이지 Collection 데이터를 가져옵니다.
-    $previousData = $data->previous($iamport);
-    $nextData = $data->next($iamport);
+    //조회에 실패한 결제내역이 존재할 경우 getfailed()를 통해 실패한 건의 imp_uid를 얻을 수 있습니다.
+    $failed = $result->getData()->getFailed();
 } else {
     $error = $result->getError();
     dump('아임포트 API 에러코드 : ', $error->code);

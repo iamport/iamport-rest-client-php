@@ -4,7 +4,7 @@ require_once '../../vendor/autoload.php';
 
 use Iamport\RestClient\Iamport;
 use Iamport\RestClient\Request\CardInfo;
-use Iamport\RestClient\Request\SubscribeOnetime;
+use Iamport\RestClient\Request\Subscribe\SubscribeOnetime;
 
 $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f');
 
@@ -14,8 +14,6 @@ $expiry      = filter_input(INPUT_POST, 'expiry', FILTER_SANITIZE_STRING);
 $birth       = filter_input(INPUT_POST, 'birth', FILTER_SANITIZE_STRING);
 $pwd_2digit  = filter_input(INPUT_POST, 'pwd_2digit', FILTER_SANITIZE_STRING);
 $amount      = filter_input(INPUT_POST, 'amount', FILTER_SANITIZE_STRING);
-
-// 빌링키 발급과 결제 요청을 동시에 처리.
 
 // 새로 생성한 주문번호
 $merchantUid = 'order_monthly_0001';

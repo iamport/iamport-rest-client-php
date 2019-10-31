@@ -6,15 +6,17 @@ use Iamport\RestClient\Iamport;
 use Iamport\RestClient\Request\Payment;
 
 $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f');
-$request = Payment::listMerchantUid('검색할 주문 번호(merchant_uid)');
-$request->payment_status = 'paid';
-$request->sorting        = '-started';
-$request->page           = 1;
-$result                  = $iamport->callApi($request);
+
+$request          = Payment::listStatus('all');
+$request->limit   = 10;
+$request->from    = '2018-08-16 09:21:32';
+$request->to      = '2018-10-08 14:04:44';
+$request->sorting = 'started';
+$result  = $iamport->callApi($request);
 
 if ($result->getSuccess()) {
-    $data = $result->getData();
-    $total = $data->getTotal();
+    $data         = $result->getData();
+    $totalCount   = $data->getTotal();
     $nextPage     = $data->getNext();
     $previousPage = $data->getPrevious();
     $payments     = $data->getItems();
@@ -26,7 +28,7 @@ if ($result->getSuccess()) {
 
     // 이전, 다음 페이지 Collection 데이터를 가져옵니다.
     $previousData = $data->previous($iamport);
-    $nextData = $data->next($iamport);
+    $nextData     = $data->next($iamport);
 } else {
     $error = $result->getError();
     dump('아임포트 API 에러코드 : ', $error->code);
