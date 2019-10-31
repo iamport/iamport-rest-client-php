@@ -20,9 +20,9 @@ class ClaimType extends Enum
      *
      * @param int $value
      *
-     * @return string
+     * @return string|null
      */
-    public static function getDescription($value): string
+    public static function getDescription($value): ?string
     {
         switch ($value) {
             case self::CANCEL:

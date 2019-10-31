@@ -2,7 +2,6 @@
 
 namespace Iamport\RestClient\Request;
 
-use Iamport\RestClient\Enum\BankCode;
 use Iamport\RestClient\Enum\Endpoint;
 use Iamport\RestClient\Enum\VbankCode;
 use Iamport\RestClient\Response;
@@ -209,11 +208,6 @@ class Vbank extends RequestBase
     public static function view(string $bankCode, string $bankNum)
     {
         $instance                     = new self();
-        if (BankCode::validation($bankCode)) {
-            throw new InvalidArgumentException(
-                '허용되지 않는 은행코드 입니다. ( BankCode::getAll()로 허용 가능한 값을 확인해주세요. )'
-            );
-        }
         $instance->bank_code          = $bankCode;
         $instance->bank_num           = $bankNum;
         $instance->responseClass      = Response\VbankHolder::class;

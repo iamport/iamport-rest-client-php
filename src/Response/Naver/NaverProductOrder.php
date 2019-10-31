@@ -134,7 +134,7 @@ class NaverProductOrder
     /**
      * @return string
      */
-    public function getProductOrderStatus(): string
+    public function getProductOrderStatus(): ?string
     {
         return OrderStatus::getDescription($this->product_order_status);
     }
@@ -142,15 +142,15 @@ class NaverProductOrder
     /**
      * @return string
      */
-    public function getClaimType(): string
+    public function getClaimType(): ?string
     {
         return ClaimType::getDescription($this->claim_type);
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClaimStatus(): string
+    public function getClaimStatus(): ?string
     {
         switch ($this->claim_type) {
             case ClaimType::CANCEL:
