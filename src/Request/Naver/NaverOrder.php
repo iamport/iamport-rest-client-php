@@ -207,6 +207,12 @@ class NaverOrder extends RequestBase
                     return true;
                 }
                 break;
+            case 'cancel':
+                if (!CancelReason::validation($this->reason)) {
+                    return false;
+                }
+                return true;
+                break;
             default:
                 return true;
         }

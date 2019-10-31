@@ -65,11 +65,15 @@ class Iamport extends IamportBase
             $parseResponse = $this->request($method, $uri, $attributes, $authenticated, $client);
             $response      = $parseResponse->response;
 
-            // TODO: NaverPayment::point, NaverPayment::confirm String형 데이트 분기처리 필요 (테스트 데이터필요)
-            if ($isCollection) {
-                $result = (new Collection($response, $request, $parseResponse->isMultiStatus));
+            // TODO: NaverPayment::point, NaverPayment::confirm 테스트 필요
+            if ($responseClass === 'string') {
+                $result = $parseResponse->message;
             } else {
-                $result = (new Item($response, $responseClass))->getClassAs();
+                if ($isCollection) {
+                    $result = (new Collection($response, $request, $parseResponse->isMultiStatus));
+                } else {
+                    $result = (new Item($response, $responseClass))->getClassAs();
+                }
             }
 
             return new Result(true, $result);
@@ -126,7 +130,7 @@ class Iamport extends IamportBase
                 throw new IamportException($parseResponse, new Request($method, $uri), null);
             }
 
-            /** @var bool $isMultiStatus */
+            /* @var bool $isMultiStatus */
             $parseResponse->isMultiStatus = false;
             if ($statusCode === 207) {
                 $parseResponse->isMultiStatus = true;

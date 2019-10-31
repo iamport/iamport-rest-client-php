@@ -41,7 +41,7 @@ class NaverReturn extends RequestBase
     /**
      * @var string 반품사유코드
      */
-    protected $reason = 'INTENT_CHANGED';
+    protected $reason;
 
     /**
      * @var string 반품 배송방법 코드
@@ -71,21 +71,21 @@ class NaverReturn extends RequestBase
     /**
      * 주문형-네이버페이 상품주문들을 반품요청.
      *
-     * @param string $imp_uid
-     * @param string $delivery_method
+     * @param string $impUid
+     * @param string $deliveryMethod
      *
      * @return NaverReturn
      */
-    public static function request(string $imp_uid, string $delivery_method)
+    public static function request(string $impUid, string $deliveryMethod)
     {
         $instance          = new self();
-        $instance->imp_uid = $imp_uid;
-        if (ReturnDeliveryMethod::validation($delivery_method)) {
+        $instance->imp_uid = $impUid;
+        if (ReturnDeliveryMethod::validation($deliveryMethod)) {
             throw new InvalidArgumentException(
                 '허용되지 않는 delivery_method 값 입니다. ( ReturnDeliveryMethod::getAll()로 허용 가능한 값을 확인해주세요. )'
             );
         }
-        $instance->delivery_method = $delivery_method;
+        $instance->delivery_method = $deliveryMethod;
         $instance->reason          = ReturnReason::INTENT_CHANGED;
         $instance->isCollection    = true;
         $instance->responseClass   = NaverProductOrder::class;
@@ -98,14 +98,15 @@ class NaverReturn extends RequestBase
     /**
      * 주문형-네이버페이 상품주문들을 반품승인처리.
      *
-     * @param string $imp_uid
+     * @param string $impUid
      *
      * @return NaverReturn
      */
-    public static function approve(string $imp_uid)
+    public static function approve(string $impUid)
     {
         $instance                  = new self();
-        $instance->imp_uid         = $imp_uid;
+        $instance->imp_uid         = $impUid;
+        $instance->extra_charge    = 0;
         $instance->isCollection    = true;
         $instance->responseClass   = NaverProductOrder::class;
         $instance->instanceType    = 'approve';
@@ -117,15 +118,15 @@ class NaverReturn extends RequestBase
     /**
      * 주문형-네이버페이 반품요청 상품주문들을 반품거절처리.
      *
-     * @param string $imp_uid
+     * @param string $impUid
      * @param string $memo
      *
      * @return NaverReturn
      */
-    public static function reject(string $imp_uid, string $memo)
+    public static function reject(string $impUid, string $memo)
     {
         $instance                  = new self();
-        $instance->imp_uid         = $imp_uid;
+        $instance->imp_uid         = $impUid;
         $instance->memo            = $memo;
         $instance->isCollection    = true;
         $instance->responseClass   = NaverProductOrder::class;
@@ -138,17 +139,18 @@ class NaverReturn extends RequestBase
     /**
      * 주문형-네이버페이 반품요청 상품주문들을 반품보류처리.
      *
-     * @param string $imp_uid
+     * @param string $impUid
      * @param string $memo
      *
      * @return NaverReturn
      */
-    public static function withhold(string $imp_uid, string $memo)
+    public static function withhold(string $impUid, string $memo)
     {
         $instance                  = new self();
-        $instance->imp_uid         = $imp_uid;
+        $instance->imp_uid         = $impUid;
         $instance->memo            = $memo;
         $instance->reason          = RejectHoldReason::ETC;
+        $instance->extra_charge    = 0;
         $instance->isCollection    = true;
         $instance->responseClass   = NaverProductOrder::class;
         $instance->instanceType    = 'withhold';
@@ -160,14 +162,14 @@ class NaverReturn extends RequestBase
     /**
      * 주문형-네이버페이 반품보류 상품주문들을 반품보류해제처리.
      *
-     * @param string $imp_uid
+     * @param string $impUid
      *
      * @return NaverReturn
      */
-    public static function resolve(string $imp_uid)
+    public static function resolve(string $impUid)
     {
         $instance                  = new self();
-        $instance->imp_uid         = $imp_uid;
+        $instance->imp_uid         = $impUid;
         $instance->isCollection    = true;
         $instance->responseClass   = NaverProductOrder::class;
         $instance->instanceType    = 'resolve';
