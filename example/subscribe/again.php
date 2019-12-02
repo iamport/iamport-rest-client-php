@@ -36,6 +36,7 @@ if ($result->getSuccess()) {
 
     if ('paid' == $payment->status) {
         // TODO: 각 가맹점 환경에 맞게 결제 성공 이후의 로직을 작성합니다.
+        dump($payment);
     } else {
         // 결제실패
         dump('결제실패 사유 : '.$payment->fail_reason);

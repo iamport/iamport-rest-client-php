@@ -6,6 +6,7 @@ use Iamport\RestClient\Enum\Endpoint;
 use Iamport\RestClient\Request\CardInfo;
 use Iamport\RestClient\Request\RequestBase;
 use Iamport\RestClient\Request\RequestTrait;
+use Iamport\RestClient\Response;
 
 /**
  * Class SubscribeSchedule.
@@ -71,7 +72,8 @@ class SubscribeSchedule extends RequestBase
     public function __construct(string $customer_uid)
     {
         $this->customer_uid  = $customer_uid;
-        $this->responseClass = Schedule::class;
+        $this->responseClass = Response\Schedule::class;
+        $this->isCollection  = true;
     }
 
     /**

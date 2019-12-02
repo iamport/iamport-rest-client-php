@@ -13,6 +13,7 @@ $result        = $iamport->callApi($request);
 if ($result->getSuccess()) {
     $data     = $result->getData();
     $nextData = $data->next($iamport);
+    dump($data);
     foreach ($data->getItems() as $payment) {
         // TODO: 결제데이터 조회
     }

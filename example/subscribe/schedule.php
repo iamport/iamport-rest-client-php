@@ -4,8 +4,8 @@ require_once '../../vendor/autoload.php';
 
 use Iamport\RestClient\Iamport;
 use Iamport\RestClient\Request\CardInfo;
-use Iamport\RestClient\Request\Schedule;
-use Iamport\RestClient\Request\SubscribeSchedule;
+use Iamport\RestClient\Request\Subscribe\Schedule;
+use Iamport\RestClient\Request\Subscribe\SubscribeSchedule;
 
 $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f');
 
@@ -47,10 +47,11 @@ $result = $iamport->callApi($request);
 
 if ($result->getSuccess()) {
     /**
-     *	Response\Schedule 를 가리킵니다. __get을 통해 API의 Item Model의 값들을 모두 property처럼 접근할 수 있습니다.
-     *	참고 : https://api.iamport.kr/#!/subscribe/schedule 의 Response Class Model.
+     *  Response\Schedule 를 가리킵니다. __get을 통해 API의 Item Model의 값들을 모두 property처럼 접근할 수 있습니다.
+     *  참고 : https://api.iamport.kr/#!/subscribe/schedule 의 Response Class Model.
      */
     $schedules = $result->getData();
+    dump($schedules);
 
     // TODO: 예약한 시간에 결제가 완료되면 지정하신 콜백 URL로 아임포트가 값을 전달하게 됩니다.
     // 자세한 사항은 아임포트 docs(https://docs.iamport.kr/implementation/subscription#request-payment)의 결제 결과 동기화하기를 참조해주세요.

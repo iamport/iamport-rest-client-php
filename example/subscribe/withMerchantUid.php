@@ -11,6 +11,7 @@ $result = $iamport->callApi($request);
 
 if ($result->getSuccess()) {
     $schedules = $result->getData();
+    dump($schedules);
 } else {
     dump($result->getError());
 }

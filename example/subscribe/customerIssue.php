@@ -36,6 +36,7 @@ if ($result->getSuccess()) {
      *	참고 : https://api.iamport.kr/#!/subscribe.customer/customer_save 의 Response Class Model.
      */
     $customer = $result->getData();
+    dump($customer);
 
     // TODO: 각 가맹점 환경에 맞게 빌링키 발급(수정) 성공 이후의 로직을 작성합니다.
 } else {

@@ -11,6 +11,7 @@ $result = $iamport->callApi($request);
 
 if ($result->getSuccess()) {
     $data = $result->getData();
+    dump($data);
     $nextData = $data->next($iamport);
     foreach ($data->getItems() as $payment) {
         dump($payment->imp_uid);

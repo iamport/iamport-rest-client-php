@@ -20,6 +20,7 @@ if ($result->getSuccess()) {
      *	참고 : https://api.iamport.kr/#!/subscribe.customer/customer_view 의 Response Class Model.
      */
     $customer = $result->getData();
+    dump($customer);
 } else {
     $error = $result->getError();
     dump("아임포트 API 에러코드 : $error->code");

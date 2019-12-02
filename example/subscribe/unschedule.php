@@ -3,7 +3,7 @@
 require_once '../../vendor/autoload.php';
 
 use Iamport\RestClient\Iamport;
-use Iamport\RestClient\Request\SubscribeUnschedule;
+use Iamport\RestClient\Request\Subscribe\SubscribeUnschedule;
 
 $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f');
 
@@ -23,6 +23,7 @@ if ($result->getSuccess()) {
      *	참고 : https://api.iamport.kr/#!/subscribe/unschedule 의 Response Class Model.
      */
     $schedules = $result->getData();
+    dump($schedules);
 } else {
     $error = $result->getError();
     dump("아임포트 API 에러코드 : $error->code");
