@@ -72,13 +72,13 @@ class Schedule
         $this->merchant_uid    = $response['merchant_uid'];
         $this->schedule_at     = $response['schedule_at'];
         $this->amount          = $response['amount'];
-        $this->name            = $response['name'];
-        $this->buyer_name      = $response['buyer_name'];
-        $this->buyer_email     = $response['buyer_email'];
-        $this->buyer_tel       = $response['buyer_tel'];
-        $this->buyer_addr      = $response['buyer_addr'];
-        $this->buyer_postcode  = $response['buyer_postcode'];
-        $this->schedule_status = $response['schedule_status'];
+        $this->name            = $response['name']  ?? null;
+        $this->buyer_name      = $response['buyer_name'] ?? null;
+        $this->buyer_email     = $response['buyer_email'] ?? null;
+        $this->buyer_tel       = $response['buyer_tel'] ?? null;
+        $this->buyer_addr      = $response['buyer_addr'] ?? null;
+        $this->buyer_postcode  = $response['buyer_postcode'] ?? null;
+        $this->schedule_status = $response['schedule_status'] ?? null;
     }
 
     /**
