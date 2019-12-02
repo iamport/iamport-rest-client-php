@@ -29,7 +29,7 @@ class Schedule
     protected $merchant_uid;
 
     /**
-     * @var int
+     * @var string
      */
     protected $schedule_at;
 
@@ -82,14 +82,15 @@ class Schedule
      * Schedule constructor.
      *
      * @param string $merchant_uid
-     * @param int    $schedule_at
+     * @param string $schedule_at  Y-m-d H:i:s 형태의 문자열
      * @param float  $amount
      */
-    public function __construct(string $merchant_uid, int $schedule_at, float $amount)
+    public function __construct(string $merchant_uid, string $schedule_at, float $amount)
     {
+        date_default_timezone_set('Asia/Seoul');
         $this->merchant_uid = $merchant_uid;
-        $this->schedule_at  = $schedule_at;
-        $this->amount       = $amount;
+        $this->setScheduleAt($schedule_at);
+        $this->amount = $amount;
     }
 
     /**
@@ -101,11 +102,11 @@ class Schedule
     }
 
     /**
-     * @param int $schedule_at
+     * @param string $schedule_at
      */
-    public function setScheduleAt(int $schedule_at): void
+    public function setScheduleAt(string $schedule_at): void
     {
-        $this->schedule_at = $schedule_at;
+        $this->schedule_at = strtotime($schedule_at);
     }
 
     /**

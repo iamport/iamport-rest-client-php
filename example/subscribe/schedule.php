@@ -32,7 +32,7 @@ $cardInfo = new CardInfo($card_number, $expiry, $birth, $pwd_2digit);
 $request->setCardInfo($cardInfo);
 
 // 정기 예약 스케쥴 정보 셋팅
-$schedule = new Schedule('order_book_'.time(), time() + 100, $amount);
+$schedule = new Schedule('order_book_' . time(), '2019-12-04 09:00:00', $amount);
 $schedule->tax_free       = 0;
 $schedule->name           = '월간 이용권 정기결제 A';
 $schedule->buyer_name     = '예약자A';
@@ -55,7 +55,6 @@ if ($result->getSuccess()) {
 
     // TODO: 예약한 시간에 결제가 완료되면 지정하신 콜백 URL로 아임포트가 값을 전달하게 됩니다.
     // 자세한 사항은 아임포트 docs(https://docs.iamport.kr/implementation/subscription#request-payment)의 결제 결과 동기화하기를 참조해주세요.
-
 } else {
     $error = $result->getError();
     dump("아임포트 API 에러코드 : $error->code");
