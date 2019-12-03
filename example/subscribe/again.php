@@ -27,14 +27,14 @@ $request->custom_data    = '';
 $request->notice_url     = '';
 $result                  = $iamport->callApi($request);
 
-if ($result->getSuccess()) {
+if ($result->hasData()) {
     /**
      *	Response\Payment 를 가리킵니다. __get을 통해 API의 Item Model의 값들을 모두 property처럼 접근할 수 있습니다.
      *	참고 : https://api.iamport.kr/#!/subscribe/again 의 Response Class Model.
      */
     $payment = $result->getData();
 
-    if ('paid' == $payment->status) {
+    if ($payment->isPaid()) {
         // TODO: 각 가맹점 환경에 맞게 결제 성공 이후의 로직을 작성합니다.
         dump($payment);
     } else {

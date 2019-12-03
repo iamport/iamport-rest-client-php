@@ -118,6 +118,6 @@ final class ExceptionHandler
             ];
         }
 
-        return new Result(false, null, $error);
+        return new Result(null, $error);
     }
 }

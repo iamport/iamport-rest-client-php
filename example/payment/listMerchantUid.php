@@ -12,7 +12,7 @@ $request->sorting        = '-started';
 $request->page           = 1;
 $result                  = $iamport->callApi($request);
 
-if ($result->getSuccess()) {
+if ($result->hasData()) {
     $data = $result->getData();
     $total = $data->getTotal();
     $nextPage     = $data->getNext();

@@ -9,7 +9,7 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 $request = Payment::withMerchantUid('merchant_1448280088556');
 $result  = $iamport->callApi($request);
 
-if ($result->getSuccess()) {
+if ($result->hasData()) {
     $payment = $result->getData();
 
     /**

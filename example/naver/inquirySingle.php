@@ -9,7 +9,7 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 $request = NaverInquiry::single('2019083013231750');
 $result = $iamport->callApi($request);
 dump($result);
-if ($result->getSuccess()) {
+if ($result->hasData()) {
     $productOrder = $result->getData();
     // 원본값 조회시에는 getAttributes() 메소드를 사용합니다.
     dump($product_order_status = $productOrder->product_order_status);

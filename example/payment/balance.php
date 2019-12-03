@@ -9,7 +9,7 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 $request = Payment::balance('imp_151056657689');
 $result  = $iamport->callApi($request);
 
-if ($result->getSuccess()) {
+if ($result->hasData()) {
     $payment = $result->getData();
     // 최초 결제승인된 금액의 총합
     $amount = $payment->amount;

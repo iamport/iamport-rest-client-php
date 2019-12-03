@@ -633,4 +633,12 @@ class Payment
     {
         return $this->cash_receipt_issued;
     }
+
+    /**
+     * @return mixed
+     */
+    public function isPaid(): bool
+    {
+        return ($this->status === 'paid') ? true : false;
+    }
 }

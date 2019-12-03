@@ -13,7 +13,7 @@ $request = NaverReturn::request('imp_589568085643', ReturnDeliveryMethod::RETURN
 if ($request->valid()) {
     $result = $iamport->callApi($request);
 
-    if ($result->getSuccess()) {
+    if ($result->hasData()) {
         $data          = $result->getData();
         $productOrders = $data->getItems();
         foreach ($productOrders as $productOrder) {

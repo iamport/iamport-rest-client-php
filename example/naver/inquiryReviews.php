@@ -9,7 +9,7 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 $request = NaverInquiry::reviews('2019-08-30 00:00:00', '2019-08-31 00:00:00');
 $result = $iamport->callApi($request);
 dump($result);
-if ($result->getSuccess()) {
+if ($result->hasData()) {
     $reviews = $result->getData()->getItems();
     foreach ($reviews as $review) {
         // TODO: 구매평 데이터 조회

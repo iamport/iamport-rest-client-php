@@ -41,7 +41,7 @@ $request->refund_bank    = '환불될 가상계좌 은행코드';
 $request->refund_account = '환불될 가상계좌 번호';
 $result                  = $iamport->callApi($request);
 
-if ($result->getSuccess()) {
+if ($result->hasData()) {
     $payment = $result->getData();
 } else {
     $error = $result->getError();

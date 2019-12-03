@@ -14,7 +14,7 @@ $invoice  = new EscrowLogisInvoice('EPOST', '1110301285808', '2019-09-03 00:00:0
 $request = EscrowLogis::update('imp_12345678912', $sender, $receiver, $invoice);
 $result = $iamport->callApi($request);
 
-if ($result->getSuccess()) {
+if ($result->hasData()) {
     $escrowLogis = $result->getData();
     // TODO: 배송정보 수정 이후 처리
 } else {

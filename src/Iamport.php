@@ -76,7 +76,7 @@ class Iamport extends IamportBase
                 }
             }
 
-            return new Result(true, $result);
+            return new Result($result);
         } catch (GuzzleException $e) {
             return ExceptionHandler::render($e);
         } catch (Exception $e) {

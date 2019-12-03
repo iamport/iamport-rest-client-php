@@ -11,7 +11,7 @@ $request       = SubscribeCustomer::schedules('cuid_1_1566960465326', '2019-12-2
 $request->page = 1;
 $result        = $iamport->callApi($request);
 
-if ($result->getSuccess()) {
+if ($result->hasData()) {
     $data     = $result->getData();
     $nextData = $data->next($iamport);
     dump($data);

@@ -10,7 +10,7 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 $request = SubscribeInquiry::withCustomerUid('cuid_1_1566960465326', '2019-12-20 08:00:00', 1576803600);
 $result = $iamport->callApi($request);
 
-if ($result->getSuccess()) {
+if ($result->hasData()) {
     $schedules = $result->getData();
     dump($schedules);
 } else {

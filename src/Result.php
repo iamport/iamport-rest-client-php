@@ -7,10 +7,6 @@ namespace Iamport\RestClient;
  */
 class Result
 {
-    /**
-     * @var bool
-     */
-    protected $success = false;
 
     /**
      * @var mixed
@@ -25,13 +21,11 @@ class Result
     /**
      * Result constructor.
      *
-     * @param bool   $success
      * @param mixed  $data
      * @param object $error
      */
-    public function __construct(bool $success = false, $data = null, $error = null)
+    public function __construct($data = null, $error = null)
     {
-        $this->success = $success;
         $this->data    = $data;
         $this->error   = is_null($error) ? null : $error;
     }
@@ -39,9 +33,9 @@ class Result
     /**
      * @return bool
      */
-    public function getSuccess(): bool
+    public function hasData(): bool
     {
-        return $this->success;
+        return ($this->getData() === null) ? false : true;
     }
 
     /**

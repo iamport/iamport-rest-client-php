@@ -9,7 +9,7 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 $request = Vbank::delete('imp_526377825577');
 $result = $iamport->callApi($request);
 
-if ($result->getSuccess()) {
+if ($result->hasData()) {
     $escrowLogis = $result->getData();
     // TODO: 가상계좌 삭제 이후 처리
 } else {

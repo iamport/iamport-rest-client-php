@@ -10,7 +10,7 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 $request = PaymentPrepare::view('merchant_1411046736531');
 $result  = $iamport->callApi($request);
 
-if ($result->getSuccess()) {
+if ($result->hasData()) {
     $payment = $result->getData();
 } else {
     $error = $result->getError();

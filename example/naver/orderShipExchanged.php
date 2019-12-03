@@ -17,7 +17,7 @@ $request->tracking_number = '123456789';
 if ($request->valid()) {
     $result = $iamport->callApi($request);
 
-    if ($result->getSuccess()) {
+    if ($result->hasData()) {
         $data          = $result->getData();
         $productOrders = $data->getItems();
         foreach ($productOrders as $productOrder) {

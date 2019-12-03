@@ -12,7 +12,7 @@ $request->product_order_id = ['2019083013231750'];
 $request->reason = CancelReason::PRODUCT_UNSATISFIED;
 $result = $iamport->callApi($request);
 
-if ($result->getSuccess()) {
+if ($result->hasData()) {
     $data          = $result->getData();
     $productOrders = $data->getItems();
     foreach ($productOrders as $productOrder) {
