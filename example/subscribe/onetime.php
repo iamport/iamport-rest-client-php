@@ -13,7 +13,7 @@ $card_number = filter_input(INPUT_POST, 'card_number', FILTER_SANITIZE_STRING);
 $expiry      = filter_input(INPUT_POST, 'expiry', FILTER_SANITIZE_STRING);
 $birth       = filter_input(INPUT_POST, 'birth', FILTER_SANITIZE_STRING);
 $pwd_2digit  = filter_input(INPUT_POST, 'pwd_2digit', FILTER_SANITIZE_STRING);
-$amount      = filter_input(INPUT_POST, 'amount', FILTER_SANITIZE_STRING);
+$amount      = filter_input(INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_FLOAT);
 
 // 새로 생성한 주문번호
 $merchantUid = 'order_monthly_0001';
@@ -31,7 +31,7 @@ $request->buyer_email    = '주문자 E-mail주소';
 $request->buyer_tel      = '주문자 전화번호';
 $request->buyer_addr     = '주문자 주소';
 $request->buyer_postcode = '주문자 우편번호';
-$request->card_quota     = '카드 할부개월 수';
+$request->card_quota     = 6; //카드 할부개월 수
 $request->custom_data    = '';
 $request->notice_url     = 'http://notice.example.com';
 $result                  = $iamport->callApi($request);

@@ -8,7 +8,7 @@ use Iamport\RestClient\Request\RequestTrait;
  * Class Schedule.
  *
  * @property string $merchant_uid
- * @property int    $schedule_at
+ * @property mixed  $schedule_at
  * @property float  $amount
  * @property float  $tax_free
  * @property string $name
@@ -29,7 +29,7 @@ class Schedule
     protected $merchant_uid;
 
     /**
-     * @var string
+     * @var mixed
      */
     protected $schedule_at;
 
@@ -82,10 +82,10 @@ class Schedule
      * Schedule constructor.
      *
      * @param string $merchant_uid
-     * @param string $schedule_at  Y-m-d H:i:s 형태의 문자열
+     * @param mixed  $schedule_at  unix timestamp 혹은 date 포맷형태의 문자열
      * @param float  $amount
      */
-    public function __construct(string $merchant_uid, string $schedule_at, float $amount)
+    public function __construct(string $merchant_uid, $schedule_at, float $amount)
     {
         date_default_timezone_set('Asia/Seoul');
         $this->merchant_uid = $merchant_uid;
@@ -102,11 +102,11 @@ class Schedule
     }
 
     /**
-     * @param string $schedule_at
+     * @param mixed $schedule_at
      */
-    public function setScheduleAt(string $schedule_at): void
+    public function setScheduleAt($schedule_at): void
     {
-        $this->schedule_at = strtotime($schedule_at);
+        $this->schedule_at = is_numeric($schedule_at) ? $schedule_at : strtotime(date($schedule_at));
     }
 
     /**

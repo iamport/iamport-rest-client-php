@@ -6,7 +6,8 @@ use Iamport\RestClient\Iamport;
 use Iamport\RestClient\Request\Subscribe\SubscribeCustomer;
 
 $iamport       = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f');
-$request       = SubscribeCustomer::schedules('cuid_1_1566960465326', '2019-10-01 00:00:00', '2019-10-01 01:00:00');
+// from, to는 unix timestamp 와 string 형태의 date 모두 가능합니다.
+$request       = SubscribeCustomer::schedules('cuid_1_1566960465326', '2019-12-20 08:00:00', 1576803600);
 $request->page = 1;
 $result        = $iamport->callApi($request);
 

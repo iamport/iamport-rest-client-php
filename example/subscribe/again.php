@@ -10,7 +10,7 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 
 // 클라이언트로부터 전달받은 카드 정보와 구매자 고유번호
 $customerUid = filter_input(INPUT_POST, 'customer_uid', FILTER_SANITIZE_STRING);
-$amount      = filter_input(INPUT_POST, 'amount', FILTER_SANITIZE_STRING);
+$amount      = filter_input(INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_FLOAT);
 
 // 새로 생성한 결제(재결제)용 주문 번호
 $merchantUid = 'order_monthly_0001';
@@ -22,7 +22,7 @@ $request->buyer_email    = '주문자 E-mail주소';
 $request->buyer_tel      = '주문자 전화번호';
 $request->buyer_addr     = '주문자 주소';
 $request->buyer_postcode = '주문자 우편번호';
-$request->card_quota     = '카드 할부개월 수';
+$request->card_quota     = 6; //카드 할부개월 수
 $request->custom_data    = '';
 $request->notice_url     = '';
 $result                  = $iamport->callApi($request);

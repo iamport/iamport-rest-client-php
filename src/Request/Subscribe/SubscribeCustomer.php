@@ -245,20 +245,21 @@ class SubscribeCustomer extends RequestBase
     /**
      * customer_uid별 결제예약목록을 조회
      * TODO: api docs에 내용과 응답 내역이 달라 확인 필요.
+     * (api.iamport.kr : 일반 배열 / 실제응답결과 : paged 형태의 배열
      *
      * @param string $customerUid
-     * @param string $from
-     * @param string $to
+     * @param mixed  $from
+     * @param mixed  $to
      *
      * @return SubscribeCustomer
      */
-    public static function schedules(string $customerUid, string $from, string $to)
+    public static function schedules(string $customerUid, $from, $to)
     {
         date_default_timezone_set('Asia/Seoul');
         $instance                 = new self();
         $instance->customer_uid   = $customerUid;
-        $instance->from           = strtotime(date($from));
-        $instance->to             = strtotime(date($to));
+        $instance->from           = is_numeric($from) ? $from : strtotime(date($from));
+        $instance->to             = is_numeric($to) ? $to : strtotime(date($to));
         $instance->isCollection   = true;
         $instance->isPaged        = true;
         $instance->responseClass  = Response\Schedule::class;
@@ -455,6 +456,7 @@ class SubscribeCustomer extends RequestBase
                 if ($this->schedule_status !== null) {
                     $result['query']['schedule-status'] = $this->schedule_status;
                 }
+
                 return $result;
                 break;
             default:

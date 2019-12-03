@@ -26,7 +26,7 @@ use Iamport\RestClient\Response;
  * @property string $buyer_tel
  * @property string $buyer_addr
  * @property string $buyer_postcode
- * @property string $card_quota
+ * @property int    $card_quota
  * @property string $custom_data
  * @property string $notice_url
  */
@@ -110,7 +110,7 @@ class SubscribeOnetime extends RequestBase
     protected $buyer_postcode;
 
     /**
-     * @var string 카드할부개월수. 2 이상의 integer 할부개월수 적용(결제금액 50,000원 이상 한정).
+     * @var int 카드할부개월수. 2 이상의 integer 할부개월수 적용(결제금액 50,000원 이상 한정).
      */
     protected $card_quota;
 
@@ -268,9 +268,9 @@ class SubscribeOnetime extends RequestBase
     }
 
     /**
-     * @param string $card_quota
+     * @param int $card_quota
      */
-    public function setCardQuota(string $card_quota): void
+    public function setCardQuota(int $card_quota): void
     {
         $this->card_quota = $card_quota;
     }

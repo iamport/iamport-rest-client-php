@@ -39,7 +39,7 @@ class SubscribeAgain extends RequestBase
     protected $merchant_uid;
 
     /**
-     * @var string 결제금액
+     * @var float 결제금액
      */
     protected $amount;
 
@@ -49,7 +49,7 @@ class SubscribeAgain extends RequestBase
     protected $name;
 
     /**
-     * @var string amount 중 면세공급가액
+     * @var float amount 중 면세공급가액
      */
     protected $tax_free;
 
@@ -79,7 +79,7 @@ class SubscribeAgain extends RequestBase
     protected $buyer_postcode;
 
     /**
-     * @var string 카드할부개월수. 2 이상의 integer 할부개월수 적용(결제금액 50,000원 이상 한정).
+     * @var int 카드할부개월수. 2 이상의 integer 할부개월수 적용(결제금액 50,000원 이상 한정).
      */
     protected $card_quota;
 
@@ -98,10 +98,10 @@ class SubscribeAgain extends RequestBase
      *
      * @param string $customer_uid
      * @param string $merchant_uid
-     * @param string $amount
+     * @param float  $amount
      * @param string $name
      */
-    public function __construct(string $customer_uid, string $merchant_uid, string $amount, string $name)
+    public function __construct(string $customer_uid, string $merchant_uid, float $amount, string $name)
     {
         $this->customer_uid = $customer_uid;
         $this->merchant_uid = $merchant_uid;
@@ -127,9 +127,9 @@ class SubscribeAgain extends RequestBase
     }
 
     /**
-     * @param string $amount
+     * @param float $amount
      */
-    public function setAmount(string $amount): void
+    public function setAmount(float $amount): void
     {
         $this->amount = $amount;
     }
@@ -143,9 +143,9 @@ class SubscribeAgain extends RequestBase
     }
 
     /**
-     * @param string $tax_free
+     * @param float $tax_free
      */
-    public function setTaxFree(string $tax_free): void
+    public function setTaxFree(float $tax_free): void
     {
         $this->tax_free = $tax_free;
     }
@@ -191,9 +191,9 @@ class SubscribeAgain extends RequestBase
     }
 
     /**
-     * @param string $card_quota
+     * @param int $card_quota
      */
-    public function setCardQuota(string $card_quota): void
+    public function setCardQuota(int $card_quota): void
     {
         $this->card_quota = $card_quota;
     }

@@ -9,7 +9,7 @@ use Iamport\RestClient\Request\RequestTrait;
  *
  * @property string $company
  * @property string $invoice
- * @property int    $sent_at
+ * @property mixed  $sent_at
  */
 class EscrowLogisInvoice
 {
@@ -26,7 +26,7 @@ class EscrowLogisInvoice
     protected $invoice;
 
     /**
-     * @var string 발송일시
+     * @var mixed 발송일시
      */
     protected $sent_at;
 
@@ -35,9 +35,9 @@ class EscrowLogisInvoice
      *
      * @param string $company
      * @param string $invoice
-     * @param string $sent_at Y-m-d H:i:s 형태의 문자열
+     * @param mixed  $sent_at Y-m-d H:i:s 형태의 문자열 혹은 unix timestamp
      */
-    public function __construct(string $company, string $invoice, string $sent_at)
+    public function __construct(string $company, string $invoice, $sent_at)
     {
         date_default_timezone_set('Asia/Seoul');
         $this->company = $company;
@@ -62,10 +62,10 @@ class EscrowLogisInvoice
     }
 
     /**
-     * @param string $sent_at
+     * @param mixed $sent_at
      */
-    public function setSentAt(string $sent_at): void
+    public function setSentAt($sent_at): void
     {
-        $this->sent_at = strtotime($sent_at);
+        $this->sent_at = is_numeric($sent_at) ? $sent_at : strtotime(date($sent_at));
     }
 }

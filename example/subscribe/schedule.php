@@ -14,7 +14,7 @@ $card_number   = filter_input(INPUT_POST, 'card_number', FILTER_SANITIZE_STRING)
 $expiry        = filter_input(INPUT_POST, 'expiry', FILTER_SANITIZE_STRING);
 $birth         = filter_input(INPUT_POST, 'birth', FILTER_SANITIZE_STRING);
 $pwd_2digit    = filter_input(INPUT_POST, 'pwd_2digit', FILTER_SANITIZE_STRING);
-$amount    = filter_input(INPUT_POST, 'amount', FILTER_SANITIZE_STRING);
+$amount    = filter_input(INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_FLOAT);
 // $customer_uid값에 대한 자세한 설명은 아임포트 docs(https://docs.iamport.kr/implementation/subscription)의 customer_uid 속성을 참조합니다.
 $customerUid  = filter_input(INPUT_POST, 'customer_uid', FILTER_SANITIZE_STRING);
 
@@ -32,6 +32,7 @@ $cardInfo = new CardInfo($card_number, $expiry, $birth, $pwd_2digit);
 $request->setCardInfo($cardInfo);
 
 // 정기 예약 스케쥴 정보 셋팅
+// Schedule의 두번째 인자인 schedule_at의 값은 unix timestamp와 문자열형태의 date 모두 가능합니다.
 $schedule = new Schedule('order_book_' . time(), '2019-12-04 09:00:00', $amount);
 $schedule->tax_free       = 0;
 $schedule->name           = '월간 이용권 정기결제 A';

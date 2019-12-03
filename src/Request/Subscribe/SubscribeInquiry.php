@@ -14,8 +14,8 @@ use InvalidArgumentException;
  * @property string $merchant_uid
  * @property string $customer_uid
  * @property string $page
- * @property string $from
- * @property string $to
+ * @property mixed  $from
+ * @property mixed  $to
  * @property string $schedule_status
  */
 class SubscribeInquiry extends RequestBase
@@ -84,18 +84,18 @@ class SubscribeInquiry extends RequestBase
      * TODO: api docs에 내용과 응답 내역이 달라 확인 필요.
      *
      * @param string $customer_uid
-     * @param string $from
-     * @param string $to
+     * @param mixed $from
+     * @param mixed $to
      *
      * @return SubscribeInquiry
      */
-    public static function withCustomerUid(string $customer_uid, string $from, string $to)
+    public static function withCustomerUid(string $customer_uid, $from, $to)
     {
         date_default_timezone_set('Asia/Seoul');
         $instance                 = new self();
         $instance->customer_uid   = $customer_uid;
-        $instance->from           = strtotime(date($from));
-        $instance->to             = strtotime(date($to));
+        $instance->from           = is_numeric($from) ? $from : strtotime(date($from));
+        $instance->to             = is_numeric($to) ? $to : strtotime(date($to));
         $instance->responseClass  = Response\Schedule::class;
         $instance->isCollection   = true;
         $instance->isPaged        = true;
