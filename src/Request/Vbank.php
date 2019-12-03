@@ -12,9 +12,9 @@ use InvalidArgumentException;
  *
  * @property string $imp_uid
  * @property string $merchant_uid
- * @property int    $amount
+ * @property float  $amount
  * @property string $vbank_code
- * @property string $vbank_due
+ * @property mixed  $vbank_due
  * @property string $vbank_holder
  * @property string $name
  * @property string $buyer_name
@@ -43,7 +43,7 @@ class Vbank extends RequestBase
     protected $merchant_uid;
 
     /**
-     * @var int 결제금액
+     * @var float 결제금액
      */
     protected $amount;
 
@@ -53,7 +53,7 @@ class Vbank extends RequestBase
     protected $vbank_code;
 
     /**
-     * @var string 가상계좌 입금기한 (UNIX TIMESTAMP)
+     * @var mixed 가상계좌 입금기한 (UNIX TIMESTAMP | Y-m-d H:i:s 포맷의 문자열 date)
      */
     protected $vbank_due;
 
@@ -124,14 +124,14 @@ class Vbank extends RequestBase
 
     /**
      * @param string $merchantUid
-     * @param int    $amount
+     * @param float  $amount
      * @param string $vbankCode
-     * @param string $vbankDue
+     * @param mixed  $vbankDue
      * @param string $vbankHolder
      *
      * @return Vbank
      */
-    public static function store(string $merchantUid, int $amount, string $vbankCode, string $vbankDue, string $vbankHolder)
+    public static function store(string $merchantUid, float $amount, string $vbankCode, $vbankDue, string $vbankHolder)
     {
         date_default_timezone_set('Asia/Seoul');
         $instance                 = new self();
@@ -143,7 +143,7 @@ class Vbank extends RequestBase
             );
         }
         $instance->vbank_code     = $vbankCode;
-        $instance->vbank_due      = strtotime(date($vbankDue));
+        $instance->vbank_due      = is_numeric($vbankDue) ? $vbankDue : strtotime(date($vbankDue));
         $instance->vbank_holder   = $vbankHolder;
         $instance->responseClass  = Response\Payment::class;
         $instance->instanceType   = 'store';
@@ -233,9 +233,9 @@ class Vbank extends RequestBase
     }
 
     /**
-     * @param int $amount
+     * @param float $amount
      */
-    public function setAmount(int $amount): void
+    public function setAmount(float $amount): void
     {
         $this->amount = $amount;
     }
@@ -249,12 +249,12 @@ class Vbank extends RequestBase
     }
 
     /**
-     * @param string $vbank_due
+     * @param mixed $vbank_due
      */
-    public function setVbankDue(string $vbank_due): void
+    public function setVbankDue($vbank_due): void
     {
         date_default_timezone_set('Asia/Seoul');
-        $this->vbank_due = strtotime(date($vbank_due));
+        $this->vbank_due = is_numeric($vbank_due) ? $vbank_due : strtotime(date($vbank_due));
     }
 
     /**
@@ -377,7 +377,7 @@ class Vbank extends RequestBase
             case 'store':
             case 'edit':
                 return [
-                'body' => json_encode($this->toArray()),
+                    'body' => json_encode($this->toArray()),
                 ];
                 break;
             case 'delete':
@@ -385,10 +385,10 @@ class Vbank extends RequestBase
                 break;
             case 'view':
                 return [
-                'query' => [
-                    'bank_code' => $this->bank_code,
-                    'bank_num'  => $this->bank_num,
-                ],
+                    'query' => [
+                        'bank_code' => $this->bank_code,
+                        'bank_num'  => $this->bank_num,
+                    ],
                 ];
                 break;
             default:

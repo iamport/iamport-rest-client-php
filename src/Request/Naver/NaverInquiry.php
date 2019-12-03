@@ -15,8 +15,8 @@ use InvalidArgumentException;
  *
  * @property string $imp_uid
  * @property string $product_order_id
- * @property string $from
- * @property string $to
+ * @property mixed  $from
+ * @property mixed  $to
  * @property string $review_type      [general, premium]
  */
 class NaverInquiry extends RequestBase
@@ -34,12 +34,12 @@ class NaverInquiry extends RequestBase
     protected $product_order_id;
 
     /**
-     * @var string 네이버페이 구매평 조회기간 시작
+     * @var mixed 네이버페이 구매평 조회기간 시작
      */
     protected $from;
 
     /**
-     * @var string 네이버페이 구매평 조회기간 시작
+     * @var mixed 네이버페이 구매평 조회기간 시작
      */
     protected $to;
 
@@ -89,18 +89,18 @@ class NaverInquiry extends RequestBase
      * 네이버페이 구매평 조회 API
      * TODO: 로컬 테스트 서버에서 Internal Server Error 던져주는데 실제 api.iamport.kr 혹은fake 데이터 생기면 테스트 요망.
      *
-     * @param string $from
-     * @param string $to
+     * @param mixed  $from
+     * @param mixed  $to
      * @param string $reviewType
      *
      * @return NaverInquiry
      */
-    public static function reviews(string $from, string $to, string $reviewType = 'general')
+    public static function reviews($from, $to, string $reviewType = 'general')
     {
         date_default_timezone_set('Asia/Seoul');
         $instance                = new self();
-        $instance->from          = strtotime(date($from));
-        $instance->to            = strtotime(date($to));
+        $instance->from          = is_numeric($from) ? $from : strtotime(date($from));
+        $instance->to            = is_numeric($to) ? $to : strtotime(date($to));
         $instance->review_type   = $reviewType;
         $instance->isCollection  = true;
         $instance->responseClass = NaverReview::class;

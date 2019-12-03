@@ -11,7 +11,7 @@ use Iamport\RestClient\Response;
  * @property string $imp_uid
  * @property string $merchant_uid
  * @property string $name
- * @property string $amount
+ * @property int    $amount
  * @property string $identifier
  * @property string $identifier_type
  * @property string $type
