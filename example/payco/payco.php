@@ -11,7 +11,7 @@ $iamport = new Iamport('imp_apikey_payco', 'DsiyA7fpCYzecdevDriz/V44/UP+rgymkJq7
 $request = new Payco('imp_499680236986', PaycoStatus::CANCELED);
 $result = $iamport->callApi($request);
 
-if ($result->hasData()) {
+if ($result->isSuccess()) {
     // 원본값 조회는 getAttributes({property name})를 사용합니다.
     $paycoStatus = $result->getData()->status;
     dump($paycoStatus);

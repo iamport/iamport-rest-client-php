@@ -75,8 +75,7 @@ class Iamport extends IamportBase
                     $result = (new Item($response, $responseClass))->getClassAs();
                 }
             }
-
-            return new Result($result);
+            return new Result($result, null, $request->extraCondition);
         } catch (GuzzleException $e) {
             return ExceptionHandler::render($e);
         } catch (Exception $e) {

@@ -108,6 +108,9 @@ class SubscribeAgain extends RequestBase
         $this->amount       = $amount;
         $this->name         = $name;
         $this->responseClass = Response\Payment::class;
+        $this->extraCondition = function ($data) {
+            return ($data->status === 'paid') ? true : false;
+        };
     }
 
     /**

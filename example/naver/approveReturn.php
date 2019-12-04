@@ -12,7 +12,7 @@ $request->memo = '기타 사유로 인해 반품을 승인합니다.';
 $request->extra_charge = 0;
 $result = $iamport->callApi($request);
 
-if ($result->hasData()) {
+if ($result->isSuccess()) {
     $data          = $result->getData();
     $productOrders = $data->getItems();
     foreach ($productOrders as $productOrder) {

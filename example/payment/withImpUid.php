@@ -9,7 +9,7 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 $request = Payment::withImpUid('imps_313576348178');
 $result  = $iamport->callApi($request);
 
-if ($result->hasData()) {
+if ($result->isSuccess()) {
     $payment = $result->getData();
 
     /*
@@ -37,8 +37,8 @@ if ($result->hasData()) {
     $amount_should_be_paid = $data['amount'];
 
     // 내부적으로 결제완료 처리하시기 위해서는 (1) 결제완료 여부 (2) 금액이 일치하는지 확인을 해주셔야 합니다.
-    if ('paid' === $payment->status && $payment->amount === $amount_should_be_paid) {
-        //TODO : 결제성공 처리
+    if ($payment->isPaid() && $payment->amount === $amount_should_be_paid) {
+        //TODO : 결제완료 처리
     } else {
         //TODO : 결제금액 불일치 혹은 미완료된 결제 처리
     }

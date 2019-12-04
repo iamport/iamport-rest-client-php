@@ -9,7 +9,7 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 $request = Payment::listImpUid(['imps_313576348178']);
 $result  = $iamport->callApi($request);
 
-if ($result->hasData()) {
+if ($result->isSuccess()) {
     $payments = $result->getData()->getItems();
     foreach ($payments as $payment) {
         $paid_at = $payment->paid_at;

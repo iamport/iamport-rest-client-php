@@ -10,7 +10,7 @@ $request = NaverReturn::reject('imp_589568085643', '기타 사유로 인해 반�
 $request->product_order_id = ['2019083013231750'];
 $result = $iamport->callApi($request);
 dump($result);
-if ($result->hasData()) {
+if ($result->isSuccess()) {
     $data          = $result->getData();
     $productOrders = $data->getItems();
     foreach ($productOrders as $productOrder) {

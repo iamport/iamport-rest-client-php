@@ -9,7 +9,7 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 $request = SubscribeCustomer::payments('customer_uid');
 $result = $iamport->callApi($request);
 
-if ($result->hasData()) {
+if ($result->isSuccess()) {
     $data = $result->getData();
     dump($data);
     $nextData = $data->next($iamport);

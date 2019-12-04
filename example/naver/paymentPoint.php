@@ -9,7 +9,7 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 $request = NaverPayment::point('imp_953098037146');
 $result  = $iamport->callApi($request);
 
-if ($result->hasData()) {
+if ($result->isSuccess()) {
     $message = $result->getData();
 } else {
     dump($result->getError());

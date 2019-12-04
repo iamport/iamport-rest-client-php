@@ -9,7 +9,7 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 $request = NaverInquiry::cashAmount('imp_2019010101');
 $result = $iamport->callApi($request);
 dump($result);
-if ($result->hasData()) {
+if ($result->isSuccess()) {
     $cashAmount = $result->getData();
     dump($cashAmount);
 } else {

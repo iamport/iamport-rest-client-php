@@ -244,8 +244,6 @@ class SubscribeCustomer extends RequestBase
 
     /**
      * customer_uid별 결제예약목록을 조회
-     * TODO: api docs에 내용과 응답 내역이 달라 확인 필요.
-     * (api.iamport.kr : 일반 배열 / 실제응답결과 : paged 형태의 배열
      *
      * @param string $customerUid
      * @param mixed  $from

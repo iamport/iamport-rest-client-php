@@ -10,7 +10,7 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 $request = Vbank::view(BankCode::SC, '35016182520575');
 $result = $iamport->callApi($request);
 
-if ($result->hasData()) {
+if ($result->isSuccess()) {
     $escrowLogis = $result->getData();
     $bank_holder = $escrowLogis->bank_holder;
 } else {

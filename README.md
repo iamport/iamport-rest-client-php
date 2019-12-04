@@ -195,7 +195,7 @@ $payment = Payment::getImpUid('imps_410064014595');
 
 $result = $iamport->callApi($payment);
 
-if ($result->hasData()) {
+if ($result->isSuccess()) {
 
     // 조회한 결제 정보
     $payment_data = $result->getData();

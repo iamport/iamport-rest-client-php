@@ -16,7 +16,7 @@ $request->extra_charge = 0;
 if ($request->valid()) {
     $result = $iamport->callApi($request);
 
-    if ($result->hasData()) {
+    if ($result->isSuccess()) {
         $data          = $result->getData();
         $productOrders = $data->getItems();
         foreach ($productOrders as $productOrder) {

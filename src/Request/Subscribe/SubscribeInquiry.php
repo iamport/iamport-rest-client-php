@@ -81,7 +81,6 @@ class SubscribeInquiry extends RequestBase
 
     /**
      * customer_uid별 결제예약목록을 조회.
-     * TODO: api docs에 내용과 응답 내역이 달라 확인 필요.
      *
      * @param string $customer_uid
      * @param mixed $from

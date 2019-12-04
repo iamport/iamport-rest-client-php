@@ -9,7 +9,7 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 $request = new Kakaopay('20190902');
 $result  = $iamport->callApi($request);
 
-if ($result->hasData()) {
+if ($result->isSuccess()) {
     $data               = $result->getData();
     $page               = $data->page;
     $paymentRequestDate = $data->payment_request_date;

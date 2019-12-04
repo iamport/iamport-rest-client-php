@@ -46,6 +46,11 @@ abstract class RequestBase
     public $client = null;
 
     /**
+     * @var mixed  api 추가 성공 조건 (optional)
+     */
+    public $extraCondition = null;
+
+    /**
      * @param string $responseClass
      */
     public function setResponseClass(string $responseClass): void
@@ -70,7 +75,7 @@ abstract class RequestBase
     }
 
     /**
-     * @return bool
+     * @return bool request 객체 입력값 validate (optional)
      */
     public function valid(): bool
     {

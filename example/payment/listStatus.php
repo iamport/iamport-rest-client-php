@@ -14,7 +14,7 @@ $request->to      = '2018-10-08 14:04:44';
 $request->sorting = 'started';
 $result  = $iamport->callApi($request);
 
-if ($result->hasData()) {
+if ($result->isSuccess()) {
     $data         = $result->getData();
     $totalCount   = $data->getTotal();
     $nextPage     = $data->getNext();

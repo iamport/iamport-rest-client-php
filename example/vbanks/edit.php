@@ -9,7 +9,7 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 $request = Vbank::store('imp_526377825577', 1000, '2020-10-10 00:00:00');
 $result = $iamport->callApi($request);
 
-if ($result->hasData()) {
+if ($result->isSuccess()) {
     $escrowLogis = $result->getData();
     // TODO: 가상계좌 수정 이후 처리
 } else {
