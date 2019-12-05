@@ -34,7 +34,7 @@ $request->buyer_postcode = '주문자 우편번호';
 $request->card_quota     = 6; //카드 할부개월 수
 $request->custom_data    = '';
 $request->notice_url     = 'http://notice.example.com';
-$result                  = $iamport->callApi($request);
+$result = $iamport->callApi($request);
 
 if ($result->isSuccess()) {
     /**

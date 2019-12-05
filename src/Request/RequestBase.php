@@ -75,6 +75,14 @@ abstract class RequestBase
     }
 
     /**
+     * @param mixed $extraCondition
+     */
+    public function setExtraCondition($extraCondition): void
+    {
+        $this->extraCondition = $extraCondition;
+    }
+
+    /**
      * @return bool request 객체 입력값 validate (optional)
      */
     public function valid(): bool
