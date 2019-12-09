@@ -97,10 +97,9 @@ class NaverInquiry extends RequestBase
      */
     public static function reviews($from, $to, string $reviewType = 'general')
     {
-        date_default_timezone_set('Asia/Seoul');
         $instance                = new self();
-        $instance->from          = is_numeric($from) ? $from : strtotime(date($from));
-        $instance->to            = is_numeric($to) ? $to : strtotime(date($to));
+        $instance->from          = $instance->dateToTimestamp($from);
+        $instance->to            = $instance->dateToTimestamp($to);
         $instance->review_type   = $reviewType;
         $instance->isCollection  = true;
         $instance->responseClass = NaverReview::class;

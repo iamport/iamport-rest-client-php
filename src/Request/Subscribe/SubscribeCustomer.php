@@ -253,11 +253,10 @@ class SubscribeCustomer extends RequestBase
      */
     public static function schedules(string $customerUid, $from, $to)
     {
-        date_default_timezone_set('Asia/Seoul');
         $instance                 = new self();
         $instance->customer_uid   = $customerUid;
-        $instance->from           = is_numeric($from) ? $from : strtotime(date($from));
-        $instance->to             = is_numeric($to) ? $to : strtotime(date($to));
+        $instance->from           = $instance->dateToTimestamp($from);
+        $instance->to             = $instance->dateToTimestamp($to);
         $instance->isCollection   = true;
         $instance->isPaged        = true;
         $instance->responseClass  = Response\Schedule::class;

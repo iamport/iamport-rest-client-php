@@ -87,7 +87,6 @@ class Schedule
      */
     public function __construct(string $merchant_uid, $schedule_at, float $amount)
     {
-        date_default_timezone_set('Asia/Seoul');
         $this->merchant_uid = $merchant_uid;
         $this->setScheduleAt($schedule_at);
         $this->amount = $amount;
@@ -106,7 +105,7 @@ class Schedule
      */
     public function setScheduleAt($schedule_at): void
     {
-        $this->schedule_at = is_numeric($schedule_at) ? $schedule_at : strtotime(date($schedule_at));
+        $this->schedule_at = $this->dateToTimestamp($schedule_at);
     }
 
     /**

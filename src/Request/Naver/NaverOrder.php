@@ -17,7 +17,7 @@ use Iamport\RestClient\Response\Naver\NaverProductOrder;
  * @property array  $product_order_id
  * @property string $reason
  * @property string $delivery_method
- * @property string $dispatched_at
+ * @property mixed  $dispatched_at
  * @property string $delivery_company
  * @property string $tracking_number
  */
@@ -46,7 +46,7 @@ class NaverOrder extends RequestBase
     protected $delivery_method = DeliveryMethod::DELIVERY;
 
     /**
-     * @var string 발송일 unix timestamp
+     * @var mixed 발송일
      */
     protected $dispatched_at;
 
@@ -84,17 +84,16 @@ class NaverOrder extends RequestBase
      *
      * @param string $imp_uid
      * @param string $delivery_method
-     * @param string $dispatched_at
+     * @param mixed $dispatched_at
      *
      * @return NaverOrder
      */
-    public static function ship(string $imp_uid, string $delivery_method, string $dispatched_at)
+    public static function ship(string $imp_uid, string $delivery_method, $dispatched_at)
     {
-        date_default_timezone_set('Asia/Seoul');
         $instance                   = new self();
         $instance->imp_uid          = $imp_uid;
         $instance->delivery_method  = $delivery_method;
-        $instance->dispatched_at    = strtotime(date($dispatched_at));
+        $instance->dispatched_at    = $instance->dateToTimestamp($dispatched_at);
         $instance->isCollection     = true;
         $instance->responseClass    = NaverProductOrder::class;
         $instance->instanceType     = 'ship';

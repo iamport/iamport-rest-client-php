@@ -133,7 +133,6 @@ class Vbank extends RequestBase
      */
     public static function store(string $merchantUid, float $amount, string $vbankCode, $vbankDue, string $vbankHolder)
     {
-        date_default_timezone_set('Asia/Seoul');
         $instance                 = new self();
         $instance->merchant_uid   = $merchantUid;
         $instance->amount         = $amount;
@@ -143,7 +142,7 @@ class Vbank extends RequestBase
             );
         }
         $instance->vbank_code     = $vbankCode;
-        $instance->vbank_due      = is_numeric($vbankDue) ? $vbankDue : strtotime(date($vbankDue));
+        $instance->vbank_due      = $instance->dateToTimestamp($vbankDue);
         $instance->vbank_holder   = $vbankHolder;
         $instance->responseClass  = Response\Payment::class;
         $instance->instanceType   = 'store';
@@ -253,8 +252,7 @@ class Vbank extends RequestBase
      */
     public function setVbankDue($vbank_due): void
     {
-        date_default_timezone_set('Asia/Seoul');
-        $this->vbank_due = is_numeric($vbank_due) ? $vbank_due : strtotime(date($vbank_due));
+        $this->vbank_due = $this->dateToTimestamp($vbank_due);
     }
 
     /**

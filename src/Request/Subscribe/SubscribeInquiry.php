@@ -90,11 +90,10 @@ class SubscribeInquiry extends RequestBase
      */
     public static function withCustomerUid(string $customer_uid, $from, $to)
     {
-        date_default_timezone_set('Asia/Seoul');
         $instance                 = new self();
         $instance->customer_uid   = $customer_uid;
-        $instance->from           = is_numeric($from) ? $from : strtotime(date($from));
-        $instance->to             = is_numeric($to) ? $to : strtotime(date($to));
+        $instance->from           = $instance->dateToTimestamp($from);
+        $instance->to             = $instance->dateToTimestamp($to);
         $instance->responseClass  = Response\Schedule::class;
         $instance->isCollection   = true;
         $instance->isPaged        = true;

@@ -2,6 +2,8 @@
 
 namespace Iamport\RestClient\Request;
 
+use DateTime;
+
 /**
  * Trait RequestTrait.
  */
@@ -58,15 +60,41 @@ trait RequestTrait
         $array = [];
         foreach ($vars as $key => $value) {
             // formdata에 불필표한 데이터 제외하고 배열로 전환
-            if (!in_array($key, [
+            if (
+                !in_array($key, [
                 'instanceType', 'verb', 'responseType', 'authenticated',
-                'isCollection', 'responseClass', 'isPaged', 'client'
-            ])) {
+                'isCollection', 'responseClass', 'isPaged', 'client',
+                ])
+            ) {
                 $array[ltrim($key, '_')] = $value;
             }
         }
 
         return $array;
+    }
+
+    /**
+     * @param $date
+     * @param string $timezone
+     *
+     * @return int
+     */
+    public function dateToTimestamp($date, $timezone = 'Asia/Seoul'): int
+    {
+        date_default_timezone_set($timezone);
+        switch (gettype($date)) {
+            case 'integer':
+                return $date;
+                break;
+            case 'object':
+                return $date->getTimestamp();
+                break;
+            case 'string':
+                return strtotime(date($date));
+                break;
+            default:
+                return $date;
+        }
     }
 
     /**

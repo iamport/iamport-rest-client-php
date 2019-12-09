@@ -39,7 +39,6 @@ class EscrowLogisInvoice
      */
     public function __construct(string $company, string $invoice, $sent_at)
     {
-        date_default_timezone_set('Asia/Seoul');
         $this->company = $company;
         $this->invoice = $invoice;
         $this->setSentAt($sent_at);
@@ -66,6 +65,6 @@ class EscrowLogisInvoice
      */
     public function setSentAt($sent_at): void
     {
-        $this->sent_at = is_numeric($sent_at) ? $sent_at : strtotime(date($sent_at));
+        $this->sent_at = $this->dateToTimestamp($sent_at);
     }
 }

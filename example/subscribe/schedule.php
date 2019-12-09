@@ -32,8 +32,8 @@ $cardInfo = new CardInfo($card_number, $expiry, $birth, $pwd_2digit);
 $request->setCardInfo($cardInfo);
 
 // 정기 예약 스케쥴 정보 셋팅
-// Schedule의 두번째 인자인 schedule_at의 값은 unix timestamp와 문자열형태의 date 모두 가능합니다.
-$schedule = new Schedule('order_book_' . time(), '2019-12-04 09:00:00', $amount);
+// Schedule의 두번째 인자인 schedule_at의 값은 unix timestamp와 DateTime 클래스(권장), 문자열형태의 date 모두 가능합니다.
+$schedule = new Schedule('order_book_' . time(), new DateTime('2019-12-25'), $amount);
 $schedule->tax_free       = 0;
 $schedule->name           = '월간 이용권 정기결제 A';
 $schedule->buyer_name     = '예약자A';

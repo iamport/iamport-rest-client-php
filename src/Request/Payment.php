@@ -237,7 +237,7 @@ class Payment extends RequestBase
      */
     public function setFrom($from): void
     {
-        $this->from = is_numeric($from) ? $from : strtotime(date($from));
+        $this->from = $this->dateToTimestamp($from);
     }
 
     /**
@@ -245,7 +245,7 @@ class Payment extends RequestBase
      */
     public function setTo($to): void
     {
-        $this->to = is_numeric($to) ? $to : strtotime(date($to));
+        $this->to = $this->dateToTimestamp($to);
     }
 
     public function valid(): bool
