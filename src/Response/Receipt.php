@@ -130,6 +130,7 @@ class Receipt
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getAppliedAt()
     {
@@ -138,6 +139,7 @@ class Receipt
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getCancelledAt()
     {

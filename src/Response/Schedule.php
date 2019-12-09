@@ -99,6 +99,7 @@ class Schedule
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getScheduleAt()
     {

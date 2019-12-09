@@ -452,6 +452,7 @@ class Payment
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getVbankDate()
     {
@@ -460,6 +461,7 @@ class Payment
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getVbankIssuedAt()
     {
@@ -564,6 +566,7 @@ class Payment
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getPaidAt()
     {
@@ -572,6 +575,7 @@ class Payment
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getFailedAt()
     {
@@ -580,6 +584,7 @@ class Payment
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getCancelledAt()
     {

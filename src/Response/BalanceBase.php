@@ -82,6 +82,7 @@ class BalanceBase
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getCreated()
     {

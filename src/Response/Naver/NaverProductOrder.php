@@ -250,6 +250,7 @@ class NaverProductOrder
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getShippingDue()
     {

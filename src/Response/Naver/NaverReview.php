@@ -57,12 +57,12 @@ class NaverReview
     protected $writer;
 
     /**
-     * @var int 네이버페이 구매평 작성시각 unix timestamp ,
+     * @var mixed 네이버페이 구매평 작성시각 unix timestamp ,
      */
     protected $created_at;
 
     /**
-     * @var int 네이버페이 구매평 수정시각 unix timestamp
+     * @var mixed 네이버페이 구매평 수정시각 unix timestamp
      */
     protected $modified_at;
 
@@ -159,17 +159,19 @@ class NaverReview
     }
 
     /**
-     * @return int
+     * @return mixed
+     * @throws \Exception
      */
-    public function getCreatedAt(): int
+    public function getCreatedAt()
     {
         return $this->timestampToDate($this->created_at);
     }
 
     /**
-     * @return int
+     * @return mixed
+     * @throws \Exception
      */
-    public function getModifiedAt(): int
+    public function getModifiedAt()
     {
         return $this->timestampToDate($this->modified_at);
     }

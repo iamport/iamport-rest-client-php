@@ -158,6 +158,7 @@ class SubscribeCustomer
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getInserted()
     {
@@ -166,6 +167,7 @@ class SubscribeCustomer
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getUpdated()
     {

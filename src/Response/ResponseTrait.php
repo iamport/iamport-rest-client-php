@@ -2,6 +2,8 @@
 
 namespace Iamport\RestClient\Response;
 
+use DateTime;
+
 /**
  * Trait ResponseTrait.
  */
@@ -37,12 +39,14 @@ trait ResponseTrait
      * @param string|null $format
      *
      * @return false|int|string
+     *
+     * @throws \Exception
      */
     public function timestampToDate(int $timestamp, string $format = null)
     {
         $format = $format ?? 'Y-m-d H:i:s';
 
-        return ($timestamp === 0) ? 0 : date($format, $timestamp);
+        return ($timestamp === 0) ? 0 : (new DateTime())->setTimestamp($timestamp)->format($format);
     }
 
     /**

@@ -66,6 +66,7 @@ class PaymentCancel
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getCancelledAt()
     {

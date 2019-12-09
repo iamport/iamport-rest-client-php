@@ -60,6 +60,7 @@ class EscrowLogis
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getSentAt()
     {
@@ -68,6 +69,7 @@ class EscrowLogis
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getAppliedAt()
     {

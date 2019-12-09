@@ -146,6 +146,7 @@ class Certification
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getBirth()
     {
@@ -170,6 +171,7 @@ class Certification
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getCertifiedAt()
     {
