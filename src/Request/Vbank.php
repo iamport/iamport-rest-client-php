@@ -136,7 +136,7 @@ class Vbank extends RequestBase
         $instance                 = new self();
         $instance->merchant_uid   = $merchantUid;
         $instance->amount         = $amount;
-        if (VbankCode::validation($vbankCode)) {
+        if (!VbankCode::validation($vbankCode)) {
             throw new InvalidArgumentException(
                 '허용되지 않는 은행코드 입니다. ( VbankCode::getAll()로 허용 가능한 값을 확인해주세요. )'
             );
