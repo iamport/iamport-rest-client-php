@@ -142,18 +142,16 @@ IDE를 사용할 경우 **타입 체크**, **값의 존재 여부**, **자동완
 
 ```html
 Result {
-    success: 성공/실패유무 (boolean)
     data : 응답 데이터 (Requset 객체)
     error : 에러정보
 }
 ```
-`getSuccess()`, `getData()`, `getError()` 메소드를 통해 각각의 값에 접근 가능하며,
+`isSuccess()`메소드르로애 API 호출 성공여부를 알 수 있으며, `getData()`, `getError()` 메소드를 통해 각각의 값에 접근 가능합니다.
 data에는 `Response`객체가 담기고 error에는 Rest Api 서버가 제공하는 에러 정보및 추적을 위한 원본 Exception 객체를 반환합니다.  
 
 ```php
 // 성공 예시
 Result {
-  success: true
   data : Payment {
     imp_uid: "imp_1234567"
     merchant_uid : "merchant_1234"
@@ -164,7 +162,6 @@ Result {
 
 // 에러 예시
 Result {
-  success: false
   data : null
   error : {
     "code": -1
