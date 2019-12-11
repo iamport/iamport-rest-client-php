@@ -405,7 +405,7 @@ class SubscribeCustomer extends RequestBase
         if ($this->instanceType === 'list') {
             return Endpoint::SBCR_CUSTOMERS;
         } elseif ($this->instanceType === 'payments') {
-            return Endpoint::SBCR_CUSTOMERS . '/' . $this->customer_uid . Endpoint::PAYMENTS;
+            return Endpoint::SBCR_CUSTOMERS . '/' . $this->customer_uid . '/payments';
         } elseif ($this->instanceType === 'schedules') {
             return Endpoint::SBCR_CUSTOMERS . '/' . $this->customer_uid . Endpoint::SCHEDULES;
         } else {

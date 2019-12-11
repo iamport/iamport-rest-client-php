@@ -2,10 +2,12 @@
 
 namespace Iamport\RestClient\Test;
 
+use DateTime;
 use Iamport\RestClient\Request\CardInfo;
 use Iamport\RestClient\Request\Subscribe\Schedule;
 use Iamport\RestClient\Request\Subscribe\SubscribeAgain;
 use Iamport\RestClient\Request\Subscribe\SubscribeCustomer;
+use Iamport\RestClient\Request\Subscribe\SubscribeInquiry;
 use Iamport\RestClient\Request\Subscribe\SubscribeOnetime;
 use Iamport\RestClient\Request\Subscribe\SubscribeSchedule;
 use Iamport\RestClient\Request\Subscribe\SubscribeUnschedule;
@@ -16,7 +18,7 @@ class SubscribeTest extends TestCase
     use IamportTestTrait;
 
     /** @test */
-    public function issue_subscribe_billing_key()
+    public function issue_subscribe_customer()
     {
         $cardInfo                             = new CardInfo('1234-1234-1234-1234', '2023-12', '800102', '01');
         $subscribeCustomer                    = SubscribeCustomer::issue(self::$customerUid, $cardInfo);
@@ -36,7 +38,7 @@ class SubscribeTest extends TestCase
     }
 
     /** @test */
-    public function view_subscribe_billing_key()
+    public function view_subscribe_customer()
     {
         $subscribeCustomer = SubscribeCustomer::view(self::$customerUid);
 
@@ -50,13 +52,58 @@ class SubscribeTest extends TestCase
     }
 
     /** @test */
-    public function delete_subscribe_billing_key()
+    public function list_subscribe_customer()
+    {
+        $subscribeCustomer = SubscribeCustomer::list([
+            self::$customerUid
+        ]);
+
+        $this->assertEquals('/subscribe/customers', $subscribeCustomer->path());
+        $this->assertEquals('GET', $subscribeCustomer->verb());
+        $this->assertArrayHasKey('query', $subscribeCustomer->attributes());
+
+        $response = $this->iamport->callApi($subscribeCustomer);
+
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+    }
+
+    /** @test */
+    public function delete_subscribe_customer()
     {
         $subscribeCustomer = SubscribeCustomer::delete(self::$customerUid);
 
         $this->assertEquals('/subscribe/customers/' . self::$customerUid, $subscribeCustomer->path());
         $this->assertEquals('DELETE', $subscribeCustomer->verb());
         $this->assertEmpty($subscribeCustomer->attributes());
+
+        $response = $this->iamport->callApi($subscribeCustomer);
+
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+    }
+
+    /** @test */
+    public function subscribe_customer_by_payments()
+    {
+        $subscribeCustomer = SubscribeCustomer::payments(self::$customerUid);
+
+        $this->assertEquals('/subscribe/customers/' . self::$customerUid . '/payments', $subscribeCustomer->path());
+        $this->assertEquals('GET', $subscribeCustomer->verb());
+        $this->assertArrayHasKey('query', $subscribeCustomer->attributes());
+
+        $response = $this->iamport->callApi($subscribeCustomer);
+
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+    }
+
+    /** @test */
+    public function subscribe_customer_by_schedules()
+    {
+        $subscribeCustomer = SubscribeCustomer::schedules(self::$customerUid, new DateTime('2019-12-25'), new DateTime('2019-12-30'));
+        $subscribeCustomer->page = 1;
+
+        $this->assertEquals('/subscribe/customers/' . self::$customerUid . '/schedules', $subscribeCustomer->path());
+        $this->assertEquals('GET', $subscribeCustomer->verb());
+        $this->assertArrayHasKey('query', $subscribeCustomer->attributes());
 
         $response = $this->iamport->callApi($subscribeCustomer);
 
@@ -156,6 +203,34 @@ class SubscribeTest extends TestCase
         $this->assertArrayHasKey('body', $subscribeUnschedule->attributes());
 
         $response = $this->iamport->callApi($subscribeUnschedule);
+
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+    }
+
+    /** @test */
+    public function subscribe_schedule_by_merchant_uid()
+    {
+        $request = SubscribeInquiry::withMerchantUid(self::$merchantUid);
+
+        $this->assertEquals('/subscribe/payments/schedule/' . self::$merchantUid, $request->path());
+        $this->assertEquals('GET', $request->verb());
+        $this->assertEmpty($request->attributes());
+
+        $response = $this->iamport->callApi($request);
+
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+    }
+
+    /** @test */
+    public function subscribe_schedule_by_customer_uid()
+    {
+        $request = SubscribeInquiry::withCustomerUid(self::$customerUid, new DateTime('2019-12-20 08:00:00'), new DateTime('2019-12-29'));
+
+        $this->assertEquals('/subscribe/payments/schedule/customers/' . self::$customerUid, $request->path());
+        $this->assertEquals('GET', $request->verb());
+        $this->assertArrayHasKey('query', $request->attributes());
+
+        $response = $this->iamport->callApi($request);
 
         $this->assertInstanceOf('Iamport\RestClient\Result', $response);
     }
