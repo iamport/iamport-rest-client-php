@@ -495,7 +495,13 @@ $nextData = $data->next($iamport);
 
 ## Example
 
-보다 자세한 예제는 [테스트 코드 - tests/IamportTest.php](tests/IamportTest.php) 혹은 [샘플코드](example)를 참조해주세요
+보다 자세한 예제는 [테스트 코드 - tests](tests/) 혹은 [샘플코드](example)를 참조해주세요
+
+## Testing
+
+```bash
+composer test
+```
 
 ## Links
 - [아임포트 API](https://api.iamport.kr)

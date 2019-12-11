@@ -4,7 +4,8 @@
 	convertErrorsToExceptions="true"
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
-	stopOnFailure="true">
+	stopOnFailure="true"
+		 printerClass="Codedungeon\PHPUnitPrettyResultPrinter\Printer">
 	<testsuites>
 		<testsuite name="Unit Tests">
 			<directory>tests</directory>
