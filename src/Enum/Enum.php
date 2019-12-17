@@ -98,16 +98,6 @@ class Enum
     /**
      * @return string
      */
-    public static function getRandomKey()
-    {
-        $keys = self::getKeys();
-
-        return $keys[array_rand($keys, 1)];
-    }
-
-    /**
-     * @return string
-     */
     public static function getRandomValue()
     {
         $values = self::getValues();
