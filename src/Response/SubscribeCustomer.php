@@ -66,8 +66,6 @@ class SubscribeCustomer
 
     /**
      * Certification constructor.
-     *
-     * @param array $response
      */
     public function __construct(array $response)
     {
@@ -84,73 +82,46 @@ class SubscribeCustomer
         $this->updated           = $response['updated'];
     }
 
-    /**
-     * @return string
-     */
     public function getCustomerUid(): string
     {
         return $this->customer_uid;
     }
 
-    /**
-     * @return string
-     */
     public function getCardName(): string
     {
         return $this->card_name;
     }
 
-    /**
-     * @return string
-     */
     public function getCardCode(): string
     {
         return $this->card_code;
     }
 
-    /**
-     * @return string
-     */
     public function getCardNumber(): string
     {
         return $this->card_number;
     }
 
-    /**
-     * @return string
-     */
     public function getCustomerName(): string
     {
         return $this->customer_name;
     }
 
-    /**
-     * @return string
-     */
     public function getCustomerTel(): string
     {
         return $this->customer_tel;
     }
 
-    /**
-     * @return string
-     */
     public function getCustomerEmail(): string
     {
         return $this->customer_email;
     }
 
-    /**
-     * @return string
-     */
     public function getCustomerAddr(): string
     {
         return $this->customer_addr;
     }
 
-    /**
-     * @return string
-     */
     public function getCustomerPostcode(): string
     {
         return $this->customer_postcode;
@@ -158,6 +129,7 @@ class SubscribeCustomer
 
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getInserted()
@@ -167,6 +139,7 @@ class SubscribeCustomer
 
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getUpdated()

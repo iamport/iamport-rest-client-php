@@ -63,8 +63,6 @@ class NaverOrder extends RequestBase
     /**
      * 주문형-네이버페이 상품주문들을 환불처리합니다.
      *
-     * @param string $impUid
-     *
      * @return NaverOrder
      */
     public static function cancel(string $impUid)
@@ -82,8 +80,6 @@ class NaverOrder extends RequestBase
     /**
      * 네이버페이 상품주문들을 발송처리.
      *
-     * @param string $imp_uid
-     * @param string $delivery_method
      * @param mixed $dispatched_at
      *
      * @return NaverOrder
@@ -104,9 +100,6 @@ class NaverOrder extends RequestBase
 
     /**
      * 네이버페이 상품주문들을 발송처리.
-     *
-     * @param string $imp_uid
-     * @param string $delivery_method
      *
      * @return NaverOrder
      */
@@ -135,49 +128,31 @@ class NaverOrder extends RequestBase
         return $instance;
     }
 
-    /**
-     * @param array $product_order_id
-     */
     public function setProductOrderId(array $product_order_id): void
     {
         $this->product_order_id = $product_order_id;
     }
 
-    /**
-     * @param string $reason
-     */
     public function setReason(string $reason): void
     {
         $this->reason = $reason;
     }
 
-    /**
-     * @param string $delivery_method
-     */
     public function setDeliveryMethod(string $delivery_method): void
     {
         $this->delivery_method = $delivery_method;
     }
 
-    /**
-     * @param string $dispatched_at
-     */
     public function setDispatchedAt(string $dispatched_at): void
     {
         $this->dispatched_at = $dispatched_at;
     }
 
-    /**
-     * @param string $delivery_company
-     */
     public function setDeliveryCompany(string $delivery_company): void
     {
         $this->delivery_company = $delivery_company;
     }
 
-    /**
-     * @param string $tracking_number
-     */
     public function setTrackingNumber(string $tracking_number): void
     {
         $this->tracking_number = $tracking_number;
@@ -210,6 +185,7 @@ class NaverOrder extends RequestBase
                 if (!CancelReason::validation($this->reason)) {
                     return false;
                 }
+
                 return true;
                 break;
             default:
@@ -229,8 +205,6 @@ class NaverOrder extends RequestBase
      *
      * 주문형-네이버페이 상품주문들을 발주처리합니다
      * [POST] /payments/{imp_uid}/naver/place.
-     *
-     * @return string
      */
     public function path(): string
     {
@@ -252,9 +226,6 @@ class NaverOrder extends RequestBase
         }
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         return [
@@ -262,9 +233,6 @@ class NaverOrder extends RequestBase
         ];
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return 'POST';

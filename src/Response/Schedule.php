@@ -63,8 +63,6 @@ class Schedule
 
     /**
      * Schedule constructor.
-     *
-     * @param array $response
      */
     public function __construct(array $response)
     {
@@ -72,7 +70,7 @@ class Schedule
         $this->merchant_uid    = $response['merchant_uid'];
         $this->schedule_at     = $response['schedule_at'];
         $this->amount          = $response['amount'];
-        $this->name            = $response['name']  ?? null;
+        $this->name            = $response['name'] ?? null;
         $this->buyer_name      = $response['buyer_name'] ?? null;
         $this->buyer_email     = $response['buyer_email'] ?? null;
         $this->buyer_tel       = $response['buyer_tel'] ?? null;
@@ -81,17 +79,11 @@ class Schedule
         $this->schedule_status = $response['schedule_status'] ?? null;
     }
 
-    /**
-     * @return string
-     */
     public function getCustomerUid(): string
     {
         return $this->customer_uid;
     }
 
-    /**
-     * @return int
-     */
     public function getMerchantUid(): int
     {
         return $this->merchant_uid;
@@ -99,6 +91,7 @@ class Schedule
 
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getScheduleAt()
@@ -106,65 +99,41 @@ class Schedule
         return $this->timestampToDate($this->schedule_at);
     }
 
-    /**
-     * @return string
-     */
     public function getAmount(): string
     {
         return $this->amount;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getBuyerName(): string
     {
         return $this->buyer_name;
     }
 
-    /**
-     * @return string
-     */
     public function getBuyerEmail(): string
     {
         return $this->buyer_email;
     }
 
-    /**
-     * @return string
-     */
     public function getBuyerTel(): string
     {
         return $this->buyer_tel;
     }
 
-    /**
-     * @return string
-     */
     public function getBuyerAddr(): string
     {
         return $this->buyer_addr;
     }
 
-    /**
-     * @return string
-     */
     public function getBuyerPostcode(): string
     {
         return $this->buyer_postcode;
     }
 
-    /**
-     * @return string
-     */
     public function getScheduleStatus(): string
     {
         return $this->schedule_status;

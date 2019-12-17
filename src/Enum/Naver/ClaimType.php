@@ -19,8 +19,6 @@ class ClaimType extends Enum
      * Enum의 설명을 가져옵니다.
      *
      * @param int $value
-     *
-     * @return string|null
      */
     public static function getDescription($value): ?string
     {

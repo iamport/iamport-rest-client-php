@@ -34,16 +34,15 @@ $request->buyer_postcode = '주문자 우편번호';
 $request->card_quota     = 6; //카드 할부개월 수
 $request->custom_data    = '';
 $request->notice_url     = 'http://notice.example.com';
-$result = $iamport->callApi($request);
+$result                  = $iamport->callApi($request);
 
 if ($result->isSuccess()) {
-    /**
+    /*
      *  Response\Payment 를 가리킵니다. __get을 통해 API의 Item Model의 값들을 모두 property처럼 접근할 수 있습니다.
      *  참고 : https://api.iamport.kr/#!/subscribe/again 의 Response Class Model.
      */
     // TODO: 각 가맹점 환경에 맞게 결제 성공 이후의 로직을 작성합니다.
     dump($result->getData());
-
 } else {
     // error가 있는지 먼저 확인합니다.
     $error = $result->getError();

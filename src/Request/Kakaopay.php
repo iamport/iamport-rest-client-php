@@ -35,26 +35,18 @@ class Kakaopay extends RequestBase
      * 카카오페이 주문내조회 API를 래핑한 API.
      *
      * Kakao constructor.
-     *
-     * @param string $payment_request_date
      */
     public function __construct(string $payment_request_date)
     {
         $this->payment_request_date = $payment_request_date;
-        $this->responseClass = Response\Kakaopay::class;
+        $this->responseClass        = Response\Kakaopay::class;
     }
 
-    /**
-     * @param string $cid
-     */
     public function setCid(string $cid): void
     {
         $this->cid = $cid;
     }
 
-    /**
-     * @param int $page
-     */
     public function setPage(int $page): void
     {
         $this->page = $page;
@@ -62,18 +54,13 @@ class Kakaopay extends RequestBase
 
     /**
      * 카카오페이 주문내역조회 API
-     * [GET] /kakao/payment/orders
-     *
-     * @return string
+     * [GET] /kakao/payment/orders.
      */
     public function path(): string
     {
         return Endpoint::KAKAO;
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         $result =  [
@@ -84,15 +71,12 @@ class Kakaopay extends RequestBase
         ];
 
         if ($this->cid !== null) {
-            $result['query']['cid'] = $this->cid ;
+            $result['query']['cid'] = $this->cid;
         }
 
         return $result;
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return 'GET';

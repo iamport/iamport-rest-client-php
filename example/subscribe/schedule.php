@@ -14,7 +14,7 @@ $card_number   = filter_input(INPUT_POST, 'card_number', FILTER_SANITIZE_STRING)
 $expiry        = filter_input(INPUT_POST, 'expiry', FILTER_SANITIZE_STRING);
 $birth         = filter_input(INPUT_POST, 'birth', FILTER_SANITIZE_STRING);
 $pwd_2digit    = filter_input(INPUT_POST, 'pwd_2digit', FILTER_SANITIZE_STRING);
-$amount    = filter_input(INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_FLOAT);
+$amount        = filter_input(INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_FLOAT);
 // $customer_uid값에 대한 자세한 설명은 아임포트 docs(https://docs.iamport.kr/implementation/subscription)의 customer_uid 속성을 참조합니다.
 $customerUid  = filter_input(INPUT_POST, 'customer_uid', FILTER_SANITIZE_STRING);
 
@@ -33,7 +33,7 @@ $request->setCardInfo($cardInfo);
 
 // 정기 예약 스케쥴 정보 셋팅
 // Schedule의 두번째 인자인 schedule_at의 값은 unix timestamp와 DateTime 클래스(권장), 문자열형태의 date 모두 가능합니다.
-$schedule = new Schedule('order_book_' . time(), new DateTime('2019-12-25'), $amount);
+$schedule                 = new Schedule('order_book_' . time(), new DateTime('2019-12-25'), $amount);
 $schedule->tax_free       = 0;
 $schedule->name           = '월간 이용권 정기결제 A';
 $schedule->buyer_name     = '예약자A';
@@ -54,7 +54,7 @@ if ($result->isSuccess()) {
     $schedules = $result->getData();
     dump($schedules);
 
-    // TODO: 예약한 시간에 결제가 완료되면 지정하신 콜백 URL로 아임포트가 값을 전달하게 됩니다.
+// TODO: 예약한 시간에 결제가 완료되면 지정하신 콜백 URL로 아임포트가 값을 전달하게 됩니다.
     // 자세한 사항은 아임포트 docs(https://docs.iamport.kr/implementation/subscription#request-payment)의 결제 결과 동기화하기를 참조해주세요.
 } else {
     $error = $result->getError();

@@ -8,7 +8,8 @@ use Iamport\RestClient\Request\RequestTrait;
 
 /**
  * Class NaverPayment.
- * TODO: 유일하게 리턴타입이 객체가 아니라 단순 문자열인데 post 전송 데이터 확인해야함
+ * TODO: 유일하게 리턴타입이 객체가 아니라 단순 문자열인데 post 전송 데이터 확인해야함.
+ *
  * @property string $imp_uid
  */
 class NaverPayment extends RequestBase
@@ -22,8 +23,6 @@ class NaverPayment extends RequestBase
 
     /**
      * 결제형-네이버페이 포인트 적립 API.
-     *
-     * @param string $impUid
      *
      * @return NaverPayment
      */
@@ -39,8 +38,6 @@ class NaverPayment extends RequestBase
 
     /**
      * 결제형-네이버페이 에스크로 주문 확정.
-     *
-     * @param string $impUid
      *
      * @return NaverPayment
      */
@@ -60,8 +57,6 @@ class NaverPayment extends RequestBase
      *
      * 결제형-네이버페이 에스크로 주문 확정
      * [POST] /payments/{imp_uid}/naver/confirm
-     *
-     * @return string
      */
     public function path(): string
     {
@@ -72,17 +67,11 @@ class NaverPayment extends RequestBase
         }
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         return [];
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return 'POST';

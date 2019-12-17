@@ -31,8 +31,6 @@ class Balance
 
     /**
      * Balance constructor.
-     *
-     * @param array $response
      */
     public function __construct(array $response)
     {
@@ -42,33 +40,21 @@ class Balance
         $this->service  = $response['service'];
     }
 
-    /**
-     * @return int
-     */
     public function getTaxFree(): int
     {
         return $this->tax_free;
     }
 
-    /**
-     * @return int
-     */
     public function getSupply(): int
     {
         return $this->supply;
     }
 
-    /**
-     * @return int
-     */
     public function getVat(): int
     {
         return $this->vat;
     }
 
-    /**
-     * @return int
-     */
     public function getService(): int
     {
         return $this->service;

@@ -18,17 +18,12 @@ class Payco
 
     /**
      * Payco constructor.
-     *
-     * @param array $response
      */
     public function __construct(array $response)
     {
         $this->status = $response['status'];
     }
 
-    /**
-     * @return string
-     */
     public function getStatus(): string
     {
         return PaycoStatus::getDescription($this->status);

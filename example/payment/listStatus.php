@@ -12,7 +12,7 @@ $request->limit   = 10;
 $request->from    = '2018-08-16 09:21:32';
 $request->to      = '2018-10-08 14:04:44';
 $request->sorting = 'started';
-$result  = $iamport->callApi($request);
+$result           = $iamport->callApi($request);
 
 if ($result->isSuccess()) {
     $data         = $result->getData();
@@ -22,7 +22,7 @@ if ($result->isSuccess()) {
     $payments     = $data->getItems();
 
     foreach ($payments as $payment) {
-        $paid_at = $payment->paid_at;
+        $paid_at          = $payment->paid_at;
         $original_paid_at = $payment->getAttributes('paid_at');
     }
 

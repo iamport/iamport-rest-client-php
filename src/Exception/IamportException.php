@@ -20,10 +20,6 @@ class IamportException extends RequestException
      * IamportException constructor.
      *
      * @param $iamportResponse
-     * @param RequestInterface       $request
-     * @param ResponseInterface|null $response
-     * @param \Exception|null        $previous
-     * @param array                  $handlerContext
      */
     public function __construct(
         $iamportResponse,

@@ -36,8 +36,6 @@ class PaymentCancel
 
     /**
      * PaymentCancel constructor.
-     *
-     * @param array $response
      */
     public function __construct(array $response)
     {
@@ -48,17 +46,11 @@ class PaymentCancel
         $this->receipt_url  = $response['receipt_url'];
     }
 
-    /**
-     * @return string
-     */
     public function getPgTid(): string
     {
         return $this->pg_tid;
     }
 
-    /**
-     * @return int
-     */
     public function getAmount(): int
     {
         return $this->amount;
@@ -66,6 +58,7 @@ class PaymentCancel
 
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getCancelledAt()
@@ -73,17 +66,11 @@ class PaymentCancel
         return $this->timestampToDate($this->cancelled_at);
     }
 
-    /**
-     * @return string
-     */
     public function getReason(): string
     {
         return $this->reason;
     }
 
-    /**
-     * @return string
-     */
     public function getReceiptUrl(): string
     {
         return $this->receipt_url;

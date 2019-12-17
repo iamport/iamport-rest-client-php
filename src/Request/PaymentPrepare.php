@@ -40,9 +40,6 @@ class PaymentPrepare extends RequestBase
     /**
      * 인증방식의 결제를 진행할 때 결제금액 위변조시 결제진행자체를 block하기 위해 결제예정금액을 사전등록.
      *
-     * @param string $merchantUid
-     * @param float  $amount
-     *
      * @return PaymentPrepare
      */
     public static function store(string $merchantUid, float $amount)
@@ -59,8 +56,6 @@ class PaymentPrepare extends RequestBase
 
     /**
      * 등록되어있는 사전등록 결제정보를 조회.
-     *
-     * @param string $merchantUid
      *
      * @return PaymentPrepare
      */
@@ -83,8 +78,6 @@ class PaymentPrepare extends RequestBase
      *
      * /payments/prepare로 이미 등록되어있는 사전등록 결제정보를 조회
      * [GET] /payments/prepare/{merchant_uid}
-     *
-     * @return string
      */
     public function path(): string
     {
@@ -95,9 +88,6 @@ class PaymentPrepare extends RequestBase
         }
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         if ($this->instanceType === 'store') {
@@ -109,9 +99,6 @@ class PaymentPrepare extends RequestBase
         }
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return $this->verb;

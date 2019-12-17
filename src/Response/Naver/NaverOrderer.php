@@ -24,8 +24,6 @@ class NaverOrderer
 
     /**
      * Payment constructor.
-     *
-     * @param array $response
      */
     public function __construct(array $response)
     {

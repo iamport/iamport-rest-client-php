@@ -10,14 +10,14 @@ use GuzzleHttp\Client;
 abstract class RequestBase
 {
     /**
-     * 하나의 Requset에서 여러개의 instance를 생성할 경우 구분값
+     * 하나의 Requset에서 여러개의 instance를 생성할 경우 구분값.
      *
      * @var string
      */
     public $instanceType;
 
     /**
-     * response 유형
+     * response 유형.
      *
      * @var string
      */
@@ -46,29 +46,20 @@ abstract class RequestBase
     public $client = null;
 
     /**
-     * @var mixed  api 추가 성공 조건 (optional)
+     * @var mixed api 추가 성공 조건 (optional)
      */
     public $extraCondition = null;
 
-    /**
-     * @param string $responseClass
-     */
     public function setResponseClass(string $responseClass): void
     {
         $this->responseClass = $responseClass;
     }
 
-    /**
-     * @param bool $authenticated
-     */
     public function setAuthenticated(bool $authenticated): void
     {
         $this->authenticated = $authenticated;
     }
 
-    /**
-     * @param Client $client
-     */
     public function setClient(Client $client): void
     {
         $this->client = $client;
@@ -90,18 +81,9 @@ abstract class RequestBase
         return true;
     }
 
-    /**
-     * @return string
-     */
     abstract public function path(): string;
 
-    /**
-     * @return array
-     */
     abstract public function attributes(): array;
 
-    /**
-     * @return string
-     */
     abstract public function verb(): string;
 }

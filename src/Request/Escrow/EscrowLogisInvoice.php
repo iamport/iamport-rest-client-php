@@ -33,9 +33,7 @@ class EscrowLogisInvoice
     /**
      * EscrowLogisInvoice constructor.
      *
-     * @param string $company
-     * @param string $invoice
-     * @param mixed  $sent_at Y-m-d H:i:s 형태의 문자열 혹은 unix timestamp
+     * @param mixed $sent_at Y-m-d H:i:s 형태의 문자열 혹은 unix timestamp
      */
     public function __construct(string $company, string $invoice, $sent_at)
     {
@@ -44,17 +42,11 @@ class EscrowLogisInvoice
         $this->setSentAt($sent_at);
     }
 
-    /**
-     * @param string $company
-     */
     public function setCompany(string $company): void
     {
         $this->company = $company;
     }
 
-    /**
-     * @param string $invoice
-     */
     public function setInvoice(string $invoice): void
     {
         $this->invoice = $invoice;

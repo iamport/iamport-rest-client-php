@@ -9,9 +9,9 @@ use Iamport\RestClient\Request\Naver\NaverOrder;
 
 $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f');
 // DeliveryMethod, DeliveryCompany Enum 클래스는 getAll() 메소드로 사용가능한 값들을 조회할 수 있습니다.
-$request = NaverOrder::shipExchange('imp_589568085643', DeliveryMethod::DELIVERY);
+$request                   = NaverOrder::shipExchange('imp_589568085643', DeliveryMethod::DELIVERY);
 $request->delivery_company = DeliveryCompany::CJGLS;
-$request->tracking_number = '123456789';
+$request->tracking_number  = '123456789';
 
 // delivery_method에 따른 필수값 유무를 체크 합니다.
 if ($request->valid()) {

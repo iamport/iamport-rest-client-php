@@ -18,7 +18,7 @@ if ($result->isSuccess()) {
      */
     $receipt = $result->getData();
 
-    // TODO: $receipt->{property} 로 결제 데이터 접근
+// TODO: $receipt->{property} 로 결제 데이터 접근
     //       $receipt->getAttributes({property}) 로 원본 데이터 접근
 } else {
     $error = $result->getError();

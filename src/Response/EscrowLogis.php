@@ -31,8 +31,6 @@ class EscrowLogis
 
     /**
      * EscrowLogis constructor.
-     *
-     * @param array $response
      */
     public function __construct(array $response)
     {
@@ -42,17 +40,11 @@ class EscrowLogis
         $this->applied_at  = $response['applied_at'];
     }
 
-    /**
-     * @return string
-     */
     public function getCompany(): string
     {
         return $this->company;
     }
 
-    /**
-     * @return string
-     */
     public function getInvoice(): string
     {
         return $this->invoice;
@@ -60,6 +52,7 @@ class EscrowLogis
 
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getSentAt()
@@ -69,6 +62,7 @@ class EscrowLogis
 
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getAppliedAt()

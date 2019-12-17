@@ -72,6 +72,7 @@ class TokenResponse
 
     /**
      * @param $clazz
+     *
      * @return object
      */
     public function getResponseAs($clazz)

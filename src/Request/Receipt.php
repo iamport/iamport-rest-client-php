@@ -101,8 +101,6 @@ class Receipt extends RequestBase
      * Receipt GET constructor.
      * 발행된 현금영수증 조회.
      *
-     * @param string $impUid
-     *
      * @return Receipt
      */
     public static function view(string $impUid)
@@ -123,9 +121,6 @@ class Receipt extends RequestBase
     /**
      * 현금영수증 발행.
      *
-     * @param string $impUid
-     * @param string $identifier
-     *
      * @return Receipt
      */
     public static function issue(string $impUid, string $identifier)
@@ -144,8 +139,6 @@ class Receipt extends RequestBase
     /**
      * 현금영수증 발급 취소.
      *
-     * @param string $impUid
-     *
      * @return Receipt
      */
     public static function cancel(string $impUid)
@@ -162,8 +155,6 @@ class Receipt extends RequestBase
 
     /**
      * 아임포트와 별개로 결제된 현금거래건의 현금영수증 조회.
-     *
-     * @param string $merchantUid
      *
      * @return Receipt
      */
@@ -184,11 +175,6 @@ class Receipt extends RequestBase
 
     /**
      * 아임포트와 별개로 결제된 현금거래건의 현금영수증 발행.
-     *
-     * @param string $merchantUid
-     * @param string $name
-     * @param int    $amount
-     * @param string $identifier
      *
      * @return Receipt
      */
@@ -213,8 +199,6 @@ class Receipt extends RequestBase
     /**
      * 아임포트와 별개로 결제된 현금거래건의 현금영수증 발급 취소.
      *
-     * @param string $merchantUid
-     *
      * @return Receipt
      */
     public static function cancelExternal(string $merchantUid)
@@ -232,105 +216,66 @@ class Receipt extends RequestBase
         return $instance;
     }
 
-    /**
-     * @param string $imp_uid
-     */
     public function setImpUid(string $imp_uid): void
     {
         $this->imp_uid = $imp_uid;
     }
 
-    /**
-     * @param string $identifier
-     */
     public function setIdentifier(string $identifier): void
     {
         $this->identifier = $identifier;
     }
 
-    /**
-     * @param string $identifier_type
-     */
     public function setIdentifierType(string $identifier_type): void
     {
         $this->identifier_type = $identifier_type;
     }
 
-    /**
-     * @param string $type
-     */
     public function setType(string $type): void
     {
         $this->type = $type;
     }
 
-    /**
-     * @param string $buyer_name
-     */
     public function setBuyerName(string $buyer_name): void
     {
         $this->buyer_name = $buyer_name;
     }
 
-    /**
-     * @param string $buyer_email
-     */
     public function setBuyerEmail(string $buyer_email): void
     {
         $this->buyer_email = $buyer_email;
     }
 
-    /**
-     * @param string $buyer_tel
-     */
     public function setBuyerTel(string $buyer_tel): void
     {
         $this->buyer_tel = $buyer_tel;
     }
 
-    /**
-     * @param int $tax_free
-     */
     public function setTaxFree(int $tax_free): void
     {
         $this->tax_free = $tax_free;
     }
 
-    /**
-     * @param string $merchant_uid
-     */
     public function setMerchantUid(string $merchant_uid): void
     {
         $this->merchant_uid = $merchant_uid;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @param string $amount
-     */
     public function setAmount(string $amount): void
     {
         $this->amount = $amount;
     }
 
-    /**
-     * @param string $pg
-     */
     public function setPg(string $pg): void
     {
         $this->pg = $pg;
     }
 
-    /**
-     * @return bool
-     */
     public function valid(): bool
     {
         switch ($this->instanceType) {
@@ -351,9 +296,6 @@ class Receipt extends RequestBase
         }
     }
 
-    /**
-     * @return string
-     */
     public function path(): string
     {
         switch ($this->instanceType) {
@@ -372,9 +314,6 @@ class Receipt extends RequestBase
         }
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         if ($this->verb === 'POST') {
@@ -386,9 +325,6 @@ class Receipt extends RequestBase
         }
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return $this->verb;

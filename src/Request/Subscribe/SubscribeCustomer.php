@@ -127,8 +127,6 @@ class SubscribeCustomer extends RequestBase
     /**
      * 비인증결제 빌링키 조회.
      *
-     * @param string $customer_uid
-     *
      * @return SubscribeCustomer
      */
     public static function view(string $customer_uid)
@@ -148,9 +146,6 @@ class SubscribeCustomer extends RequestBase
 
     /**
      * 비인증결제 빌링키 등록(수정).
-     *
-     * @param string   $customer_uid
-     * @param CardInfo $cardInfo
      *
      * @return SubscribeCustomer
      */
@@ -176,8 +171,6 @@ class SubscribeCustomer extends RequestBase
     /**
      * 비인증결제 빌링키 삭제.
      *
-     * @param string $customer_uid
-     *
      * @return SubscribeCustomer
      */
     public static function delete(string $customer_uid)
@@ -197,8 +190,6 @@ class SubscribeCustomer extends RequestBase
 
     /**
      * 비인증결제 빌링키 목록조회.
-     *
-     * @param array $customer_uids
      *
      * @return SubscribeCustomer
      */
@@ -221,8 +212,6 @@ class SubscribeCustomer extends RequestBase
     /**
      * 구매자의 빌링키로 결제된 결제목록 조회.
      *
-     * @param string $customerUid
-     *
      * @return SubscribeCustomer
      */
     public static function payments(string $customerUid)
@@ -243,11 +232,10 @@ class SubscribeCustomer extends RequestBase
     }
 
     /**
-     * customer_uid별 결제예약목록을 조회
+     * customer_uid별 결제예약목록을 조회.
      *
-     * @param string $customerUid
-     * @param mixed  $from
-     * @param mixed  $to
+     * @param mixed $from
+     * @param mixed $to
      *
      * @return SubscribeCustomer
      */
@@ -270,111 +258,70 @@ class SubscribeCustomer extends RequestBase
         return $instance;
     }
 
-    /**
-     * @param string $customer_uid
-     */
     public function setCustomerUid(string $customer_uid): void
     {
         $this->customer_uid = $customer_uid;
     }
 
-    /**
-     * @param string $pg
-     */
     public function setPg(string $pg): void
     {
         $this->pg = $pg;
     }
 
-    /**
-     * @param string $card_number
-     */
     public function setCardNumber(string $card_number): void
     {
         $this->card_number = $card_number;
     }
 
-    /**
-     * @param string $expiry
-     */
     public function setExpiry(string $expiry): void
     {
         $this->expiry = $expiry;
     }
 
-    /**
-     * @param string $birth
-     */
     public function setBirth(string $birth): void
     {
         $this->birth = $birth;
     }
 
-    /**
-     * @param string $pwd_2digit
-     */
     public function setPwd2digit(string $pwd_2digit): void
     {
         $this->pwd_2digit = $pwd_2digit;
     }
 
-    /**
-     * @param string $customer_name
-     */
     public function setCustomerName(string $customer_name): void
     {
         $this->customer_name = $customer_name;
     }
 
-    /**
-     * @param string $customer_tel
-     */
     public function setCustomerTel(string $customer_tel): void
     {
         $this->customer_tel = $customer_tel;
     }
 
-    /**
-     * @param string $customer_email
-     */
     public function setCustomerEmail(string $customer_email): void
     {
         $this->customer_email = $customer_email;
     }
 
-    /**
-     * @param string $customer_addr
-     */
     public function setCustomerAddr(string $customer_addr): void
     {
         $this->customer_addr = $customer_addr;
     }
 
-    /**
-     * @param string $customer_postcode
-     */
     public function setCustomerPostcode(string $customer_postcode): void
     {
         $this->customer_postcode = $customer_postcode;
     }
 
-    /**
-     * @param int $page
-     */
     public function setPage(int $page): void
     {
         $this->page = $page;
     }
 
-    /**
-     * @param string $schedule_status
-     */
     public function setScheduleStatus(string $schedule_status): void
     {
         if (!in_array($schedule_status, ['scheduled', 'executed', 'revoked'])) {
-            throw new InvalidArgumentException(
-                '허용되지 않는 schedule_status 값 입니다. [ 가능한 값은 scheduled, executed, revoked 입니다. ]'
-            );
+            throw new InvalidArgumentException('허용되지 않는 schedule_status 값 입니다. [ 가능한 값은 scheduled, executed, revoked 입니다. ]');
         }
         $this->schedule_status = $schedule_status;
     }
@@ -397,8 +344,6 @@ class SubscribeCustomer extends RequestBase
      *
      * customer_uid별 결제예약목록을 조회
      * [GET] /subscribe/customers/{customer_uid}/schedules
-     *
-     * @return string
      */
     public function path(): string
     {
@@ -413,9 +358,6 @@ class SubscribeCustomer extends RequestBase
         }
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         switch ($this->instanceType) {
@@ -461,9 +403,6 @@ class SubscribeCustomer extends RequestBase
         }
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return $this->verb;

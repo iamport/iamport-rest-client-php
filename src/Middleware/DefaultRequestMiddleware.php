@@ -10,8 +10,6 @@ use Psr\Http\Message\RequestInterface;
 class DefaultRequestMiddleware
 {
     /**
-     * @param callable $handler
-     *
      * @return \Closure
      */
     public function __invoke(callable $handler)

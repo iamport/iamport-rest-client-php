@@ -68,8 +68,6 @@ class NaverReview
 
     /**
      * NaverReview constructor.
-     *
-     * @param array $response
      */
     public function __construct(array $response)
     {
@@ -86,73 +84,46 @@ class NaverReview
         $this->modified_at         = $response['modified_at'];
     }
 
-    /**
-     * @return string
-     */
     public function getReviewId(): string
     {
         return $this->review_id;
     }
 
-    /**
-     * @return string
-     */
     public function getScore(): string
     {
         return $this->score;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getContent(): string
     {
         return $this->content;
     }
 
-    /**
-     * @return string
-     */
     public function getProductOrderId(): string
     {
         return $this->product_order_id;
     }
 
-    /**
-     * @return string
-     */
     public function getProductId(): string
     {
         return $this->product_id;
     }
 
-    /**
-     * @return string
-     */
     public function getProductName(): string
     {
         return $this->product_name;
     }
 
-    /**
-     * @return string
-     */
     public function getProductOptionName(): string
     {
         return $this->product_option_name;
     }
 
-    /**
-     * @return string
-     */
     public function getWriter(): string
     {
         return $this->writer;
@@ -160,6 +131,7 @@ class NaverReview
 
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getCreatedAt()
@@ -169,6 +141,7 @@ class NaverReview
 
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getModifiedAt()

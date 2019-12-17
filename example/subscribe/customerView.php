@@ -19,7 +19,7 @@ if ($result->isSuccess()) {
     $customer = $result->getData();
     dump($customer);
     echo "빌키가 등록된 시각 (변환된 값) : $customer->inserted <br>";
-    echo '빌키가 등록된 시각 (원본) : '.$customer->getAttributes('inserted');
+    echo '빌키가 등록된 시각 (원본) : ' . $customer->getAttributes('inserted');
 } else {
     $error = $result->getError();
     dump("아임포트 API 에러코드 : $error->code");

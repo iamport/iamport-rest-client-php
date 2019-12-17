@@ -31,9 +31,6 @@ abstract class IamportBase
 
     /**
      * IamportBase constructor.
-     *
-     * @param string $impKey
-     * @param string $impSecret
      */
     public function __construct(string $impKey, string $impSecret)
     {
@@ -41,21 +38,18 @@ abstract class IamportBase
         $this->impSecret = $impSecret;
     }
 
-    /**
-     * @return string|null
-     */
     public function getAccessToken(): ?string
     {
         return $this->accessToken;
     }
 
-    public abstract function requestAccessToken(bool $force = false): ?string;
+    abstract public function requestAccessToken(bool $force = false): ?string;
 
-    public abstract function callApi(RequestBase $request): Result;
+    abstract public function callApi(RequestBase $request): Result;
 
-    public abstract function request(string $method, string $uri, array $attributes = [], bool $authenticated = true, Client $customClient = null);
+    abstract public function request(string $method, string $uri, array $attributes = [], bool $authenticated = true, Client $customClient = null);
 
-    protected abstract function getHttpClient(bool $authenticated): Client;
+    abstract protected function getHttpClient(bool $authenticated): Client;
 
-    protected abstract function isTokenExpired(): bool;
+    abstract protected function isTokenExpired(): bool;
 }

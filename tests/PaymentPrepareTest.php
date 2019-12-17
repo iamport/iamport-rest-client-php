@@ -2,7 +2,6 @@
 
 namespace Iamport\RestClient\Test;
 
-
 use Iamport\RestClient\Request\PaymentPrepare;
 use PHPUnit\Framework\TestCase;
 

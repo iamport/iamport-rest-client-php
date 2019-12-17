@@ -7,7 +7,6 @@ namespace Iamport\RestClient\Response;
  */
 class Item
 {
-
     /**
      * @var array
      */
@@ -21,14 +20,13 @@ class Item
     /**
      * Item constructor.
      *
-     * @param array $response
      * @param $responseClass
      */
     public function __construct(array $response, $responseClass)
     {
         date_default_timezone_set('Asia/Seoul');
         $this->response = $response;
-        $this->clazz = $responseClass;
+        $this->clazz    = $responseClass;
     }
 
     /**

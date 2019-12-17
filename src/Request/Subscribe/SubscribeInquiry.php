@@ -62,8 +62,6 @@ class SubscribeInquiry extends RequestBase
     /**
      * 예약 거래주문번호(merchant_uid)로 결제예약정보를 조회.
      *
-     * @param string $merchant_uid
-     *
      * @return SubscribeInquiry
      */
     public static function withMerchantUid(string $merchant_uid)
@@ -82,7 +80,6 @@ class SubscribeInquiry extends RequestBase
     /**
      * customer_uid별 결제예약목록을 조회.
      *
-     * @param string $customer_uid
      * @param mixed $from
      * @param mixed $to
      *
@@ -103,23 +100,15 @@ class SubscribeInquiry extends RequestBase
         return $instance;
     }
 
-    /**
-     * @param string $page
-     */
     public function setPage(string $page): void
     {
         $this->page = $page;
     }
 
-    /**
-     * @param string $schedule_status
-     */
     public function setScheduleStatus(string $schedule_status): void
     {
         if (!in_array($schedule_status, ['scheduled', 'executed', 'revoked'])) {
-            throw new InvalidArgumentException(
-                '허용되지 않는 schedule_status 값 입니다. [ 가능한 값은 scheduled, executed, revoked 입니다. ]'
-            );
+            throw new InvalidArgumentException('허용되지 않는 schedule_status 값 입니다. [ 가능한 값은 scheduled, executed, revoked 입니다. ]');
         }
         $this->schedule_status = $schedule_status;
     }
@@ -130,8 +119,6 @@ class SubscribeInquiry extends RequestBase
      *
      * customer_uid별 결제예약목록을 조회
      * [GET] /subscribe/payments/schedule/customers/{customer_uid}
-     *
-     * @return string
      */
     public function path(): string
     {
@@ -147,9 +134,6 @@ class SubscribeInquiry extends RequestBase
         }
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         switch ($this->instanceType) {
@@ -171,9 +155,6 @@ class SubscribeInquiry extends RequestBase
         }
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return 'GET';

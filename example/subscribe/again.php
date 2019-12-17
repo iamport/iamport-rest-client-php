@@ -13,7 +13,7 @@ $amount      = filter_input(INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_FLOAT);
 
 // 새로 생성한 결제(재결제)용 주문 번호
 $merchantUid = 'order_monthly_0001';
-$request = new SubscribeAgain($customerUid, $merchantUid, $amount, '주문명');
+$request     = new SubscribeAgain($customerUid, $merchantUid, $amount, '주문명');
 // 파라메터 목록 참조 :  https://api.iamport.kr/#!/subscribe/again
 $request->tax_free       = 100;
 $request->buyer_name     = '주문자명';
@@ -24,10 +24,10 @@ $request->buyer_postcode = '주문자 우편번호';
 $request->card_quota     = 6; //카드 할부개월 수
 $request->custom_data    = '';
 $request->notice_url     = '';
-$result = $iamport->callApi($request);
+$result                  = $iamport->callApi($request);
 
 if ($result->isSuccess()) {
-    /**
+    /*
      *  Response\Payment 를 가리킵니다. __get을 통해 API의 Item Model의 값들을 모두 property처럼 접근할 수 있습니다.
      *  참고 : https://api.iamport.kr/#!/subscribe/again 의 Response Class Model.
      */

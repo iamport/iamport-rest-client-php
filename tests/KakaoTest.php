@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Iamport\RestClient\Test;
 
 use Iamport\RestClient\Request\Kakaopay;

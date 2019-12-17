@@ -37,8 +37,6 @@ class Certification extends RequestBase
      * SMS본인인증된 결과를 조회.
      * [GET] /certifications/{imp_uid}.
      *
-     * @param string $impUid
-     *
      * @return Certification
      */
     public static function view(string $impUid)
@@ -55,8 +53,6 @@ class Certification extends RequestBase
      * SMS본인인증 결과정보를 아임포트에서 완전히 삭제
      * [DELETE] /certifications/{imp_uid}.
      *
-     * @param string $impUid
-     *
      * @return Certification
      */
     public static function delete(string $impUid)
@@ -68,33 +64,21 @@ class Certification extends RequestBase
         return $instance;
     }
 
-    /**
-     * @param string $imp_uid
-     */
     public function setImpUid(string $imp_uid): void
     {
         $this->imp_uid = $imp_uid;
     }
 
-    /**
-     * @return string
-     */
     public function path(): string
     {
         return Endpoint::CERTIFICATIONS . $this->imp_uid;
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         return [];
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return $this->verb;

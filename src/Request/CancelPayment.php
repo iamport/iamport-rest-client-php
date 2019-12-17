@@ -78,8 +78,6 @@ class CancelPayment extends RequestBase
     /**
      * 아임포트 고유번호로 인스턴스 생성.
      *
-     * @param string $imp_uid
-     *
      * @return CancelPayment
      */
     public static function withImpUid(string $imp_uid)
@@ -93,8 +91,6 @@ class CancelPayment extends RequestBase
     /**
      * 거래 고유번호로 인스턴스 생성.
      *
-     * @param string $merchant_uid
-     *
      * @return CancelPayment
      */
     public static function withMerchantUid(string $merchant_uid)
@@ -105,73 +101,46 @@ class CancelPayment extends RequestBase
         return $instance;
     }
 
-    /**
-     * @param string $imp_uid
-     */
     public function setImpUid(string $imp_uid): void
     {
         $this->imp_uid = $imp_uid;
     }
 
-    /**
-     * @param string $merchant_uid
-     */
     public function setMerchantUid(string $merchant_uid): void
     {
         $this->merchant_uid = $merchant_uid;
     }
 
-    /**
-     * @param float $amount
-     */
     public function setAmount(float $amount): void
     {
         $this->amount = $amount;
     }
 
-    /**
-     * @param float $tax_free
-     */
     public function setTaxFree(float $tax_free): void
     {
         $this->tax_free = $tax_free;
     }
 
-    /**
-     * @param float $checksum
-     */
     public function setChecksum(float $checksum): void
     {
         $this->checksum = $checksum;
     }
 
-    /**
-     * @param string $reason
-     */
     public function setReason(string $reason): void
     {
         $this->reason = $reason;
     }
 
-    /**
-     * @param string $refund_holder
-     */
     public function setRefundHolder(string $refund_holder): void
     {
         $this->refund_holder = $refund_holder;
     }
 
-    /**
-     * @param string $refund_bank
-     */
     public function setRefundBank(string $refund_bank): void
     {
         $this->refund_bank = $refund_bank;
     }
 
-    /**
-     * @param string $refund_account
-     */
     public function setRefundAccount(string $refund_account): void
     {
         $this->refund_account = $refund_account;
@@ -180,17 +149,12 @@ class CancelPayment extends RequestBase
     /**
      * 주문취소.
      * [POST] /payments/cancel.
-     *
-     * @return string
      */
     public function path(): string
     {
         return Endpoint::PAYMENTS_CANCEL;
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         return [
@@ -198,9 +162,6 @@ class CancelPayment extends RequestBase
         ];
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return 'POST';

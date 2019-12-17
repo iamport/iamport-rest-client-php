@@ -7,11 +7,11 @@ use Iamport\RestClient\Request\Vbank;
 
 $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f');
 $request = Vbank::delete('imp_526377825577');
-$result = $iamport->callApi($request);
+$result  = $iamport->callApi($request);
 
 if ($result->isSuccess()) {
     $escrowLogis = $result->getData();
-    // TODO: 가상계좌 삭제 이후 처리
+// TODO: 가상계좌 삭제 이후 처리
 } else {
     $error = $result->getError();
     echo "아임포트 API 에러코드 : $error->code";

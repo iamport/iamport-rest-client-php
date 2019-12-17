@@ -56,11 +56,6 @@ class EscrowLogis extends RequestBase
      * 에스크로 결제 건에 대한 배송정보 등록.
      * [POST] /escrows/logis/{imp_uid}.
      *
-     * @param string             $imp_uid
-     * @param EscrowLogisPerson  $sender
-     * @param EscrowLogisPerson  $receiver
-     * @param EscrowLogisInvoice $invoice
-     *
      * @return EscrowLogis
      */
     public static function register(string $imp_uid, EscrowLogisPerson $sender, EscrowLogisPerson $receiver, EscrowLogisInvoice $invoice)
@@ -80,11 +75,6 @@ class EscrowLogis extends RequestBase
      * 에스크로 결제 건에 대한 배송정보 수정.
      * [PUT] /escrows/logis/{imp_uid}.
      *
-     * @param string             $imp_uid
-     * @param EscrowLogisPerson  $sender
-     * @param EscrowLogisPerson  $receiver
-     * @param EscrowLogisInvoice $invoice
-     *
      * @return EscrowLogis
      */
     public static function update(string $imp_uid, EscrowLogisPerson $sender, EscrowLogisPerson $receiver, EscrowLogisInvoice $invoice)
@@ -99,33 +89,21 @@ class EscrowLogis extends RequestBase
         return $instance;
     }
 
-    /**
-     * @param string $imp_uid
-     */
     public function setImpUid(string $imp_uid): void
     {
         $this->imp_uid = $imp_uid;
     }
 
-    /**
-     * @param EscrowLogisPerson $sender
-     */
     public function setSender(EscrowLogisPerson $sender): void
     {
         $this->sender = $sender;
     }
 
-    /**
-     * @param EscrowLogisPerson $receiver
-     */
     public function setReceiver(EscrowLogisPerson $receiver): void
     {
         $this->receiver = $receiver;
     }
 
-    /**
-     * @param EscrowLogisInvoice $logis
-     */
     public function setLogis(EscrowLogisInvoice $logis): void
     {
         $this->logis = $logis;
@@ -133,21 +111,16 @@ class EscrowLogis extends RequestBase
 
     /**
      * 에스크로 결제 건에 대한 배송정보 등록
-     * [POST] /escrows/logis/{imp_uid}
+     * [POST] /escrows/logis/{imp_uid}.
      *
      * 에스크로 결제 건에 대해서 POST /escrows/logis/{imp_uid} 로 등록된 배송정보를 수정
      * [PUT] /escrows/logis/{imp_uid}
-     *
-     * @return string
      */
     public function path(): string
     {
         return Endpoint::ESCROW . $this->imp_uid;
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         return [
@@ -155,9 +128,6 @@ class EscrowLogis extends RequestBase
         ];
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return $this->verb;

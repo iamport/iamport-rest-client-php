@@ -25,8 +25,6 @@ class TokenMiddleware
     }
 
     /**
-     * @param callable $handler
-     *
      * @return \Closure
      */
     public function __invoke(callable $handler)
@@ -34,8 +32,8 @@ class TokenMiddleware
         return function (
             RequestInterface $request,
             array $options
-    ) use ($handler) {
-            $request = $request->withHeader('Authorization', 'Bearer '.$this->token);
+        ) use ($handler) {
+            $request = $request->withHeader('Authorization', 'Bearer ' . $this->token);
 
             return $handler($request, $options);
         };

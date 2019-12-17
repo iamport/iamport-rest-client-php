@@ -29,8 +29,6 @@ class SubscribeUnschedule extends RequestBase
 
     /**
      * SubscribeUnschedule constructor.
-     *
-     * @param string $customer_uid
      */
     public function __construct(string $customer_uid)
     {
@@ -39,17 +37,11 @@ class SubscribeUnschedule extends RequestBase
         $this->isCollection  = true;
     }
 
-    /**
-     * @param string $customer_uid
-     */
     public function setCustomerUid(string $customer_uid): void
     {
         $this->customer_uid = $customer_uid;
     }
 
-    /**
-     * @param array $merchant_uid
-     */
     public function setMerchantUid(array $merchant_uid): void
     {
         $this->merchant_uid = $merchant_uid;
@@ -58,17 +50,12 @@ class SubscribeUnschedule extends RequestBase
     /**
      * 비인증 결제요청예약 취소
      * [POST] /subscribe/payments/unschedule.
-     *
-     * @return string
      */
     public function path(): string
     {
         return Endpoint::SBCR_PAYMENTS_UNSCHEDULE;
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         return [
@@ -76,9 +63,6 @@ class SubscribeUnschedule extends RequestBase
         ];
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return 'POST';

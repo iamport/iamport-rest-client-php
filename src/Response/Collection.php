@@ -47,10 +47,6 @@ class Collection
 
     /**
      * Collection constructor.
-     *
-     * @param array       $response
-     * @param RequestBase $request
-     * @param bool        $isMultiStatus
      */
     public function __construct(array $response, RequestBase $request, bool $isMultiStatus)
     {
@@ -78,10 +74,10 @@ class Collection
 
         if (is_null($collection) || empty($collection)) {
             $iamportResponse = [
-                'code' => 404,
+                'code'    => 404,
                 'message' => '검색된 데이터가 없습니다.',
             ];
-            throw new IamportException((object)$iamportResponse, new Request($request->verb(), $request->path()));
+            throw new IamportException((object) $iamportResponse, new Request($request->verb(), $request->path()));
         } else {
             foreach ($collection as $item) {
                 $this->items[] = (new Item($item, $responseClass))->getClassAs();
@@ -129,10 +125,6 @@ class Collection
         return $this->failed;
     }
 
-    /**
-     * @param RequestBase $request
-     * @param array       $collection
-     */
     public function setFailed(RequestBase $request, array $collection): void
     {
         $diffColumn    = 'imp_uid';

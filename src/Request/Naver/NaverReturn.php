@@ -71,9 +71,6 @@ class NaverReturn extends RequestBase
     /**
      * 주문형-네이버페이 상품주문들을 반품요청.
      *
-     * @param string $impUid
-     * @param string $deliveryMethod
-     *
      * @return NaverReturn
      */
     public static function request(string $impUid, string $deliveryMethod)
@@ -81,9 +78,7 @@ class NaverReturn extends RequestBase
         $instance          = new self();
         $instance->imp_uid = $impUid;
         if (ReturnDeliveryMethod::validation($deliveryMethod)) {
-            throw new InvalidArgumentException(
-                '허용되지 않는 delivery_method 값 입니다. ( ReturnDeliveryMethod::getAll()로 허용 가능한 값을 확인해주세요. )'
-            );
+            throw new InvalidArgumentException('허용되지 않는 delivery_method 값 입니다. ( ReturnDeliveryMethod::getAll()로 허용 가능한 값을 확인해주세요. )');
         }
         $instance->delivery_method = $deliveryMethod;
         $instance->reason          = ReturnReason::INTENT_CHANGED;
@@ -97,8 +92,6 @@ class NaverReturn extends RequestBase
 
     /**
      * 주문형-네이버페이 상품주문들을 반품승인처리.
-     *
-     * @param string $impUid
      *
      * @return NaverReturn
      */
@@ -118,9 +111,6 @@ class NaverReturn extends RequestBase
     /**
      * 주문형-네이버페이 반품요청 상품주문들을 반품거절처리.
      *
-     * @param string $impUid
-     * @param string $memo
-     *
      * @return NaverReturn
      */
     public static function reject(string $impUid, string $memo)
@@ -138,9 +128,6 @@ class NaverReturn extends RequestBase
 
     /**
      * 주문형-네이버페이 반품요청 상품주문들을 반품보류처리.
-     *
-     * @param string $impUid
-     * @param string $memo
      *
      * @return NaverReturn
      */
@@ -162,8 +149,6 @@ class NaverReturn extends RequestBase
     /**
      * 주문형-네이버페이 반품보류 상품주문들을 반품보류해제처리.
      *
-     * @param string $impUid
-     *
      * @return NaverReturn
      */
     public static function resolve(string $impUid)
@@ -174,63 +159,42 @@ class NaverReturn extends RequestBase
         $instance->responseClass   = NaverProductOrder::class;
         $instance->instanceType    = 'resolve';
         $instance->unsetArray([
-            'reason', 'delivery_method', 'delivery_company', 'tracking_number', 'extra_charge', 'memo'
+            'reason', 'delivery_method', 'delivery_company', 'tracking_number', 'extra_charge', 'memo',
         ]);
 
         return $instance;
     }
 
-    /**
-     * @param array $product_order_id
-     */
     public function setProductOrderId(array $product_order_id): void
     {
         $this->product_order_id = $product_order_id;
     }
 
-    /**
-     * @param string $reason
-     */
     public function setReason(string $reason): void
     {
         $this->reason = $reason;
     }
 
-    /**
-     * @param string $delivery_company
-     */
     public function setDeliveryCompany(string $delivery_company): void
     {
         $this->delivery_company = $delivery_company;
     }
 
-    /**
-     * @param string $tracking_number
-     */
     public function setTrackingNumber(string $tracking_number): void
     {
         $this->tracking_number = $tracking_number;
     }
 
-    /**
-     * @param int $extra_charge
-     */
     public function setExtraCharge(int $extra_charge): void
     {
         $this->extra_charge = $extra_charge;
     }
 
-    /**
-     * @param string $memo
-     */
     public function setMemo(string $memo): void
     {
         $this->memo = $memo;
     }
 
-    /**
-     * @return bool
-     */
     public function valid(): bool
     {
         switch ($this->instanceType) {
@@ -246,11 +210,13 @@ class NaverReturn extends RequestBase
                     if (is_null($this->tracking_number) || $this->tracking_number === '') {
                         return false;
                     }
+
                     return true;
                 }
                 if (ReturnReason::validation($this->reason)) {
                     return false;
                 }
+
                 return true;
                 break;
             case 'withhold':
@@ -283,8 +249,6 @@ class NaverReturn extends RequestBase
      *
      * 주문형-네이버페이 반품보류상품 반품보류해제 처리
      * [POST] /payments/{imp_uid}/naver/resolve-return
-     *
-     * @return string
      */
     public function path(): string
     {
@@ -306,12 +270,10 @@ class NaverReturn extends RequestBase
                 $endPoint = Endpoint::NAVER_RESOLVE_RETURN;
                 break;
         }
+
         return Endpoint::PAYMENTS . $this->imp_uid . $endPoint;
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         return [
@@ -319,9 +281,6 @@ class NaverReturn extends RequestBase
         ];
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return 'POST';

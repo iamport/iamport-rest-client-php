@@ -30,29 +30,20 @@ class AuthResponse
     public function __construct($resultBody)
     {
         $this->access_token = $resultBody->access_token;
-        $this->now = $resultBody->now;
-        $this->expired_at = $resultBody->expired_at;
+        $this->now          = $resultBody->now;
+        $this->expired_at   = $resultBody->expired_at;
     }
 
-    /**
-     * @return string
-     */
     public function getAccessToken(): string
     {
         return $this->access_token;
     }
 
-    /**
-     * @return int
-     */
     public function getNow(): int
     {
         return $this->now;
     }
 
-    /**
-     * @return int
-     */
     public function getExpiredAt(): int
     {
         return $this->expired_at;

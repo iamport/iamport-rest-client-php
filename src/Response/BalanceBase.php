@@ -36,8 +36,6 @@ class BalanceBase
 
     /**
      * BalanceBase constructor.
-     *
-     * @param array $response
      */
     public function __construct(array $response)
     {
@@ -48,33 +46,21 @@ class BalanceBase
         $this->created      = $response['created'];
     }
 
-    /**
-     * @return Balance
-     */
     public function getCashReceipt(): Balance
     {
         return $this->cash_receipt;
     }
 
-    /**
-     * @return Balance
-     */
     public function getPrimary(): Balance
     {
         return $this->primary;
     }
 
-    /**
-     * @return Balance
-     */
     public function getSecondary(): Balance
     {
         return $this->secondary;
     }
 
-    /**
-     * @return Balance
-     */
     public function getDiscount(): Balance
     {
         return $this->discount;
@@ -82,6 +68,7 @@ class BalanceBase
 
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getCreated()

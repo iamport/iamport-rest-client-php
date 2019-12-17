@@ -51,8 +51,6 @@ class NaverInquiry extends RequestBase
     /**
      * 아임포트 거래 고유번호로 네이버페이 상품주문 목록을 조회.
      *
-     * @param string $impUid
-     *
      * @return NaverInquiry
      */
     public static function list(string $impUid)
@@ -69,8 +67,6 @@ class NaverInquiry extends RequestBase
 
     /**
      * 네이버페이 상품주문번호로 단 건 조회.
-     *
-     * @param string $productOrderId
      *
      * @return NaverInquiry
      */
@@ -89,9 +85,8 @@ class NaverInquiry extends RequestBase
      * 네이버페이 구매평 조회 API
      * TODO: 로컬 테스트 서버에서 Internal Server Error 던져주는데 실제 api.iamport.kr 혹은fake 데이터 생기면 테스트 요망.
      *
-     * @param mixed  $from
-     * @param mixed  $to
-     * @param string $reviewType
+     * @param mixed $from
+     * @param mixed $to
      *
      * @return NaverInquiry
      */
@@ -112,8 +107,6 @@ class NaverInquiry extends RequestBase
     /**
      * 네이버페이 현금영수증 발급가능 금액 조회 API.
      *
-     * @param string $impUid
-     *
      * @return NaverInquiry
      */
     public static function cashAmount(string $impUid)
@@ -127,31 +120,20 @@ class NaverInquiry extends RequestBase
         return $instance;
     }
 
-    /**
-     * @param string $imp_uid
-     */
     public function setImpUid(string $imp_uid): void
     {
         $this->imp_uid = $imp_uid;
     }
 
-    /**
-     * @param string $product_order_id
-     */
     public function setProductOrderId(string $product_order_id): void
     {
         $this->product_order_id = $product_order_id;
     }
 
-    /**
-     * @param string $reviewType
-     */
     public function setReviewType(string $reviewType): void
     {
         if (!in_array($reviewType, ['general', 'premium'])) {
-            throw new InvalidArgumentException(
-                '허용되지 않는 reviewType 값 입니다. [ general(일반구매평) 혹은 premium(프리미엄 구매평)만 가능합니다. ]'
-            );
+            throw new InvalidArgumentException('허용되지 않는 reviewType 값 입니다. [ general(일반구매평) 혹은 premium(프리미엄 구매평)만 가능합니다. ]');
         }
         $this->review_type = $reviewType;
     }
@@ -168,8 +150,6 @@ class NaverInquiry extends RequestBase
      *
      * 결제형-네이버페이 현금영수증 발급가능 금액 조회 API
      * [GET] /payments/{imp_uid}/naver/cash-amount
-     *
-     * @return string
      */
     public function path(): string
     {
@@ -189,9 +169,6 @@ class NaverInquiry extends RequestBase
         }
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         if ($this->instanceType === 'reviews') {
@@ -207,9 +184,6 @@ class NaverInquiry extends RequestBase
         return [];
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return 'GET';

@@ -8,7 +8,7 @@ use Iamport\RestClient\Request\Vbank;
 
 $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f');
 $request = Vbank::view(BankCode::SC, '35016182520575');
-$result = $iamport->callApi($request);
+$result  = $iamport->callApi($request);
 
 if ($result->isSuccess()) {
     $escrowLogis = $result->getData();

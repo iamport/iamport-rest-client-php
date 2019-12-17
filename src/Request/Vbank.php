@@ -123,11 +123,7 @@ class Vbank extends RequestBase
     private $verb;
 
     /**
-     * @param string $merchantUid
-     * @param float  $amount
-     * @param string $vbankCode
-     * @param mixed  $vbankDue
-     * @param string $vbankHolder
+     * @param mixed $vbankDue
      *
      * @return Vbank
      */
@@ -137,9 +133,7 @@ class Vbank extends RequestBase
         $instance->merchant_uid   = $merchantUid;
         $instance->amount         = $amount;
         if (!VbankCode::validation($vbankCode)) {
-            throw new InvalidArgumentException(
-                '허용되지 않는 은행코드 입니다. ( VbankCode::getAll()로 허용 가능한 값을 확인해주세요. )'
-            );
+            throw new InvalidArgumentException('허용되지 않는 은행코드 입니다. ( VbankCode::getAll()로 허용 가능한 값을 확인해주세요. )');
         }
         $instance->vbank_code     = $vbankCode;
         $instance->vbank_due      = $instance->dateToTimestamp($vbankDue);
@@ -153,8 +147,6 @@ class Vbank extends RequestBase
     }
 
     /**
-     * @param string $impUid
-     *
      * @return Vbank
      */
     public static function delete(string $impUid)
@@ -176,8 +168,6 @@ class Vbank extends RequestBase
     }
 
     /**
-     * @param string $impUid
-     *
      * @return Vbank
      */
     public static function edit(string $impUid)
@@ -199,9 +189,6 @@ class Vbank extends RequestBase
     }
 
     /**
-     * @param string $bankCode
-     * @param string $bankNum
-     *
      * @return Vbank
      */
     public static function view(string $bankCode, string $bankNum)
@@ -223,25 +210,16 @@ class Vbank extends RequestBase
         return $instance;
     }
 
-    /**
-     * @param string $merchant_uid
-     */
     public function setMerchantUid(string $merchant_uid): void
     {
         $this->merchant_uid = $merchant_uid;
     }
 
-    /**
-     * @param float $amount
-     */
     public function setAmount(float $amount): void
     {
         $this->amount = $amount;
     }
 
-    /**
-     * @param string $vbank_code
-     */
     public function setVbankCode(string $vbank_code): void
     {
         $this->vbank_code = $vbank_code;
@@ -255,81 +233,51 @@ class Vbank extends RequestBase
         $this->vbank_due = $this->dateToTimestamp($vbank_due);
     }
 
-    /**
-     * @param string $vbank_holder
-     */
     public function setVbankHolder(string $vbank_holder): void
     {
         $this->vbank_holder = $vbank_holder;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @param string $buyer_name
-     */
     public function setBuyerName(string $buyer_name): void
     {
         $this->buyer_name = $buyer_name;
     }
 
-    /**
-     * @param string $buyer_email
-     */
     public function setBuyerEmail(string $buyer_email): void
     {
         $this->buyer_email = $buyer_email;
     }
 
-    /**
-     * @param string $buyer_tel
-     */
     public function setBuyerTel(string $buyer_tel): void
     {
         $this->buyer_tel = $buyer_tel;
     }
 
-    /**
-     * @param string $buyer_addr
-     */
     public function setBuyerAddr(string $buyer_addr): void
     {
         $this->buyer_addr = $buyer_addr;
     }
 
-    /**
-     * @param string $buyer_postcode
-     */
     public function setBuyerPostcode(string $buyer_postcode): void
     {
         $this->buyer_postcode = $buyer_postcode;
     }
 
-    /**
-     * @param string $pg
-     */
     public function setPg(string $pg): void
     {
         $this->pg = $pg;
     }
 
-    /**
-     * @param array $notice_url
-     */
     public function setNoticeUrl(array $notice_url): void
     {
         $this->notice_url = $notice_url;
     }
 
-    /**
-     * @param string $custom_data
-     */
     public function setCustomData(string $custom_data): void
     {
         $this->custom_data = $custom_data;
@@ -347,8 +295,6 @@ class Vbank extends RequestBase
      *
      * 가상계좌 환불 전, 확인차원에서 예금주를 조회
      * [GET] /vbanks/holder
-     *
-     * @return string
      */
     public function path(): string
     {
@@ -366,9 +312,6 @@ class Vbank extends RequestBase
         }
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         switch ($this->instanceType) {
@@ -394,9 +337,6 @@ class Vbank extends RequestBase
         }
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return $this->verb;

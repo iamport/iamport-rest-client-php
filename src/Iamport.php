@@ -27,18 +27,12 @@ class Iamport extends IamportBase
 {
     /**
      * Iamport constructor.
-     *
-     * @param string $impKey
-     * @param string $impSecret
      */
     public function __construct(string $impKey, string $impSecret)
     {
         parent::__construct($impKey, $impSecret);
     }
 
-    /**
-     * @return bool
-     */
     protected function isTokenExpired(): bool
     {
         $now = time();
@@ -46,11 +40,6 @@ class Iamport extends IamportBase
         return null === $this->accessToken || ($this->expireTimestamp - self::EXPIRE_BUFFER) < $now;
     }
 
-    /**
-     * @param RequestBase $request
-     *
-     * @return Result
-     */
     public function callApi(RequestBase $request): Result
     {
         try {
@@ -75,6 +64,7 @@ class Iamport extends IamportBase
                     $result = (new Item($response, $responseClass))->getClassAs();
                 }
             }
+
             return new Result($result, null, $request->extraCondition);
         } catch (GuzzleException $e) {
             return ExceptionHandler::render($e);
@@ -84,8 +74,6 @@ class Iamport extends IamportBase
     }
 
     /**
-     * @param RequestBase $request
-     *
      * @return PromiseInterface|Result
      */
     public function callApiPromise(RequestBase $request)
@@ -106,12 +94,6 @@ class Iamport extends IamportBase
     }
 
     /**
-     * @param string      $method
-     * @param string      $uri
-     * @param array       $attributes
-     * @param bool        $authenticated
-     * @param Client|null $customClient
-     *
      * @return mixed
      *
      * @throws GuzzleException
@@ -141,15 +123,6 @@ class Iamport extends IamportBase
         }
     }
 
-    /**
-     * @param string      $method
-     * @param string      $uri
-     * @param array       $attributes
-     * @param bool        $authenticated
-     * @param Client|null $customClient
-     *
-     * @return PromiseInterface
-     */
     public function requestPromise(string $method, string $uri, array $attributes = [], bool $authenticated = true, Client $customClient = null): PromiseInterface
     {
         try {
@@ -161,11 +134,6 @@ class Iamport extends IamportBase
         }
     }
 
-    /**
-     * @param HandlerStack $handlerStack
-     *
-     * @return Client
-     */
     public function getCustomHttpClient(HandlerStack $handlerStack): Client
     {
         $handlerStack->push(new DefaultRequestMiddleware());
@@ -177,10 +145,6 @@ class Iamport extends IamportBase
     }
 
     /**
-     * @param bool $authenticated
-     *
-     * @return Client
-     *
      * @throws Exception
      */
     protected function getHttpClient(bool $authenticated): Client
@@ -200,10 +164,6 @@ class Iamport extends IamportBase
     }
 
     /**
-     * @param bool $force
-     *
-     * @return string|null
-     *
      * @throws Exception
      */
     public function requestAccessToken(bool $force = false): ?string

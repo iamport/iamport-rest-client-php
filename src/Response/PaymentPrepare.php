@@ -21,8 +21,6 @@ class PaymentPrepare
 
     /**
      * PaymentPrepare constructor.
-     *
-     * @param array $response
      */
     public function __construct(array $response)
     {
@@ -30,17 +28,11 @@ class PaymentPrepare
         $this->amount       = $response['amount'];
     }
 
-    /**
-     * @param string $merchant_uid
-     */
     public function setMerchantUid(string $merchant_uid): void
     {
         $this->merchant_uid = $merchant_uid;
     }
 
-    /**
-     * @param float $amount
-     */
     public function setAmount(float $amount): void
     {
         $this->amount = $amount;

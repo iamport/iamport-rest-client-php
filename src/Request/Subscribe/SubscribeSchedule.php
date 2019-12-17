@@ -66,8 +66,6 @@ class SubscribeSchedule extends RequestBase
 
     /**
      * SubscribeSchedule constructor.
-     *
-     * @param string $customer_uid
      */
     public function __construct(string $customer_uid)
     {
@@ -78,17 +76,12 @@ class SubscribeSchedule extends RequestBase
 
     /**
      * Schedule 객체를 array 형태로 변환하여 추가
-     *
-     * @param Schedule $schedule
      */
     public function addSchedules(Schedule $schedule)
     {
         array_push($this->schedules, $schedule->toArray());
     }
 
-    /**
-     * @param CardInfo $cardInfo
-     */
     public function setCardInfo(CardInfo $cardInfo)
     {
         $this->card_number = $cardInfo->card_number;
@@ -97,57 +90,36 @@ class SubscribeSchedule extends RequestBase
         $this->pwd_2digit  = $cardInfo->pwd_2digit;
     }
 
-    /**
-     * @param string $customer_uid
-     */
     public function setCustomerUid(string $customer_uid): void
     {
         $this->customer_uid = $customer_uid;
     }
 
-    /**
-     * @param int $checking_amount
-     */
     public function setCheckingAmount(int $checking_amount): void
     {
         $this->checking_amount = $checking_amount;
     }
 
-    /**
-     * @param string $card_number
-     */
     public function setCardNumber(string $card_number): void
     {
         $this->card_number = $card_number;
     }
 
-    /**
-     * @param string $expiry
-     */
     public function setExpiry(string $expiry): void
     {
         $this->expiry = $expiry;
     }
 
-    /**
-     * @param string $birth
-     */
     public function setBirth(string $birth): void
     {
         $this->birth = $birth;
     }
 
-    /**
-     * @param string $pwd_2digit
-     */
     public function setPwd2digit(string $pwd_2digit): void
     {
         $this->pwd_2digit = $pwd_2digit;
     }
 
-    /**
-     * @param string $pg
-     */
     public function setPg(string $pg): void
     {
         $this->pg = $pg;
@@ -156,17 +128,12 @@ class SubscribeSchedule extends RequestBase
     /**
      * 저장된 빌링키로 정기 예약 결제.
      * [POST] /subscribe/payments/schedule.
-     *
-     * @return string
      */
     public function path(): string
     {
         return Endpoint::SBCR_PAYMENTS_SCHEDULE;
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         return [
@@ -174,9 +141,6 @@ class SubscribeSchedule extends RequestBase
         ];
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return 'POST';

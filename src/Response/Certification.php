@@ -76,8 +76,6 @@ class Certification
 
     /**
      * Certification constructor.
-     *
-     * @param array $response
      */
     public function __construct(array $response)
     {
@@ -96,49 +94,31 @@ class Certification
         $this->origin           = $response['origin'];
     }
 
-    /**
-     * @return string
-     */
     public function getImpUid(): string
     {
         return $this->imp_uid;
     }
 
-    /**
-     * @return string
-     */
     public function getMerchantUid(): string
     {
         return $this->merchant_uid;
     }
 
-    /**
-     * @return string
-     */
     public function getPgTid(): string
     {
         return $this->pg_tid;
     }
 
-    /**
-     * @return string
-     */
     public function getPgProvider(): string
     {
         return $this->pg_provider;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getGender(): string
     {
         return $this->gender;
@@ -146,6 +126,7 @@ class Certification
 
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getBirth()
@@ -153,17 +134,11 @@ class Certification
         return $this->timestampToDate($this->birth, 'Y-m-d');
     }
 
-    /**
-     * @return bool
-     */
     public function isForeigner(): bool
     {
         return $this->foreigner;
     }
 
-    /**
-     * @return bool
-     */
     public function isCertified(): bool
     {
         return $this->certified;
@@ -171,6 +146,7 @@ class Certification
 
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getCertifiedAt()
@@ -186,17 +162,11 @@ class Certification
         return $this->unique_key;
     }
 
-    /**
-     * @return string
-     */
     public function getUniqueInSite(): string
     {
         return $this->unique_in_site;
     }
 
-    /**
-     * @return string
-     */
     public function getOrigin(): string
     {
         return $this->origin;

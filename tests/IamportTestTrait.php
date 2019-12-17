@@ -6,6 +6,7 @@ use Iamport\RestClient\Iamport;
 
 /**
  * Trait IamportTestTrait.
+ *
  * @property Iamport $iamport
  */
 trait IamportTestTrait

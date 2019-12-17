@@ -126,10 +126,6 @@ class SubscribeOnetime extends RequestBase
 
     /**
      * SubscribeOnetime constructor.
-     *
-     * @param string   $merchant_uid
-     * @param float    $amount
-     * @param CardInfo $cardInfo
      */
     public function __construct(string $merchant_uid, float $amount, CardInfo $cardInfo)
     {
@@ -144,151 +140,97 @@ class SubscribeOnetime extends RequestBase
             $this->pwd_2digit = $cardInfo->pwd_2digit;
         }
 
-        $this->responseClass = Response\Payment::class;
+        $this->responseClass  = Response\Payment::class;
         $this->extraCondition = function ($data) {
             return ($data->status === 'paid') ? true : false;
         };
     }
 
-    /**
-     * @param string $merchant_uid
-     */
     public function setMerchantUid(string $merchant_uid): void
     {
         $this->merchant_uid = $merchant_uid;
     }
 
-    /**
-     * @param float $amount
-     */
     public function setAmount(float $amount): void
     {
         $this->amount = $amount;
     }
 
-    /**
-     * @param float $tax_free
-     */
     public function setTaxFree(float $tax_free): void
     {
         $this->tax_free = $tax_free;
     }
 
-    /**
-     * @param string $card_number
-     */
     public function setCardNumber(string $card_number): void
     {
         $this->card_number = $card_number;
     }
 
-    /**
-     * @param string $expiry
-     */
     public function setExpiry(string $expiry): void
     {
         $this->expiry = $expiry;
     }
 
-    /**
-     * @param string $birth
-     */
     public function setBirth(string $birth): void
     {
         $this->birth = $birth;
     }
 
-    /**
-     * @param string $pwd_2digit
-     */
     public function setPwd2digit(string $pwd_2digit): void
     {
         $this->pwd_2digit = $pwd_2digit;
     }
 
-    /**
-     * @param string $customer_uid
-     */
     public function setCustomerUid(string $customer_uid): void
     {
         $this->customer_uid = $customer_uid;
     }
 
-    /**
-     * @param string $pg
-     */
     public function setPg(string $pg): void
     {
         $this->pg = $pg;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @param string $buyer_name
-     */
     public function setBuyerName(string $buyer_name): void
     {
         $this->buyer_name = $buyer_name;
     }
 
-    /**
-     * @param string $buyer_email
-     */
     public function setBuyerEmail(string $buyer_email): void
     {
         $this->buyer_email = $buyer_email;
     }
 
-    /**
-     * @param string $buyer_tel
-     */
     public function setBuyerTel(string $buyer_tel): void
     {
         $this->buyer_tel = $buyer_tel;
     }
 
-    /**
-     * @param string $buyer_addr
-     */
     public function setBuyerAddr(string $buyer_addr): void
     {
         $this->buyer_addr = $buyer_addr;
     }
 
-    /**
-     * @param string $buyer_postcode
-     */
     public function setBuyerPostcode(string $buyer_postcode): void
     {
         $this->buyer_postcode = $buyer_postcode;
     }
 
-    /**
-     * @param int $card_quota
-     */
     public function setCardQuota(int $card_quota): void
     {
         $this->card_quota = $card_quota;
     }
 
-    /**
-     * @param string $custom_data
-     */
     public function setCustomData(string $custom_data): void
     {
         $this->custom_data = $custom_data;
     }
 
-    /**
-     * @param string $notice_url
-     */
     public function setNoticeUrl(string $notice_url): void
     {
         $this->notice_url = $notice_url;
@@ -297,17 +239,12 @@ class SubscribeOnetime extends RequestBase
     /**
      * 빌링키 발급과 결제 요청을 동시에 처리.
      * [POST] /subscribe/payments/onetime.
-     *
-     * @return string
      */
     public function path(): string
     {
         return Endpoint::SBCR_PAYMENTS_ONETIME;
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         return [
@@ -315,9 +252,6 @@ class SubscribeOnetime extends RequestBase
         ];
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return 'POST';

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Iamport\RestClient\Response;
 
 /**
@@ -22,8 +21,6 @@ class StandardCode
 
     /**
      * StandardCode constructor.
-     *
-     * @param array $response
      */
     public function __construct(array $response)
     {
@@ -31,17 +28,11 @@ class StandardCode
         $this->name = $response['name'];
     }
 
-    /**
-     * @return string
-     */
     public function getCode(): string
     {
         return $this->code;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;

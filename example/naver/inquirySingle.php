@@ -7,7 +7,7 @@ use Iamport\RestClient\Request\Naver\NaverInquiry;
 
 $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f');
 $request = NaverInquiry::single('2019083013231750');
-$result = $iamport->callApi($request);
+$result  = $iamport->callApi($request);
 dump($result);
 if ($result->isSuccess()) {
     $productOrder = $result->getData();
@@ -16,7 +16,6 @@ if ($result->isSuccess()) {
     dump($product_order_status = $productOrder->getAttributes('product_order_status'));
     dump($claim_type = $productOrder->claim_type);
     dump($claim_status = $productOrder->claim_status);
-
 } else {
     dump($result->getError());
 }

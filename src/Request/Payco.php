@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Iamport\RestClient\Request;
 
 use Iamport\RestClient\Enum\Endpoint;
@@ -27,33 +26,26 @@ class Payco extends RequestBase
     protected $status;
 
     /**
-     * 페이코 주문상품의 상태를 변경
+     * 페이코 주문상품의 상태를 변경.
      *
      * Payco constructor.
-     * @param string $impUid
-     * @param string $status
      */
     public function __construct(string $impUid, string $status)
     {
-        $this->imp_uid = $impUid;
-        $this->status = $status;
+        $this->imp_uid       = $impUid;
+        $this->status        = $status;
         $this->responseClass = Response\Payco::class;
     }
 
     /**
      * 페이코 주문상품의 상태를 변경
-     * [POST] /payco/orders/status/{imp_uid}
-     *
-     * @return string
+     * [POST] /payco/orders/status/{imp_uid}.
      */
     public function path(): string
     {
         return Endpoint::PAYCO . $this->imp_uid;
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         return [
@@ -61,9 +53,6 @@ class Payco extends RequestBase
         ];
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return 'POST';

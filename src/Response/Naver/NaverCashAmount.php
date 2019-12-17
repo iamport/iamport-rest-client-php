@@ -38,8 +38,6 @@ class NaverCashAmount
 
     /**
      * NaverCashAmount constructor.
-     *
-     * @param array $response
      */
     public function __construct(array $response)
     {
@@ -50,41 +48,26 @@ class NaverCashAmount
         $this->amount_vat        = $response['amount_vat'];
     }
 
-    /**
-     * @return int
-     */
     public function getAmountTotal(): int
     {
         return $this->amount_total;
     }
 
-    /**
-     * @return int
-     */
     public function getAmountByNpoint(): int
     {
         return $this->amount_by_npoint;
     }
 
-    /**
-     * @return int
-     */
     public function getAmountByPrimary(): int
     {
         return $this->amount_by_primary;
     }
 
-    /**
-     * @return int
-     */
     public function getAmountSupply(): int
     {
         return $this->amount_supply;
     }
 
-    /**
-     * @return int
-     */
     public function getAmountVat(): int
     {
         return $this->amount_vat;

@@ -80,8 +80,6 @@ class Payment extends RequestBase
     /**
      * 아임포트 고유번호로 결제내역을 조회.
      *
-     * @param string $impUid
-     *
      * @return Payment
      */
     public static function withImpUid(string $impUid)
@@ -97,8 +95,6 @@ class Payment extends RequestBase
     /**
      * 가맹점지정 고유번호로 결제내역을 단건 조회 ( 정렬 기준에 따라 가장 첫 번째 건 반환 ).
      *
-     * @param string $merchant_uid
-     *
      * @return Payment
      */
     public static function withMerchantUid(string $merchant_uid)
@@ -113,8 +109,6 @@ class Payment extends RequestBase
 
     /**
      * 가맹점지정 고유번호로 결제내역을 조회.
-     *
-     * @param string $merchant_uid
      *
      * @return Payment
      */
@@ -133,8 +127,6 @@ class Payment extends RequestBase
     /**
      * 아임포트 고유번호 배열로 결제내역을 한 번에 조회.
      *
-     * @param array $imp_uids
-     *
      * @return Payment
      */
     public static function listImpUid(array $imp_uids)
@@ -152,8 +144,6 @@ class Payment extends RequestBase
     /**
      * 아임포트 고유번호로 결제수단별 금액 상세정보를 확인합.
      *
-     * @param string $imp_uid
-     *
      * @return Payment
      */
     public static function balance(string $imp_uid)
@@ -170,9 +160,7 @@ class Payment extends RequestBase
     {
         $instance                = new self();
         if (!in_array($payment_status, ['all', 'ready', 'paid', 'cancelled', 'failed'])) {
-            throw new InvalidArgumentException(
-                '$payment_status로 가능한 값은 all, ready, paid, cancelled, failed 입니다. '
-            );
+            throw new InvalidArgumentException('$payment_status로 가능한 값은 all, ready, paid, cancelled, failed 입니다. ');
         }
         $instance->payment_status = $payment_status;
         $instance->isCollection   = true;
@@ -184,49 +172,31 @@ class Payment extends RequestBase
         return $instance;
     }
 
-    /**
-     * @param string $imp_uid
-     */
     public function setImpUid(string $imp_uid): void
     {
         $this->imp_uid = $imp_uid;
     }
 
-    /**
-     * @param string $merchant_uid
-     */
     public function setMerchantUid(string $merchant_uid): void
     {
         $this->merchant_uid = $merchant_uid;
     }
 
-    /**
-     * @param string $payment_status
-     */
     public function setPaymentStatus(string $payment_status): void
     {
         $this->payment_status = $payment_status;
     }
 
-    /**
-     * @param string $sorting
-     */
     public function setSorting(string $sorting): void
     {
         $this->sorting = $sorting;
     }
 
-    /**
-     * @param int $page
-     */
     public function setPage(int $page): void
     {
         $this->page = $page;
     }
 
-    /**
-     * @param int $limit
-     */
     public function setLimit(int $limit): void
     {
         $this->limit = $limit;
@@ -253,16 +223,13 @@ class Payment extends RequestBase
         switch ($this->instanceType) {
             case 'listStatus':
                 if (PaymentSort::validation($this->sorting)) {
-                    throw new InvalidArgumentException(
-                        '허용되지 않는 sorting 입니다. ( PaymentSort::getAll()로 허용 가능한 값을 확인해주세요. )'
-                    );
+                    throw new InvalidArgumentException('허용되지 않는 sorting 입니다. ( PaymentSort::getAll()로 허용 가능한 값을 확인해주세요. )');
                 }
                 break;
             default:
                 return true;
         }
     }
-
 
     /**
      * imp_uid 로 주문정보 찾기(아임포트에서 생성된 거래고유번호).
@@ -276,8 +243,6 @@ class Payment extends RequestBase
      *
      * 여러 개의 아임포트 고유번호로 결제내역을 한 번에 조회
      * [GET] /payments
-     *
-     * @return string
      */
     public function path(): string
     {
@@ -304,9 +269,6 @@ class Payment extends RequestBase
         }
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         switch ($this->instanceType) {
@@ -355,9 +317,6 @@ class Payment extends RequestBase
         }
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return 'GET';

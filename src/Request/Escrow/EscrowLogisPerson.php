@@ -38,11 +38,6 @@ class EscrowLogisPerson
 
     /**
      * EscrowLogisPerson constructor.
-     *
-     * @param string $name
-     * @param string $tel
-     * @param string $addr
-     * @param string $postcode
      */
     public function __construct(string $name, string $tel, string $addr, string $postcode)
     {
@@ -52,33 +47,21 @@ class EscrowLogisPerson
         $this->postcode = $postcode;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @param string $tel
-     */
     public function setTel(string $tel): void
     {
         $this->tel = $tel;
     }
 
-    /**
-     * @param string $addr
-     */
     public function setAddr(string $addr): void
     {
         $this->addr = $addr;
     }
 
-    /**
-     * @param string $postcode
-     */
     public function setPostcode(string $postcode): void
     {
         $this->postcode = $postcode;

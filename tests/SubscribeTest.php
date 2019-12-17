@@ -55,7 +55,7 @@ class SubscribeTest extends TestCase
     public function list_subscribe_customer()
     {
         $subscribeCustomer = SubscribeCustomer::list([
-            self::$customerUid
+            self::$customerUid,
         ]);
 
         $this->assertEquals('/subscribe/customers', $subscribeCustomer->path());
@@ -98,7 +98,7 @@ class SubscribeTest extends TestCase
     /** @test */
     public function subscribe_customer_by_schedules()
     {
-        $subscribeCustomer = SubscribeCustomer::schedules(self::$customerUid, new DateTime('2019-12-25'), new DateTime('2019-12-30'));
+        $subscribeCustomer       = SubscribeCustomer::schedules(self::$customerUid, new DateTime('2019-12-25'), new DateTime('2019-12-30'));
         $subscribeCustomer->page = 1;
 
         $this->assertEquals('/subscribe/customers/' . self::$customerUid . '/schedules', $subscribeCustomer->path());

@@ -95,123 +95,79 @@ class SubscribeAgain extends RequestBase
 
     /**
      * SubscribeAgain constructor.
-     *
-     * @param string $customer_uid
-     * @param string $merchant_uid
-     * @param float  $amount
-     * @param string $name
      */
     public function __construct(string $customer_uid, string $merchant_uid, float $amount, string $name)
     {
-        $this->customer_uid = $customer_uid;
-        $this->merchant_uid = $merchant_uid;
-        $this->amount       = $amount;
-        $this->name         = $name;
-        $this->responseClass = Response\Payment::class;
+        $this->customer_uid   = $customer_uid;
+        $this->merchant_uid   = $merchant_uid;
+        $this->amount         = $amount;
+        $this->name           = $name;
+        $this->responseClass  = Response\Payment::class;
         $this->extraCondition = function ($data) {
             return ($data->status === 'paid') ? true : false;
         };
     }
 
-    /**
-     * @param string $customer_uid
-     */
     public function setCustomerUid(string $customer_uid): void
     {
         $this->customer_uid = $customer_uid;
     }
 
-    /**
-     * @param string $merchant_uid
-     */
     public function setMerchantUid(string $merchant_uid): void
     {
         $this->merchant_uid = $merchant_uid;
     }
 
-    /**
-     * @param float $amount
-     */
     public function setAmount(float $amount): void
     {
         $this->amount = $amount;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @param float $tax_free
-     */
     public function setTaxFree(float $tax_free): void
     {
         $this->tax_free = $tax_free;
     }
 
-    /**
-     * @param string $buyer_name
-     */
     public function setBuyerName(string $buyer_name): void
     {
         $this->buyer_name = $buyer_name;
     }
 
-    /**
-     * @param string $buyer_email
-     */
     public function setBuyerEmail(string $buyer_email): void
     {
         $this->buyer_email = $buyer_email;
     }
 
-    /**
-     * @param string $buyer_tel
-     */
     public function setBuyerTel(string $buyer_tel): void
     {
         $this->buyer_tel = $buyer_tel;
     }
 
-    /**
-     * @param string $buyer_addr
-     */
     public function setBuyerAddr(string $buyer_addr): void
     {
         $this->buyer_addr = $buyer_addr;
     }
 
-    /**
-     * @param string $buyer_postcode
-     */
     public function setBuyerPostcode(string $buyer_postcode): void
     {
         $this->buyer_postcode = $buyer_postcode;
     }
 
-    /**
-     * @param int $card_quota
-     */
     public function setCardQuota(int $card_quota): void
     {
         $this->card_quota = $card_quota;
     }
 
-    /**
-     * @param string $custom_data
-     */
     public function setCustomData(string $custom_data): void
     {
         $this->custom_data = $custom_data;
     }
 
-    /**
-     * @param string $notice_url
-     */
     public function setNoticeUrl(string $notice_url): void
     {
         $this->notice_url = $notice_url;
@@ -220,17 +176,12 @@ class SubscribeAgain extends RequestBase
     /**
      * 저장된 빌링키로 재결제.
      * [POST] /subscribe/payments/again.
-     *
-     * @return string
      */
     public function path(): string
     {
         return Endpoint::SBCR_PAYMENTS_AGAIN;
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         return [
@@ -238,9 +189,6 @@ class SubscribeAgain extends RequestBase
         ];
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return 'POST';

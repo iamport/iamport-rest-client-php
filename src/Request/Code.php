@@ -43,8 +43,6 @@ class Code extends RequestBase
     /**
      * 카드사표준코드, 카드사명을 조회(금융결제원표준코드 기준).
      *
-     * @param string $cardStandardCode
-     *
      * @return Code
      */
     public static function card(string $cardStandardCode)
@@ -75,8 +73,6 @@ class Code extends RequestBase
     /**
      * 은행표준코드, 은행명을 조회(금융결제원표준코드 기준).
      *
-     * @param string $bankStandardCode
-     *
      * @return Code
      */
     public static function bank(string $bankStandardCode)
@@ -101,8 +97,6 @@ class Code extends RequestBase
      *
      * 은행정보를 조회
      * [GET] /banks/{bank_standard_code}
-     *
-     * @return string
      */
     public function path(): string
     {
@@ -124,17 +118,11 @@ class Code extends RequestBase
         }
     }
 
-    /**
-     * @return array
-     */
     public function attributes(): array
     {
         return [];
     }
 
-    /**
-     * @return string
-     */
     public function verb(): string
     {
         return 'GET';

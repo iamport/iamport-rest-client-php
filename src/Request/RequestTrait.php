@@ -2,8 +2,6 @@
 
 namespace Iamport\RestClient\Request;
 
-use DateTime;
-
 /**
  * Trait RequestTrait.
  */
@@ -42,8 +40,6 @@ trait RequestTrait
     }
 
     /**
-     * @param string $string
-     *
      * @return string
      */
     public function toCamel(string $string)
@@ -62,8 +58,8 @@ trait RequestTrait
             // formdata에 불필표한 데이터 제외하고 배열로 전환
             if (
                 !in_array($key, [
-                'instanceType', 'verb', 'responseType', 'authenticated',
-                'isCollection', 'responseClass', 'isPaged', 'client',
+                    'instanceType', 'verb', 'responseType', 'authenticated',
+                    'isCollection', 'responseClass', 'isPaged', 'client',
                 ])
             ) {
                 $array[ltrim($key, '_')] = $value;
@@ -76,8 +72,6 @@ trait RequestTrait
     /**
      * @param $date
      * @param string $timezone
-     *
-     * @return int
      */
     public function dateToTimestamp($date, $timezone = 'Asia/Seoul'): int
     {
@@ -99,8 +93,6 @@ trait RequestTrait
 
     /**
      * 배열에 넘겨진 property unset.
-     *
-     * @param array $array
      */
     private function unsetArray(array $array): void
     {

@@ -11,7 +11,7 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 // DeliveryMethod, DeliveryCompany Enum 클래스는 getAll() 메소드로 사용가능한 값들을 조회할 수 있습니다.
 $request                   = NaverOrder::ship('imp_589568085643', DeliveryMethod::NOTHING, '2019-09-04 00:00:00');
 $request->delivery_company = DeliveryCompany::CJGLS;
-$request->tracking_number = '123456789';
+$request->tracking_number  = '123456789';
 
 // delivery_method에 따른 필수값 유무를 체크 합니다.
 if ($request->valid()) {

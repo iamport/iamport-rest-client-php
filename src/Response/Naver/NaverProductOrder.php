@@ -100,8 +100,6 @@ class NaverProductOrder
 
     /**
      * NaverInquiry constructor.
-     *
-     * @param array $response
      */
     public function __construct(array $response)
     {
@@ -123,9 +121,6 @@ class NaverProductOrder
         $this->individual_code      =  $response['individual_code'];
     }
 
-    /**
-     * @return string
-     */
     public function getProductOrderId(): string
     {
         return $this->product_order_id;
@@ -147,9 +142,6 @@ class NaverProductOrder
         return ClaimType::getDescription($this->claim_type);
     }
 
-    /**
-     * @return string|null
-     */
     public function getClaimStatus(): ?string
     {
         switch ($this->claim_type) {
@@ -168,81 +160,51 @@ class NaverProductOrder
         }
     }
 
-    /**
-     * @return string
-     */
     public function getProductId(): string
     {
         return $this->product_id;
     }
 
-    /**
-     * @return string
-     */
     public function getProductName(): string
     {
         return $this->product_name;
     }
 
-    /**
-     * @return string
-     */
     public function getProductOptionId(): string
     {
         return $this->product_option_id;
     }
 
-    /**
-     * @return string
-     */
     public function getProductOptionName(): string
     {
         return $this->product_option_name;
     }
 
-    /**
-     * @return int
-     */
     public function getProductAmount(): int
     {
         return $this->product_amount;
     }
 
-    /**
-     * @return int
-     */
     public function getDeliveryAmount(): int
     {
         return $this->delivery_amount;
     }
 
-    /**
-     * @return int
-     */
     public function getQuantity(): int
     {
         return $this->quantity;
     }
 
-    /**
-     * @return NaverOrderer
-     */
     public function getOrderer(): NaverOrderer
     {
         return $this->orderer;
     }
 
-    /**
-     * @return NaverAddress
-     */
     public function getShippingAddress(): NaverAddress
     {
         return $this->shipping_address;
     }
 
-    /**
-     * @return string
-     */
     public function getShippingMemo(): string
     {
         return $this->shipping_memo;
@@ -250,6 +212,7 @@ class NaverProductOrder
 
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getShippingDue()
@@ -257,9 +220,6 @@ class NaverProductOrder
         return $this->timestampToDate($this->shipping_due);
     }
 
-    /**
-     * @return string
-     */
     public function getIndividualCode(): string
     {
         return $this->individual_code;

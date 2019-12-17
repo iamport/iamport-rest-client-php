@@ -31,8 +31,6 @@ class Kakaopay
 
     /**
      * Kakaopay constructor.
-     *
-     * @param array $response
      */
     public function __construct(array $response)
     {
@@ -42,36 +40,23 @@ class Kakaopay
         $this->orders               =  $response['orders'];
     }
 
-    /**
-     * @return array
-     */
     public function getPage(): array
     {
         return $this->page;
     }
 
-    /**
-     * @return string
-     */
     public function getPaymentRequestDate(): string
     {
         return $this->payment_request_date;
     }
 
-    /**
-     * @return string
-     */
     public function getCid(): string
     {
         return $this->cid;
     }
 
-    /**
-     * @return array
-     */
     public function getOrders(): array
     {
         return $this->orders;
     }
-
 }

@@ -10,13 +10,11 @@ use Iamport\RestClient\Request\Certification;
 use Iamport\RestClient\Request\Escrow\EscrowLogis;
 use Iamport\RestClient\Request\Escrow\EscrowLogisInvoice;
 use Iamport\RestClient\Request\Escrow\EscrowLogisPerson;
-use Iamport\RestClient\Request\Naver\NaverInquiry;
 use Iamport\RestClient\Request\Payment;
 use Iamport\RestClient\Request\Receipt;
 use Iamport\RestClient\Request\Subscribe\Schedule;
 use Iamport\RestClient\Request\Subscribe\SubscribeAgain;
 use Iamport\RestClient\Request\Subscribe\SubscribeCustomer;
-use Iamport\RestClient\Request\Subscribe\SubscribeInquiry;
 use Iamport\RestClient\Request\Subscribe\SubscribeOnetime;
 use Iamport\RestClient\Request\Subscribe\SubscribeSchedule;
 use Iamport\RestClient\Request\Subscribe\SubscribeUnschedule;
@@ -29,17 +27,16 @@ $customerUid = 'customer_1234';
 
 $iamport = new Iamport($impKey, $impSecret);
 
-$request        = Payment::listStatus('all');
-$request->limit = 10;
-$request->from  = '2018-08-16 09:21:32';
-$request->to    = '2018-10-08 14:04:44';
+$request          = Payment::listStatus('all');
+$request->limit   = 10;
+$request->from    = '2018-08-16 09:21:32';
+$request->to      = '2018-10-08 14:04:44';
 $request->sorting = 'started';
 
-$rs = $iamport->callApi($request);
+$rs   = $iamport->callApi($request);
 $data = $rs->getData();
 dump($data);
 foreach ($data->getItems() as $payment) {
-
 }
 
 die();

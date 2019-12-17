@@ -41,8 +41,6 @@ class BalanceWrap
 
     /**
      * NaverInquiry constructor.
-     *
-     * @param array $response
      */
     public function __construct(array $response)
     {
@@ -54,52 +52,34 @@ class BalanceWrap
 
         foreach ($response['histories'] as $item) {
             $this->histories[] = new BalanceBase($item);
-        };
+        }
     }
 
-    /**
-     * @return int
-     */
     public function getAmount(): int
     {
         return $this->amount;
     }
 
-    /**
-     * @return Balance
-     */
     public function getCashReceipt(): Balance
     {
         return $this->cash_receipt;
     }
 
-    /**
-     * @return Balance
-     */
     public function getPrimary(): Balance
     {
         return $this->primary;
     }
 
-    /**
-     * @return Balance
-     */
     public function getSecondary(): Balance
     {
         return $this->secondary;
     }
 
-    /**
-     * @return Balance
-     */
     public function getDiscount(): Balance
     {
         return $this->discount;
     }
 
-    /**
-     * @return array
-     */
     public function getHistories(): array
     {
         return $this->histories;

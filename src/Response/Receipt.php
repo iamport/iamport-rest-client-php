@@ -56,8 +56,6 @@ class Receipt
 
     /**
      * Receipt constructor.
-     *
-     * @param array $response
      */
     public function __construct(array $response)
     {
@@ -72,57 +70,36 @@ class Receipt
         $this->cancelled_at = $response['cancelled_at'];
     }
 
-    /**
-     * @return string
-     */
     public function getImpUid(): string
     {
         return $this->imp_uid;
     }
 
-    /**
-     * @return string
-     */
     public function getReceiptTid(): string
     {
         return $this->receipt_tid;
     }
 
-    /**
-     * @return string
-     */
     public function getApplyNum(): string
     {
         return $this->apply_num;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @return int
-     */
     public function getAmount(): int
     {
         return $this->amount;
     }
 
-    /**
-     * @return int
-     */
     public function getVat(): int
     {
         return $this->vat;
     }
 
-    /**
-     * @return string
-     */
     public function getReceiptUrl(): string
     {
         return $this->receipt_url;
@@ -130,6 +107,7 @@ class Receipt
 
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getAppliedAt()
@@ -139,6 +117,7 @@ class Receipt
 
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getCancelledAt()

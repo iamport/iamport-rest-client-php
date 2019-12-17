@@ -12,7 +12,7 @@ $result  = $iamport->callApi($request);
 if ($result->isSuccess()) {
     $payment = $result->getData();
 
-    /**
+    /*
      *  IMP.request_pay({
      *      custom_data : {my_key : value}
      *  });
@@ -21,7 +21,7 @@ if ($result->isSuccess()) {
      */
     dump($payment->custom_data);
 
-    /**
+    /*
      * paid_at, failed_at 등과 같은 UNIX timestamp 유형의 경우 편의를 위해 'Y-m-d H:i:s' 등의 포맷으로 변환되어 집니다
      * 만약 이렇게 변환된 값이 아닌 원본 값이 필요할경우 getAttributes() 메소드를 통해 호출합니다.
      */

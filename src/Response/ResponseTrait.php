@@ -35,9 +35,6 @@ trait ResponseTrait
     }
 
     /**
-     * @param int         $timestamp
-     * @param string|null $format
-     *
      * @return false|int|string
      *
      * @throws \Exception

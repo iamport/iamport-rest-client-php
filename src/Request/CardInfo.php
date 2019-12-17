@@ -37,9 +37,6 @@ class CardInfo
     /**
      * CardInfo constructor.
      *
-     * @param string      $card_number
-     * @param string      $expiry
-     * @param string      $birth
      * @param string|null $pwd_2digit
      */
     public function __construct(string $card_number, string $expiry, string $birth, string $pwd_2digit = '')
@@ -53,33 +50,21 @@ class CardInfo
         }
     }
 
-    /**
-     * @param string $card_number
-     */
     public function setCardNumber(string $card_number): void
     {
         $this->card_number = $card_number;
     }
 
-    /**
-     * @param string $expiry
-     */
     public function setExpiry(string $expiry): void
     {
         $this->expiry = $expiry;
     }
 
-    /**
-     * @param string $birth
-     */
     public function setBirth(string $birth): void
     {
         $this->birth = $birth;
     }
 
-    /**
-     * @param string $pwd_2digit
-     */
     public function setPwd2digit(string $pwd_2digit): void
     {
         $this->pwd_2digit = $pwd_2digit;

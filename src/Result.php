@@ -53,7 +53,7 @@ class Result
     }
 
     /**
-     * code == 0이고 데이터도 정상응답 받았지만 그 안에서 추가적인 검증로직이 필요할 경우 수행
+     * code == 0이고 데이터도 정상응답 받았지만 그 안에서 추가적인 검증로직이 필요할 경우 수행.
      *
      * @return bool
      */
@@ -74,9 +74,6 @@ class Result
         }
     }
 
-    /**
-     * @return bool
-     */
     private function hasData(): bool
     {
         return ($this->getData() === null) ? false : true;

@@ -13,12 +13,8 @@ class PaycoStatus extends Enum
 
     /**
      * Enum의 설명을 가져옵니다.
-     *
-     * @param int $value
-     *
-     * @return string
      */
-    public static function getDescription($value): string
+    public static function getDescription(string $value): string
     {
         switch ($value) {
             case self::DELIVERY_START:
@@ -28,7 +24,7 @@ class PaycoStatus extends Enum
             case self::CANCELED:
                 return '취소';
             default:
-                return null;
+                return '';
         }
     }
 }

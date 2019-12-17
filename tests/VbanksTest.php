@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Iamport\RestClient\Test;
 
 use DateTime;
@@ -11,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 class VbanksTest extends TestCase
 {
     use IamportTestTrait;
-
 
     /** @test */
     public function vbanks_view()
@@ -51,8 +49,8 @@ class VbanksTest extends TestCase
     /** @test */
     public function vbanks_edit()
     {
-        $request = Vbank::edit(self::$impUid);
-        $request->amount = '1001';
+        $request            = Vbank::edit(self::$impUid);
+        $request->amount    = '1001';
         $request->vbank_due = new DateTime('2019-12-26 08:00:00');
 
         $this->assertEquals('/vbanks/' . self::$impUid, $request->path());

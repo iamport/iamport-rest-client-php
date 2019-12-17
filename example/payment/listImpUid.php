@@ -12,7 +12,7 @@ $result  = $iamport->callApi($request);
 if ($result->isSuccess()) {
     $payments = $result->getData()->getItems();
     foreach ($payments as $payment) {
-        $paid_at = $payment->paid_at;
+        $paid_at          = $payment->paid_at;
         $original_paid_at = $payment->getAttributes('paid_at');
     }
     //조회에 실패한 결제내역이 존재할 경우 getfailed()를 통해 실패한 건의 imp_uid를 얻을 수 있습니다.
