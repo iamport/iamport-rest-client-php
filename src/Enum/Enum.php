@@ -90,7 +90,7 @@ class Enum
         }
     }
 
-    public static function getDescription(string $value): string
+    public static function getDescription(string $value): ?string
     {
         return self::getKey($value);
     }
