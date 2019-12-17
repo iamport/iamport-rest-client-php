@@ -3,5 +3,4 @@ redoc/
 composer.lock
 .DS_Store
 .idea
-.php_cs
 .phpunit.result.cache
