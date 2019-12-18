@@ -38,8 +38,11 @@ $config = Config::create()
         'ordered_imports'              => [
             'sort_algorithm' => 'alpha',                        //import 구문 알파벳 순으로 정렬
         ],
+        'no_superfluous_phpdoc_tags'   => [
+            'allow_mixed' => true
+        ]
     ])
     ->setFinder($finder)
-    ->setUsingCache(false);
+    ->setUsingCache(true);
 
 return $config;
