@@ -371,11 +371,11 @@ $result = $iamport->request(
 #### Mutator
 보통 `Setter`라고도 불리며 `Requset`객체에 값을 설정합니다.
 
-예를 들어 `Payment::list()`의 `from`, `to` 값은 `unix timestamp`로 전달해야 하지만 아래와 같이 `Y-m-d H:i:s` 포맷의 
-문자열로 전달하면 `Payment Requset` 객체의 `Mutator`가 해당값을 `timestamp`로 변환하여 값을 전달합니다.
+예를 들어 `Payment::list()`의 `from`, `to` 값은 `unix timestamp`로 전달해야 하지만 아래와 같이 `DateTime` 객체로
+ 전달하면 `Payment Requset` 객체의 `Mutator`가 해당값을 `timestamp`로 변환하여 값을 전달합니다.
 ```php
 $requset = Payment::list('paid');
-$request->to = '2019-10-23 09:25:00';
+$request->to = new DateTime('2019-12-01 09:25:00');
 ```
 이러한 변경과정을 커스터마이징 하고 싶다면 Requset 객체의 Mutator 메소드를 오버라이드 하여 사용합니다.
 
