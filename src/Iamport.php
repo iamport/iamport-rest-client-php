@@ -47,11 +47,10 @@ class Iamport extends IamportBase
             $uri            = $request->path();
             $attributes     = $request->attributes();
             $responseClass  = $request->responseClass;
-            $authenticated  = $request->authenticated;
             $client         = $request->client ?? null;
             $isCollection   = $request->isCollection;
 
-            $parseResponse = $this->request($method, $uri, $attributes, $authenticated, $client);
+            $parseResponse = $this->request($method, $uri, $attributes, $client);
             $response      = $parseResponse->response;
 
             // TODO: NaverPayment::point, NaverPayment::confirm 테스트 필요
@@ -82,10 +81,9 @@ class Iamport extends IamportBase
             $method        = $request->verb();
             $uri           = $request->path();
             $attributes    = $request->attributes();
-            $authenticated = $request->authenticated;
             $client        = $request->client ?? null;
 
-            return $this->requestPromise($method, $uri, $attributes, $authenticated, $client);
+            return $this->requestPromise($method, $uri, $attributes, $client);
         } catch (GuzzleException $e) {
             return ExceptionHandler::render($e);
         } catch (Exception $e) {
@@ -98,10 +96,10 @@ class Iamport extends IamportBase
      *
      * @throws GuzzleException
      */
-    public function request(string $method, string $uri, array $attributes = [], bool $authenticated = true, Client $customClient = null)
+    public function request(string $method, string $uri, array $attributes = [], Client $customClient = null)
     {
         try {
-            $client     = $customClient ?? $this->getHttpClient($authenticated);
+            $client     = $customClient ?? $this->getHttpClient(true);
             $response   = $client->request($method, $uri, $attributes);
             $statusCode = $response->getStatusCode();
 
@@ -123,10 +121,10 @@ class Iamport extends IamportBase
         }
     }
 
-    public function requestPromise(string $method, string $uri, array $attributes = [], bool $authenticated = true, Client $customClient = null): PromiseInterface
+    public function requestPromise(string $method, string $uri, array $attributes = [], Client $customClient = null): PromiseInterface
     {
         try {
-            $client   = $customClient ?? $this->getHttpClient($authenticated);
+            $client   = $customClient ?? $this->getHttpClient(true);
 
             return $client->requestAsync($method, $uri, $attributes);
         } catch (Exception $e) {
@@ -145,7 +143,7 @@ class Iamport extends IamportBase
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     protected function getHttpClient(bool $authenticated): Client
     {

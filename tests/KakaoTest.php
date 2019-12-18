@@ -19,7 +19,7 @@ class KakaoTest extends TestCase
         $this->assertArrayHasKey('query', $request->attributes());
         $this->assertArrayHasKey('payment_request_date', $request->attributes()['query']);
 
-        $response    = $this->iamport->callApi($request);
+        $response = $this->iamport->callApi($request);
 
         $this->assertInstanceOf('Iamport\RestClient\Result', $response);
     }

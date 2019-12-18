@@ -20,8 +20,8 @@ composer require iamport/rest-client
 
 - `callApi(Request)` - 성공/실패 일관된 결과를 제공합니다.
 - `callApiPromise(Request)` - 성공시 promise객체를 반환합니다. 
-- `request(method, uri, attributes, authenticated, $client)` - api 호출 응답을 반환합니다.
-- `requestPromise(method, uri, attributes, authenticated, $client)` - 비동기 호출을 통해 promise 객체를 반환합니다. 
+- `request(method, uri, attributes, $client)` - api 호출 응답을 반환합니다.
+- `requestPromise(method, uri, attributes, $client)` - 비동기 호출을 통해 promise 객체를 반환합니다. 
 - `requestAccessToken()` - 액세스 토큰을 발급합니다.
 - `getCustomHttpClient(HandlerStack)` - guzzle 클라이언트의 handler를 직접 생성하고 싶을 경우 호출합니다.
 

@@ -51,7 +51,7 @@ final class ExceptionHandler
         }
     }
 
-    public static function render(Exception $exception): Result
+    public static function render($exception): Result
     {
         $error = new \stdClass();
         if ($exception instanceof IamportException) {

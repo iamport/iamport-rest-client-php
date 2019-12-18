@@ -7,7 +7,7 @@ use Iamport\RestClient\Request\RequestBase;
 
 abstract class IamportBase
 {
-    const EXPIRE_BUFFER = 30;
+    protected const EXPIRE_BUFFER = 30;
 
     /**
      * @var string
@@ -47,7 +47,7 @@ abstract class IamportBase
 
     abstract public function callApi(RequestBase $request): Result;
 
-    abstract public function request(string $method, string $uri, array $attributes = [], bool $authenticated = true, Client $customClient = null);
+    abstract public function request(string $method, string $uri, array $attributes = [], Client $customClient = null);
 
     abstract protected function getHttpClient(bool $authenticated): Client;
 

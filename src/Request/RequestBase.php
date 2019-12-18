@@ -34,13 +34,6 @@ abstract class RequestBase
     public $isPaged = false;
 
     /**
-     * 토큰 포함 여부
-     *
-     * @var bool
-     */
-    public $authenticated = true;
-
-    /**
      * @var Client
      */
     public $client = null;
@@ -53,11 +46,6 @@ abstract class RequestBase
     public function setResponseClass(string $responseClass): void
     {
         $this->responseClass = $responseClass;
-    }
-
-    public function setAuthenticated(bool $authenticated): void
-    {
-        $this->authenticated = $authenticated;
     }
 
     public function setClient(Client $client): void
