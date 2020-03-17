@@ -560,6 +560,26 @@ if (!class_exists('Iamport')) {
             }
         }
 
+        public function revokeVbank($impUid)
+        {
+            try {
+                $accessToken = $this->getAccessCode();
+
+                $response = $this->deleteResponse(
+                    self::VBANK_BASE_URL . $impUid,
+                    array(self::TOKEN_HEADER . ': ' . $accessToken)
+                );
+
+                return new IamportResult(true, $response);
+            } catch (IamportAuthException $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            } catch (IamportRequestException $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            } catch (Exception $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            }
+        }
+
         protected function getResponse($request_url, $request_data = null)
         {
             $access_token = $this->getAccessCode();
