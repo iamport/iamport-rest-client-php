@@ -150,6 +150,7 @@ if (!class_exists('Iamport')) {
         const SBCR_UNSCHEDULE_PAYMENT_URL = 'https://api.iamport.kr/subscribe/payments/unschedule/';
         const SBCR_CUSTOMERS_URL = 'https://api.iamport.kr/subscribe/customers/';
         const RECEIPT_URL = 'https://api.iamport.kr/receipts/';
+        const VBANK_BASE_URL = 'https://api.iamport.kr/vbanks/';
 
         const TOKEN_HEADER = 'Authorization';
 
@@ -493,6 +494,72 @@ if (!class_exists('Iamport')) {
             }
         }
 
+        public function issueVbank($requestData)
+        {
+            try {
+                $accessToken = $this->getAccessCode();
+
+                $keys = array_flip(array(
+                    "merchant_uid",
+                    "amount",
+                    "vbank_code",
+                    "vbank_due",
+                    "vbank_holder",
+                    "name",
+                    "buyer_name",
+                    "buyer_email",
+                    "buyer_tel",
+                    "buyer_addr",
+                    "buyer_postcode",
+                    "pg",
+                    "notice_url",
+                    "custom_data",));
+                $postData = array_intersect_key($requestData, $keys);
+
+                $response = $this->postResponse(
+                    self::VBANK_BASE_URL,
+                    $postData,
+                    array(self::TOKEN_HEADER . ': ' . $accessToken)
+                );
+
+                return new IamportResult(true, $response);
+            } catch (IamportAuthException $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            } catch (IamportRequestException $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            } catch (Exception $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            }
+        }
+
+        public function modifyVbank($impUid, $requestData)
+        {
+            try {
+                $accessToken = $this->getAccessCode();
+
+                $keys = array_flip(array(
+                    "amount",
+                    "vbank_due",
+                    ));
+                $postData = array_intersect_key($requestData, $keys);
+
+                $response = $this->postResponse(
+                    self::VBANK_BASE_URL . $impUid,
+                    $postData,
+                    array(self::TOKEN_HEADER . ': ' . $accessToken),
+                    true
+                );
+
+                return new IamportResult(true, $response);
+            } catch (IamportAuthException $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            } catch (IamportRequestException $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            } catch (Exception $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            }
+        }
+
         protected function getResponse($request_url, $request_data = null)
         {
             $access_token = $this->getAccessCode();
@@ -518,15 +585,21 @@ if (!class_exists('Iamport')) {
             return $r->response;
         }
 
-        protected function postResponse($request_url, $post_data = array(), $headers = array())
+        protected function postResponse($request_url, $post_data = array(), $headers = array(), $put = false)
         {
             $post_data_str = json_encode($post_data);
             $default_header = array('Content-Type: application/json', 'Content-Length: ' . strlen($post_data_str));
             $headers = array_merge($default_header, $headers);
 
             $ch = curl_init();
+
+            if ($put) {
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+            } else {
+                curl_setopt($ch, CURLOPT_POST, true);
+            }
+
             curl_setopt($ch, CURLOPT_URL, $request_url);
-            curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data_str);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
