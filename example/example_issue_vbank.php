@@ -19,6 +19,7 @@ if ( $result->success ) {
   $payment = $result->data;
 
   echo "## 가상계좌 발급 성공 ##" . "\n";
+  echo "가상계좌 발급된 거래건의 imp_uid : " . $payment->imp_uid . "\n";
   echo "입금해야할 금액 : " . $payment->amount . "\n";
   echo "발급된 가상계좌번호 : " . $payment->vbank_num . "\n";
   echo "발급된 가상계좌 은행코드 : " . $payment->vbank_code . "\n";
