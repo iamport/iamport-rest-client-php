@@ -151,6 +151,7 @@ if (!class_exists('Iamport')) {
         const SBCR_CUSTOMERS_URL = 'https://api.iamport.kr/subscribe/customers/';
         const RECEIPT_URL = 'https://api.iamport.kr/receipts/';
         const VBANK_BASE_URL = 'https://api.iamport.kr/vbanks/';
+        const ESCROW_LOGIS_BASE_URL = 'https://api.iamport.kr/escrows/logis/';
 
         const TOKEN_HEADER = 'Authorization';
 
@@ -567,6 +568,31 @@ if (!class_exists('Iamport')) {
 
                 $response = $this->deleteResponse(
                     self::VBANK_BASE_URL . $impUid,
+                    array(self::TOKEN_HEADER . ': ' . $accessToken)
+                );
+
+                return new IamportResult(true, $response);
+            } catch (IamportAuthException $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            } catch (IamportRequestException $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            } catch (Exception $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            }
+        }
+
+        public function registerEscrowLogis($impUid, $sender, $receiver, $logis)
+        {
+            try {
+                $accessToken = $this->getAccessCode();
+
+                $response = $this->postResponse(
+                    self::ESCROW_LOGIS_BASE_URL . $impUid,
+                    array(
+                        'sender' => $sender,
+                        'receiver' => $receiver,
+                        'logis' => $logis,
+                    ),
                     array(self::TOKEN_HEADER . ': ' . $accessToken)
                 );
 
