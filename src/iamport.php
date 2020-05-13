@@ -606,6 +606,32 @@ if (!class_exists('Iamport')) {
             }
         }
 
+        public function updateEscrowLogis($impUid, $sender, $receiver, $logis)
+        {
+            try {
+                $accessToken = $this->getAccessCode();
+
+                $response = $this->postResponse(
+                    self::ESCROW_LOGIS_BASE_URL . $impUid,
+                    array(
+                        'sender' => $sender,
+                        'receiver' => $receiver,
+                        'logis' => $logis,
+                    ),
+                    array(self::TOKEN_HEADER . ': ' . $accessToken),
+                    true
+                );
+
+                return new IamportResult(true, $response);
+            } catch (IamportAuthException $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            } catch (IamportRequestException $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            } catch (Exception $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            }
+        }
+
         protected function getResponse($request_url, $request_data = null)
         {
             $access_token = $this->getAccessCode();
