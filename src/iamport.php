@@ -387,6 +387,21 @@ if (!class_exists('Iamport')) {
             }
         }
 
+        public function getSchedule($merchantUid)
+        {
+            try {
+                $response = $this->getResponse(self::SBCR_SCHEDULE_PAYMENT_URL . $merchantUid);
+
+                return new IamportResult(true, $response);
+            } catch (IamportAuthException $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            } catch (IamportRequestException $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            } catch (Exception $e) {
+                return new IamportResult(false, null, array('code' => $e->getCode(), 'message' => $e->getMessage()));
+            }
+        }
+
         // /subscribe/customers/{customer_uid} POST function
 
         /**
