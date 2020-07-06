@@ -4,11 +4,11 @@ require_once('src/iamport.php');
 $iamport = new Iamport('YOUR_IMP_REST_API_KEY', 'YOUR_IMP_REST_API_SECRET');
 
 #4. 저장된 빌링키로 재결제
-$result = $iamport->sbcr_again(array(
+$result = $iamport->subscribeAgain(array(
 	//필수
-	'customer_uid'  => '구매자 고유 번호', 			
+	'customer_uid'  => '구매자 고유 번호',
 	'merchant_uid'	=> '가맹점 거래 고유번호', 		// PG사 영수증에 '주문번호'로 찍힘
-	'amount' 		=> 1000,					
+	'amount' 		=> 1000,
 	//필수 or 생략가능
 	'vat'			=> 100, 					// 1. 부가세 관련 PG사 인증을 안받은경우(기본): 기본으로 10%로 VAT가 찍힘(생략가능)
 												// 2. 부가세 관련 PG사 인증을 받은경우: VAT를 생략할 경우 결제실패(생략불가)
@@ -19,7 +19,8 @@ $result = $iamport->sbcr_again(array(
 	'buyer_tel'		=> '주문자 전화번호',
 	'buyer_addr'	=> '주문자 주소',
 	'buyer_postcode'=> '주문자 우편번호',
-	'card_quota'	=> '카드 할부개월 수'			// 2 이상의 integer에 대해 적용(최소 amount 50,000원)
+	'card_quota'	=> '카드 할부개월 수',			// 2 이상의 integer에 대해 적용(최소 amount 50,000원)
+    'extra'         => array('naverUseCfm' => '20201001'),  //네이버페이 반복결제에 이용완료일 지정이 필요한 가맹점은, extra 필드로 naverUseCfm 전달 가능
 ));
 if ( $result->success ) {
 	/**
@@ -42,7 +43,7 @@ if ( $result->success ) {
 
 	else {
 		// 결제실패
-		echo '결제실패 사유 : ' 		. $payment_data->fail_reason;	
+		echo '결제실패 사유 : ' 		. $payment_data->fail_reason;
 	}
 	//등등 __get을 선언해 놓고 있어 API의 Payment Model의 값들을 모두 property처럼 접근할 수 있습니다.
 } else {
