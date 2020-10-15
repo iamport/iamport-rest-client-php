@@ -109,7 +109,12 @@
     <td class="tg-0pky">빌링키를 수정하거나 등록하는 예제<br><strong>하단 주의사항 1 필독!! **</strong></td>
   </tr>
   <tr>
-    <td class="tg-0pky">example_schedule.php</td>
+    <td class="tg-0pky">example_schedule_by_cardinfo.php</td>
+    <td class="tg-0pky">비인증결제</td>
+    <td class="tg-0pky">카드정보를 통한 예약결제/정기결제 스케쥴을 추가 예제<br><strong>하단 주의사항 1 필독!! **</strong></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">example_schedule_by_billinkey.php</td>
     <td class="tg-0pky">비인증결제</td>
     <td class="tg-0pky">빌링키를 이용하여 예약결제/정기결제 스케쥴을 추가 예제</td>
   </tr>
