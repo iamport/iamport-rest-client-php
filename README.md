@@ -5,7 +5,7 @@ PHP사용자를 위한 아임포트 REST API 연동 모듈입니다
 - [guzzle](http://docs.guzzlephp.org/en/stable/)을 기반으로 만들어진 버전
 - composer 패키지 형태로 제공
 
-기존의 [PHP 5.X 버전의 연동모듈은 1.0 version](https://github.com/iamport/iamport-rest-client-php/tree/1.0) 을 참고해주세요.
+기존의 PHP 5.X 버전의 연동모듈은 [1.0 branch](https://github.com/iamport/iamport-rest-client-php/tree/1.0)를 참고해주세요.
 
 ## Required
 - PHP 7.1 버전 이상을 요구합니다.
@@ -504,11 +504,13 @@ $nextData = $data->next($iamport);
 ```bash
 composer test
 ```
+![composer test](./tests/composer-test.gif)
 
 ## Links
 - [아임포트 API](https://api.iamport.kr)
 - [아임포트 Docs](https://docs.iamport.kr/)
 - [Guzzle Docs](http://docs.guzzlephp.org/en/stable/index.html)
+- [구버전 Link](https://github.com/iamport/iamport-rest-client-php/tree/1.0)
 
 ## Changelog
 
