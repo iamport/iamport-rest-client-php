@@ -74,7 +74,7 @@ class SubscribeTest extends TestCase
 
         $this->assertEquals('/subscribe/customers/' . self::$customerUid, $subscribeCustomer->path());
         $this->assertEquals('DELETE', $subscribeCustomer->verb());
-        $this->assertEmpty($subscribeCustomer->attributes());
+        $this->assertArrayHasKey('query', $subscribeCustomer->attributes());
 
         $response = $this->iamport->callApi($subscribeCustomer);
 
