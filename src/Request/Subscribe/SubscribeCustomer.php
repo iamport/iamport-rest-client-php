@@ -27,6 +27,8 @@ use InvalidArgumentException;
  * @property mixed  $from
  * @property mixed  $to
  * @property string $schedule_status
+ * @property string $reason
+ * @property SubscribeCustomerExtra $extra
  */
 class SubscribeCustomer extends RequestBase
 {
@@ -118,6 +120,16 @@ class SubscribeCustomer extends RequestBase
     protected $schedule_status;
 
     /**
+     * @var string 삭제 사유
+     */
+    protected $reason;
+
+    /**
+     * @var SubscribeCustomerExtra
+     */
+    protected $extra;
+
+    /**
      * SubscribeCustomer constructor.
      */
     public function __construct()
@@ -138,7 +150,8 @@ class SubscribeCustomer extends RequestBase
         $instance->verb          = 'GET';
         $instance->unsetArray([
             'customer_uids', 'pg', 'card_number', 'expiry', 'birth', 'pwd_2digit', 'customer_name', 'customer_tel',
-            'customer_email', 'customer_addr', 'customer_postcode', 'page', 'from', 'to', 'schedule-status',
+            'customer_email', 'customer_addr', 'customer_postcode', 'page', 'from', 'to', 'schedule-status', 'reason',
+            'extra',
         ]);
 
         return $instance;
@@ -163,7 +176,7 @@ class SubscribeCustomer extends RequestBase
         $instance->responseClass = Response\SubscribeCustomer::class;
         $instance->instanceType  = 'issue';
         $instance->verb          = 'POST';
-        $instance->unsetArray(['customer_uids', 'page', 'from', 'to', 'schedule-status']);
+        $instance->unsetArray(['customer_uids', 'page', 'from', 'to', 'schedule-status', 'reason', 'extra']);
 
         return $instance;
     }
@@ -173,10 +186,12 @@ class SubscribeCustomer extends RequestBase
      *
      * @return SubscribeCustomer
      */
-    public static function delete(string $customer_uid)
+    public static function delete(string $customer_uid, string $reason=null, SubscribeCustomerExtra $extra=null)
     {
         $instance                = new self();
         $instance->customer_uid  = $customer_uid;
+        $instance->reason        = $reason;
+        $instance->extra         = $extra;
         $instance->responseClass = Response\SubscribeCustomer::class;
         $instance->instanceType  = 'delete';
         $instance->verb          = 'DELETE';
@@ -203,7 +218,8 @@ class SubscribeCustomer extends RequestBase
         $instance->verb           = 'GET';
         $instance->unsetArray([
             'pg', 'card_number', 'expiry', 'birth', 'pwd_2digit', 'customer_name', 'customer_tel',
-            'customer_email', 'customer_addr', 'customer_postcode', 'page', 'from', 'to', 'schedule-status',
+            'customer_email', 'customer_addr', 'customer_postcode', 'page', 'from', 'to', 'schedule-status', 'reason',
+            'extra',
         ]);
 
         return $instance;
@@ -225,7 +241,8 @@ class SubscribeCustomer extends RequestBase
         $instance->verb           = 'GET';
         $instance->unsetArray([
             'customer_uids', 'pg', 'card_number', 'expiry', 'birth', 'pwd_2digit', 'customer_name', 'customer_tel',
-            'customer_email', 'customer_addr', 'customer_postcode', 'from', 'to', 'schedule-status',
+            'customer_email', 'customer_addr', 'customer_postcode', 'from', 'to', 'schedule-status', 'reason',
+            'extra',
         ]);
 
         return $instance;
@@ -252,7 +269,7 @@ class SubscribeCustomer extends RequestBase
         $instance->verb           = 'GET';
         $instance->unsetArray([
             'customer_uids', 'pg', 'card_number', 'expiry', 'birth', 'pwd_2digit', 'customer_name',
-            'customer_tel', 'customer_email', 'customer_addr', 'customer_postcode',
+            'customer_tel', 'customer_email', 'customer_addr', 'customer_postcode', 'reason', 'extra',
         ]);
 
         return $instance;
@@ -326,6 +343,16 @@ class SubscribeCustomer extends RequestBase
         $this->schedule_status = $schedule_status;
     }
 
+    public function setReason(string $reason): void
+    {
+        $this->reason = $reason;
+    }
+
+    public function setExtra(SubscribeCustomerExtra $extra): void
+    {
+        $this->extra = $extra;
+    }
+
     /**
      * 구매자의 빌링키 정보 조회
      * [GET] /subscribe/customers/{customer_uid}.
@@ -362,8 +389,23 @@ class SubscribeCustomer extends RequestBase
     {
         switch ($this->instanceType) {
             case 'view':
+                return [];
+                break;
             case 'delete':
-                return  [];
+                $result = ['query' => []];
+
+                if (!empty($this->reason)) {
+                    $result['query']['reason'] = $this->reason;
+                }
+
+                if (!empty($this->extra)) {
+                    $extra_requester = $this->extra->requester;
+                    if (!empty($extra_requester)) {
+                        $result['query']['extra[requester]'] = $extra_requester;
+                    }
+                }
+
+                return $result;
                 break;
             case 'issue':
                 return [
