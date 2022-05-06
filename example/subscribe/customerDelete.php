@@ -9,9 +9,10 @@ use Iamport\RestClient\Request\Subscribe\SubscribeCustomerExtra;
 $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f');
 
 // 비인증결제 빌링키 삭제
-$extra = new SubscribeCustomerExtra();
+$reason = "삭제 사유"; // Optional 요청 파라미터.
+$extra = new SubscribeCustomerExtra(); // Optional 요청 파라미터.
 $extra->requester = '삭제 요청자';
-$request = SubscribeCustomer::delete('구매자 고유번호(customerUid)', '삭제 사유', $extra);
+$request = SubscribeCustomer::delete('구매자 고유번호(customerUid)', $reason, $extra);
 $result  = $iamport->callApi($request);
 
 if ($result->isSuccess()) {
