@@ -28,7 +28,7 @@ use InvalidArgumentException;
  * @property mixed  $to
  * @property string $schedule_status
  * @property string $reason
- * @property string $extra_requester
+ * @property SubscribeCustomerExtra $extra
  */
 class SubscribeCustomer extends RequestBase
 {
