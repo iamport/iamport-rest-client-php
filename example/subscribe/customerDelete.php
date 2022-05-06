@@ -4,11 +4,14 @@ require_once '../../vendor/autoload.php';
 
 use Iamport\RestClient\Iamport;
 use Iamport\RestClient\Request\Subscribe\SubscribeCustomer;
+use Iamport\RestClient\Request\Subscribe\SubscribeCustomerExtra;
 
 $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f');
 
 // 비인증결제 빌링키 삭제
-$request = SubscribeCustomer::delete('구매자 고유번호(customerUid)');
+$extra = new SubscribeCustomerExtra();
+$extra->requester = '삭제 요청자';
+$request = SubscribeCustomer::delete('구매자 고유번호(customerUid)', '삭제 사유', $extra);
 $result  = $iamport->callApi($request);
 
 if ($result->isSuccess()) {

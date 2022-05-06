@@ -7,6 +7,7 @@ use Iamport\RestClient\Request\CardInfo;
 use Iamport\RestClient\Request\Subscribe\Schedule;
 use Iamport\RestClient\Request\Subscribe\SubscribeAgain;
 use Iamport\RestClient\Request\Subscribe\SubscribeCustomer;
+use Iamport\RestClient\Request\Subscribe\SubscribeCustomerExtra;
 use Iamport\RestClient\Request\Subscribe\SubscribeInquiry;
 use Iamport\RestClient\Request\Subscribe\SubscribeOnetime;
 use Iamport\RestClient\Request\Subscribe\SubscribeSchedule;
@@ -71,6 +72,22 @@ class SubscribeTest extends TestCase
     public function delete_subscribe_customer()
     {
         $subscribeCustomer = SubscribeCustomer::delete(self::$customerUid);
+
+        $this->assertEquals('/subscribe/customers/' . self::$customerUid, $subscribeCustomer->path());
+        $this->assertEquals('DELETE', $subscribeCustomer->verb());
+        $this->assertArrayHasKey('query', $subscribeCustomer->attributes());
+
+        $response = $this->iamport->callApi($subscribeCustomer);
+
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+    }
+
+    /** @test */
+    public function delete_subscribe_customer_with_optional_parameters()
+    {
+        $extra = new SubscribeCustomerExtra();
+        $extra->requester = '삭제 요청자';
+        $subscribeCustomer = SubscribeCustomer::delete(self::$customerUid, '삭제 사유', $extra);
 
         $this->assertEquals('/subscribe/customers/' . self::$customerUid, $subscribeCustomer->path());
         $this->assertEquals('DELETE', $subscribeCustomer->verb());
