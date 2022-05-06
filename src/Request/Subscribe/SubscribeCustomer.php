@@ -125,9 +125,9 @@ class SubscribeCustomer extends RequestBase
     protected $reason;
 
     /**
-     * @var string 삭제 요청자(네이버페이에서만 사용)
+     * @var SubscribeCustomerExtra
      */
-    protected $extra_requester;
+    protected $extra;
 
     /**
      * SubscribeCustomer constructor.
@@ -151,7 +151,7 @@ class SubscribeCustomer extends RequestBase
         $instance->unsetArray([
             'customer_uids', 'pg', 'card_number', 'expiry', 'birth', 'pwd_2digit', 'customer_name', 'customer_tel',
             'customer_email', 'customer_addr', 'customer_postcode', 'page', 'from', 'to', 'schedule-status', 'reason',
-            'extra_requester',
+            'extra',
         ]);
 
         return $instance;
@@ -176,7 +176,7 @@ class SubscribeCustomer extends RequestBase
         $instance->responseClass = Response\SubscribeCustomer::class;
         $instance->instanceType  = 'issue';
         $instance->verb          = 'POST';
-        $instance->unsetArray(['customer_uids', 'page', 'from', 'to', 'schedule-status', 'reason', 'extra_requester']);
+        $instance->unsetArray(['customer_uids', 'page', 'from', 'to', 'schedule-status', 'reason', 'extra']);
 
         return $instance;
     }
@@ -186,12 +186,12 @@ class SubscribeCustomer extends RequestBase
      *
      * @return SubscribeCustomer
      */
-    public static function delete(string $customer_uid, string $reason=null, string $extraRequester=null)
+    public static function delete(string $customer_uid, string $reason=null, SubscribeCustomerExtra $extra=null)
     {
         $instance                = new self();
         $instance->customer_uid  = $customer_uid;
-        $instance->reason = $reason;
-        $instance->extra_requester = $extraRequester;
+        $instance->reason        = $reason;
+        $instance->extra         = $extra;
         $instance->responseClass = Response\SubscribeCustomer::class;
         $instance->instanceType  = 'delete';
         $instance->verb          = 'DELETE';
@@ -219,7 +219,7 @@ class SubscribeCustomer extends RequestBase
         $instance->unsetArray([
             'pg', 'card_number', 'expiry', 'birth', 'pwd_2digit', 'customer_name', 'customer_tel',
             'customer_email', 'customer_addr', 'customer_postcode', 'page', 'from', 'to', 'schedule-status', 'reason',
-            'extra_requester',
+            'extra',
         ]);
 
         return $instance;
@@ -242,7 +242,7 @@ class SubscribeCustomer extends RequestBase
         $instance->unsetArray([
             'customer_uids', 'pg', 'card_number', 'expiry', 'birth', 'pwd_2digit', 'customer_name', 'customer_tel',
             'customer_email', 'customer_addr', 'customer_postcode', 'from', 'to', 'schedule-status', 'reason',
-            'extra_requester',
+            'extra',
         ]);
 
         return $instance;
@@ -269,7 +269,7 @@ class SubscribeCustomer extends RequestBase
         $instance->verb           = 'GET';
         $instance->unsetArray([
             'customer_uids', 'pg', 'card_number', 'expiry', 'birth', 'pwd_2digit', 'customer_name',
-            'customer_tel', 'customer_email', 'customer_addr', 'customer_postcode', 'reason', 'extra_requester',
+            'customer_tel', 'customer_email', 'customer_addr', 'customer_postcode', 'reason', 'extra',
         ]);
 
         return $instance;
@@ -348,9 +348,9 @@ class SubscribeCustomer extends RequestBase
         $this->reason = $reason;
     }
 
-    public function setExtraRequester(string $extra_requester): void
+    public function setExtra(SubscribeCustomerExtra $extra): void
     {
-        $this->extra_requester = $extra_requester;
+        $this->extra = $extra;
     }
 
     /**
@@ -398,8 +398,11 @@ class SubscribeCustomer extends RequestBase
                     $result['query']['reason'] = $this->reason;
                 }
 
-                if (!empty($this->extra_requester)) {
-                    $result['query']['extra[requester]'] = $this->extra_requester;
+                if (!empty($this->extra)) {
+                    $extra_requester = $this->extra->requester;
+                    if (!empty($extra_requester)) {
+                        $result['query']['extra[requester]'] = $extra_requester;
+                    }
                 }
 
                 return $result;
