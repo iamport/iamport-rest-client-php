@@ -17,6 +17,8 @@ use Iamport\RestClient\Response;
  * @property string $refund_holder
  * @property string $refund_bank
  * @property string $refund_account
+ * @property string $refund_tel
+ * @property CancelPaymentExtra $extra
  */
 class CancelPayment extends RequestBase
 {
@@ -66,6 +68,16 @@ class CancelPayment extends RequestBase
      * @var string 환불계좌 계좌번호(가상계좌취소시 필수)
      */
     protected $refund_account;
+
+    /**
+     * @var string 환불계좌 예금주 연락처(가상계좌취소,스마트로 PG사 인경우 필수 )
+     */
+    protected $refund_tel;
+
+    /**
+     * @var CancelPaymentExtra
+     */
+    protected $extra;
 
     /**
      * CancelPayment constructor.
@@ -146,6 +158,16 @@ class CancelPayment extends RequestBase
         $this->refund_account = $refund_account;
     }
 
+    public function setRefundTel(string $refund_tel): void
+    {
+        $this->refund_tel = $refund_tel;
+    }
+
+    public function setExtra(CancelPaymentExtra $extra): void
+    {
+        $this->extra = $extra;
+    }
+
     /**
      * 주문취소.
      * [POST] /payments/cancel.
@@ -157,8 +179,14 @@ class CancelPayment extends RequestBase
 
     public function attributes(): array
     {
+        $result = $this->toArray();
+
+        if ($this->extra instanceof CancelPaymentExtra) {
+            $result['extra'] = $this->extra->toArray();
+        }
+
         return [
-            'body' => json_encode($this->toArray()),
+            'body' => json_encode($result),
         ];
     }
 
