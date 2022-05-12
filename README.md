@@ -10,12 +10,6 @@ PHP사용자를 위한 아임포트 REST API 연동 모듈입니다
 ## Required
 - PHP 7.1 버전 이상을 요구합니다.
 
-
-## Install
-```bash
-composer require iamport/rest-client
-```
-
 ## Quick start
 
 ### Iamport
