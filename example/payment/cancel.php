@@ -14,7 +14,6 @@ $reason              = filter_input(INPUT_POST, 'reason', FILTER_SANITIZE_STRING
 $cancelRequestAmount = filter_input(INPUT_POST, 'cancel_request_amount', FILTER_SANITIZE_STRING);
 $extra_requester     = filter_input(INPUT_POST, 'extra_requester', FILTER_SANITIZE_STRING);
 
-
 // TODO : 아래 가맹점 DB 접근 코드는 예시를 돕고자 작성된 샘플코드로 실제 가맹점의 환경에 맞게 직접 작성하셔야 됩니다.
 // 가맹점 DB에서 환불할 결제 정보 조회
 $pdo          = new PDO('dsn', 'db username', 'db password');
