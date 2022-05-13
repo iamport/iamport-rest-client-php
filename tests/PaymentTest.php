@@ -1,5 +1,6 @@
 <?php
 
+use Iamport\RestClient\Enum\Naver\CancelPaymentRequester;
 use Iamport\RestClient\Request\CancelPayment;
 use Iamport\RestClient\Request\CancelPaymentExtra;
 use Iamport\RestClient\Request\Payment;
@@ -84,7 +85,7 @@ class PaymentTest extends TestCase
         $cancelPayment->refund_account = '환불될 가상계좌 번호';
         $cancelPayment->refund_tel     = "01012341234";
         $extra                         = new CancelPaymentExtra();
-        $extra->requester              = 'admin';
+        $extra->requester              = CancelPaymentRequester::ADMIN;
         $cancelPayment->setExtra($extra);
 
         $this->assertSame($cancelPayment->imp_uid, self::$impUid);
@@ -110,7 +111,7 @@ class PaymentTest extends TestCase
         $cancelPayment->refund_account = '환불될 가상계좌 번호';
         $cancelPayment->refund_tel     = "01012341234";
         $extra                         = new CancelPaymentExtra();
-        $extra->requester              = 'admin';
+        $extra->requester              = CancelPaymentRequester::ADMIN;
         $cancelPayment->setExtra($extra);
 
         $this->assertSame($cancelPayment->merchant_uid, self::$merchantUid);

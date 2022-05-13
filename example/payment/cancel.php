@@ -2,6 +2,7 @@
 
 require_once '../../vendor/autoload.php';
 
+use Iamport\RestClient\Enum\Naver\CancelPaymentRequester;
 use Iamport\RestClient\Iamport;
 use Iamport\RestClient\Request\CancelPayment;
 use Iamport\RestClient\Request\CancelPaymentExtra;
@@ -43,9 +44,11 @@ $request->refund_bank    = '환불될 가상계좌 은행코드';
 $request->refund_account = '환불될 가상계좌 번호';
 
 $extra = new CancelPaymentExtra();
-if ( in_array($extra_requester, ['admin', 'customer'])) {
-    // API를 호출하는 출처 (optional)
-    $extra->requester = $extra_requester;
+// 취소 요청자, API를 호출하는 출처 (optional)
+if ($extra_requester === 'admin') {
+    $extra->requester = CancelPaymentRequester::ADMIN;
+} else if ($extra_requester === 'customer'){
+    $extra->requester = CancelPaymentRequester::CUSTOMER;
 }
 
 $request->extra          = $extra;
