@@ -1,6 +1,8 @@
 <?php
 
+use Iamport\RestClient\Enum\Naver\CancelPaymentRequester;
 use Iamport\RestClient\Request\CancelPayment;
+use Iamport\RestClient\Request\CancelPaymentExtra;
 use Iamport\RestClient\Request\Payment;
 use Iamport\RestClient\Test\IamportTestTrait;
 use PHPUnit\Framework\TestCase;
@@ -81,6 +83,10 @@ class PaymentTest extends TestCase
         $cancelPayment->refund_holder  = '환불될 가상계좌 예금주';
         $cancelPayment->refund_bank    = '환불될 가상계좌 은행코드';
         $cancelPayment->refund_account = '환불될 가상계좌 번호';
+        $cancelPayment->refund_tel     = "01012341234";
+        $extra                         = new CancelPaymentExtra();
+        $extra->requester              = CancelPaymentRequester::ADMIN;
+        $cancelPayment->setExtra($extra);
 
         $this->assertSame($cancelPayment->imp_uid, self::$impUid);
         $this->assertEquals('/payments/cancel/', $cancelPayment->path());
@@ -103,6 +109,10 @@ class PaymentTest extends TestCase
         $cancelPayment->refund_holder  = '환불될 가상계좌 예금주';
         $cancelPayment->refund_bank    = '환불될 가상계좌 은행코드';
         $cancelPayment->refund_account = '환불될 가상계좌 번호';
+        $cancelPayment->refund_tel     = "01012341234";
+        $extra                         = new CancelPaymentExtra();
+        $extra->requester              = CancelPaymentRequester::ADMIN;
+        $cancelPayment->setExtra($extra);
 
         $this->assertSame($cancelPayment->merchant_uid, self::$merchantUid);
         $this->assertEquals('/payments/cancel/', $cancelPayment->path());

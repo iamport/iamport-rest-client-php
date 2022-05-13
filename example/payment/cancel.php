@@ -2,8 +2,10 @@
 
 require_once '../../vendor/autoload.php';
 
+use Iamport\RestClient\Enum\Naver\CancelPaymentRequester;
 use Iamport\RestClient\Iamport;
 use Iamport\RestClient\Request\CancelPayment;
+use Iamport\RestClient\Request\CancelPaymentExtra;
 
 $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f');
 
@@ -11,6 +13,7 @@ $iamport = new Iamport('imp_apikey', 'ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA
 $merchant_uid        = filter_input(INPUT_POST, 'merchant_uid', FILTER_SANITIZE_STRING);
 $reason              = filter_input(INPUT_POST, 'reason', FILTER_SANITIZE_STRING);
 $cancelRequestAmount = filter_input(INPUT_POST, 'cancel_request_amount', FILTER_SANITIZE_STRING);
+$extra_requester     = filter_input(INPUT_POST, 'extra_requester', FILTER_SANITIZE_STRING);
 
 // TODO : 아래 가맹점 DB 접근 코드는 예시를 돕고자 작성된 샘플코드로 실제 가맹점의 환경에 맞게 직접 작성하셔야 됩니다.
 // 가맹점 DB에서 환불할 결제 정보 조회
@@ -39,6 +42,16 @@ $request->reason         = $data['reason'];
 $request->refund_holder  = '환불될 가상계좌 예금주';
 $request->refund_bank    = '환불될 가상계좌 은행코드';
 $request->refund_account = '환불될 가상계좌 번호';
+
+$extra = new CancelPaymentExtra();
+// 취소 요청자, API를 호출하는 출처 (optional)
+if ($extra_requester === 'admin') {
+    $extra->requester = CancelPaymentRequester::ADMIN;
+} else if ($extra_requester === 'customer'){
+    $extra->requester = CancelPaymentRequester::CUSTOMER;
+}
+
+$request->extra          = $extra;
 $result                  = $iamport->callApi($request);
 
 if ($result->isSuccess()) {
