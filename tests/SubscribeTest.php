@@ -251,4 +251,46 @@ class SubscribeTest extends TestCase
 
         $this->assertInstanceOf('Iamport\RestClient\Result', $response);
     }
+
+    /** @test */
+    public function subscribe_schedule_update()
+    {
+        $request = SubscribeInquiry::updateSchedule(self::$merchantUid, time() + 3600);
+
+        $this->assertEquals('/subscribe/payments/schedule/' . self::$merchantUid, $request->path());
+        $this->assertEquals('PUT', $request->verb());
+        $this->assertArrayHasKey('body', $request->attributes());
+
+        $response = $this->iamport->callApi($request);
+
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+    }
+
+    /** @test */
+    public function subscribe_schedule_retry()
+    {
+        $request = SubscribeInquiry::retry(self::$merchantUid);
+
+        $this->assertEquals('/subscribe/payments/schedule/' . self::$merchantUid . '/retry', $request->path());
+        $this->assertEquals('POST', $request->verb());
+        $this->assertEmpty($request->attributes());
+
+        $response = $this->iamport->callApi($request);
+
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+    }
+
+    /** @test */
+    public function subscribe_schedule_reschedule()
+    {
+        $request = SubscribeInquiry::reschedule(self::$merchantUid, time() + 7200);
+
+        $this->assertEquals('/subscribe/payments/schedule/' . self::$merchantUid . '/reschedule', $request->path());
+        $this->assertEquals('POST', $request->verb());
+        $this->assertArrayHasKey('body', $request->attributes());
+
+        $response = $this->iamport->callApi($request);
+
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+    }
 }

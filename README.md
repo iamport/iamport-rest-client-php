@@ -1,3 +1,8 @@
+> **⚠️ DEPRECATED**: 이 레포지토리는 2026년 3월 4일부로 deprecated 되었으며, 공식 지원이 되지 않습니다.
+> 본 클라이언트는 함께 포함된 [openapi.json](./openapi.json) Swagger spec 기준으로 동작합니다.
+> 추가/수정이 필요한 경우 본 레포지토리를 fork하여 수정하거나,
+> [PortOne V1 REST API 문서](https://developers.portone.io/api/rest-v1?v=v1)를 참고하여 REST client를 직접 구현해주세요.
+
 # iamport-rest-client-php
 
 PHP사용자를 위한 아임포트 REST API 연동 모듈입니다
@@ -60,13 +65,17 @@ IDE를 사용할 경우 **타입 체크**, **값의 존재 여부**, **자동완
 - SubscribeUnschedule
     - [SubscribeUnschedule()](https://api.iamport.kr/#!/subscribe/unschedule)
 - SubscribeInquiry
-    - [SubscribeInquiry::withMerchantUid()](https://api.iamport.kr/#!/subscribe/getScheduleByMid)    
-    - [SubscribeInquiry::withCustomerUid()](https://api.iamport.kr/#!/subscribe/findSchedulesByCustomer)    
+    - [SubscribeInquiry::withMerchantUid()](https://api.iamport.kr/#!/subscribe/getScheduleByMid)
+    - [SubscribeInquiry::withCustomerUid()](https://api.iamport.kr/#!/subscribe/findSchedulesByCustomer)
+    - [SubscribeInquiry::updateSchedule()](https://api.iamport.kr/#!/subscribe/updateSchedule)
+    - [SubscribeInquiry::retry()](https://api.iamport.kr/#!/subscribe/retrySchedule)
+    - [SubscribeInquiry::reschedule()](https://api.iamport.kr/#!/subscribe/reschedule)
 
 **결제 사전정보 등록&검증 API**
 - PaymentPrepare
     - [PaymentPrepare::view()](https://api.iamport.kr/#!/payments.validation/getPaymentPrepareByMerchantUid)
     - [PaymentPrepare::store()](https://api.iamport.kr/#!/payments.validation/preparePayment)
+    - [PaymentPrepare::update()](https://api.iamport.kr/#!/payments.validation/updatePaymentPrepare)
 
 **비인증 결제 빌링키 관리 API**
 - SubscribeCustomer
@@ -97,6 +106,8 @@ IDE를 사용할 경우 **타입 체크**, **값의 존재 여부**, **자동완
     - [NaverOrder::ship()](https://api.iamport.kr/#!/naver/naverShipProductOrder)
     - [NaverOrder::shipExchange()](https://api.iamport.kr/#!/naver/naverShipProductOrder_0)
     - [NaverOrder::place()](https://api.iamport.kr/#!/naver/naverPlaceProductOrder)
+    - [NaverOrder::approveCancel()](https://api.iamport.kr/#!/naver/naverApproveCancelProductOrder)
+    - [NaverOrder::collectExchanged()](https://api.iamport.kr/#!/naver/naverCollectExchangedProductOrder)
 
 - NaverPayment
     - [NaverPayment::point()](https://api.iamport.kr/#!/naver/naverDepositPoint)
@@ -127,10 +138,41 @@ IDE를 사용할 경우 **타입 체크**, **값의 존재 여부**, **자동완
     
 **카드사/은행정보 API**
 - Code
-    - [Code::cards()](https://api.iamport.kr/#!/codes/allCardCodes)    
-    - [Code::card()](https://api.iamport.kr/#!/codes/cardCodes)    
-    - [Code::banks()](https://api.iamport.kr/#!/codes/allBankCodes)    
-    - [Code::bank()](https://api.iamport.kr/#!/codes/bankCodes)    
+    - [Code::cards()](https://api.iamport.kr/#!/codes/allCardCodes)
+    - [Code::card()](https://api.iamport.kr/#!/codes/cardCodes)
+    - [Code::banks()](https://api.iamport.kr/#!/codes/allBankCodes)
+    - [Code::bank()](https://api.iamport.kr/#!/codes/bankCodes)
+
+**베네피아 전용 API**
+- Benepia
+    - [Benepia::point()](https://api.iamport.kr/#!/benepia/queryBenepiaPoint)
+    - [Benepia::payment()](https://api.iamport.kr/#!/benepia/payBenepiaPoint)
+
+**편의점 결제(CVS) API**
+- Cvs
+    - [Cvs::issue()](https://api.iamport.kr/#!/cvs/issueCvs)
+    - [Cvs::revoke()](https://api.iamport.kr/#!/cvs/revokeCvs)
+
+**KCP 퀵페이 API**
+- KcpQuick
+    - [KcpQuick::deleteMember()](https://api.iamport.kr/#!/kcpquick/deleteKcpQuickMember)
+    - [KcpQuick::payMoney()](https://api.iamport.kr/#!/kcpquick/payKcpQuickMoney)
+
+**하위 상점(Partners) API**
+- Partners
+    - [Partners::receipt()](https://api.iamport.kr/#!/partners/registerPartnerReceipt)
+
+**페이먼트월 API**
+- Paymentwall
+    - [Paymentwall::delivery()](https://api.iamport.kr/#!/paymentwall/registerDelivery)
+
+**하위 상점(Tiers) API**
+- Tiers
+    - [Tiers::view()](https://api.iamport.kr/#!/tiers/getTier)
+
+**사용자 설정 API**
+- Users
+    - [Users::pgSettings()](https://api.iamport.kr/#!/users/getPgSettings)
 
 ### Result
 

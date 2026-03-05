@@ -46,4 +46,15 @@ class Endpoint extends Enum
     public const NAVER_RESOLVE_RETURN     = '/naver/resolve-return';
     public const NAVER_POINT              = '/naver/point';
     public const NAVER_CONFIRM            = '/naver/confirm';
+    public const NAVER_APPROVE_CANCEL     = '/naver/approve-cancel';
+    public const NAVER_COLLECT_EXCHANGED  = '/naver/collect-exchanged';
+    public const BENEPIA_POINT            = '/benepia/point';
+    public const BENEPIA_PAYMENT          = '/benepia/payment';
+    public const CVS                      = '/cvs';
+    public const KCPQUICK_MEMBERS         = '/kcpquick/members/';
+    public const KCPQUICK_PAYMENT_MONEY   = '/kcpquick/payment/money';
+    public const PARTNERS_RECEIPTS        = '/partners/receipts/';
+    public const PAYMENTWALL_DELIVERY     = '/paymentwall/delivery';
+    public const TIERS                    = '/tiers/';
+    public const USERS_PG                 = '/users/pg';
 }

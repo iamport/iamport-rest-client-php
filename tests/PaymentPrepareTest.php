@@ -36,4 +36,22 @@ class PaymentPrepareTest extends TestCase
 
         $this->assertInstanceOf('Iamport\RestClient\Result', $response);
     }
+
+    /** @test */
+    public function prepare_update()
+    {
+        $request = PaymentPrepare::update(self::$merchantUid, 2000);
+
+        $this->assertEquals('/payments/prepare', $request->path());
+        $this->assertEquals('PUT', $request->verb());
+        $this->assertArrayHasKey('body', $request->attributes());
+
+        $body = json_decode($request->attributes()['body']);
+        $this->assertObjectHasAttribute('amount', $body);
+        $this->assertEquals(2000, $body->amount);
+
+        $response    = $this->iamport->callApi($request);
+
+        $this->assertInstanceOf('Iamport\RestClient\Result', $response);
+    }
 }

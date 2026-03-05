@@ -17,6 +17,7 @@ use InvalidArgumentException;
  * @property mixed  $from
  * @property mixed  $to
  * @property string $schedule_status
+ * @property int    $schedule_at
  */
 class SubscribeInquiry extends RequestBase
 {
@@ -51,6 +52,16 @@ class SubscribeInquiry extends RequestBase
      * @var string 예약상태. 누락되면 모든 상태의 예약내역 조회
      */
     protected $schedule_status;
+
+    /**
+     * @var int 결제예약 시각 UNIX TIMESTAMP
+     */
+    protected $schedule_at;
+
+    /**
+     * @var string HTTP verb
+     */
+    private $verb = 'GET';
 
     /**
      * SubscribeCustomer constructor.
@@ -100,6 +111,69 @@ class SubscribeInquiry extends RequestBase
         return $instance;
     }
 
+    /**
+     * 결제요청 예약시각 수정.
+     *
+     * @param mixed $schedule_at
+     *
+     * @return SubscribeInquiry
+     */
+    public static function updateSchedule(string $merchant_uid, $schedule_at)
+    {
+        $instance                = new self();
+        $instance->merchant_uid  = $merchant_uid;
+        $instance->schedule_at   = $instance->dateToTimestamp($schedule_at);
+        $instance->responseClass = Response\Schedule::class;
+        $instance->instanceType  = 'updateSchedule';
+        $instance->verb          = 'PUT';
+        $instance->unsetArray([
+            'customer_uid', 'page', 'from', 'to', 'schedule_status',
+        ]);
+
+        return $instance;
+    }
+
+    /**
+     * 결제 실패 재시도.
+     *
+     * @return SubscribeInquiry
+     */
+    public static function retry(string $merchant_uid)
+    {
+        $instance                = new self();
+        $instance->merchant_uid  = $merchant_uid;
+        $instance->responseClass = Response\Payment::class;
+        $instance->instanceType  = 'retry';
+        $instance->verb          = 'POST';
+        $instance->unsetArray([
+            'customer_uid', 'page', 'from', 'to', 'schedule_status', 'schedule_at',
+        ]);
+
+        return $instance;
+    }
+
+    /**
+     * 결제 실패 재예약.
+     *
+     * @param mixed $schedule_at
+     *
+     * @return SubscribeInquiry
+     */
+    public static function reschedule(string $merchant_uid, $schedule_at)
+    {
+        $instance                = new self();
+        $instance->merchant_uid  = $merchant_uid;
+        $instance->schedule_at   = $instance->dateToTimestamp($schedule_at);
+        $instance->responseClass = Response\Schedule::class;
+        $instance->instanceType  = 'reschedule';
+        $instance->verb          = 'POST';
+        $instance->unsetArray([
+            'customer_uid', 'page', 'from', 'to', 'schedule_status',
+        ]);
+
+        return $instance;
+    }
+
     public function setPage(string $page): void
     {
         $this->page = $page;
@@ -114,20 +188,44 @@ class SubscribeInquiry extends RequestBase
     }
 
     /**
+     * @param mixed $schedule_at
+     */
+    public function setScheduleAt($schedule_at): void
+    {
+        $this->schedule_at = $this->dateToTimestamp($schedule_at);
+    }
+
+    /**
      * 예약 거래주문번호(merchant_uid)로 결제예약정보를 조회
      * [GET] /subscribe/payments/schedule/{merchant_uid}.
      *
      * customer_uid별 결제예약목록을 조회
      * [GET] /subscribe/payments/schedule/customers/{customer_uid}
+     *
+     * 결제요청 예약시각 수정
+     * [PUT] /subscribe/payments/schedule/{merchant_uid}
+     *
+     * 결제 실패 재시도
+     * [POST] /subscribe/payments/schedule/{merchant_uid}/retry
+     *
+     * 결제 실패 재예약
+     * [POST] /subscribe/payments/schedule/{merchant_uid}/reschedule
      */
     public function path(): string
     {
         switch ($this->instanceType) {
             case 'withMerchantUid':
+            case 'updateSchedule':
                 return Endpoint::SBCR_PAYMENTS_SCHEDULE . $this->merchant_uid;
                 break;
             case 'withCustomerUid':
                 return Endpoint::SBCR_PAYMENTS_SCHEDULE . 'customers/' . $this->customer_uid;
+                break;
+            case 'retry':
+                return Endpoint::SBCR_PAYMENTS_SCHEDULE . $this->merchant_uid . '/retry';
+                break;
+            case 'reschedule':
+                return Endpoint::SBCR_PAYMENTS_SCHEDULE . $this->merchant_uid . '/reschedule';
                 break;
             default:
                 return '';
@@ -150,6 +248,15 @@ class SubscribeInquiry extends RequestBase
                     ],
                 ];
                 break;
+            case 'updateSchedule':
+            case 'reschedule':
+                return [
+                    'body' => json_encode($this->toArray()),
+                ];
+                break;
+            case 'retry':
+                return [];
+                break;
             default:
                 return [];
         }
@@ -157,6 +264,6 @@ class SubscribeInquiry extends RequestBase
 
     public function verb(): string
     {
-        return 'GET';
+        return $this->verb;
     }
 }

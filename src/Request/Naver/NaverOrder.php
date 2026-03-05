@@ -128,6 +128,40 @@ class NaverOrder extends RequestBase
         return $instance;
     }
 
+    /**
+     * 주문형-네이버페이 구매자의 환불요청 승인처리.
+     *
+     * @return NaverOrder
+     */
+    public static function approveCancel(string $impUid)
+    {
+        $instance                = new self();
+        $instance->imp_uid       = $impUid;
+        $instance->isCollection  = true;
+        $instance->responseClass = NaverProductOrder::class;
+        $instance->instanceType  = 'approveCancel';
+        $instance->unsetArray(['reason', 'delivery_method', 'dispatched_at', 'delivery_company', 'tracking_number']);
+
+        return $instance;
+    }
+
+    /**
+     * 주문형-네이버페이 교환승인된 상품 수거완료처리.
+     *
+     * @return NaverOrder
+     */
+    public static function collectExchanged(string $impUid)
+    {
+        $instance                = new self();
+        $instance->imp_uid       = $impUid;
+        $instance->isCollection  = true;
+        $instance->responseClass = NaverProductOrder::class;
+        $instance->instanceType  = 'collectExchanged';
+        $instance->unsetArray(['reason', 'delivery_method', 'dispatched_at', 'delivery_company', 'tracking_number']);
+
+        return $instance;
+    }
+
     public function setProductOrderId(array $product_order_id): void
     {
         $this->product_order_id = $product_order_id;
@@ -220,6 +254,12 @@ class NaverOrder extends RequestBase
                 break;
             case 'place':
                 return Endpoint::PAYMENTS . $this->imp_uid . Endpoint::NAVER_PLACE;
+                break;
+            case 'approveCancel':
+                return Endpoint::PAYMENTS . $this->imp_uid . Endpoint::NAVER_APPROVE_CANCEL;
+                break;
+            case 'collectExchanged':
+                return Endpoint::PAYMENTS . $this->imp_uid . Endpoint::NAVER_COLLECT_EXCHANGED;
                 break;
             default:
                 return '';
