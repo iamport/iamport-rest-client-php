@@ -73,11 +73,31 @@ class PaymentPrepare extends RequestBase
     }
 
     /**
+     * 사전등록 결제금액을 수정.
+     *
+     * @return PaymentPrepare
+     */
+    public static function update(string $merchantUid, float $amount)
+    {
+        $instance                 = new self();
+        $instance->merchant_uid   = $merchantUid;
+        $instance->amount         = $amount;
+        $instance->responseClass  = Response\PaymentPrepare::class;
+        $instance->instanceType   = 'update';
+        $instance->verb           = 'PUT';
+
+        return $instance;
+    }
+
+    /**
      * 인증방식의 결제를 진행할 때 결제금액 위변조시 결제진행자체를 block하기 위해 결제예정금액을 사전등록
      * [POST] /payments/prepare.
      *
      * /payments/prepare로 이미 등록되어있는 사전등록 결제정보를 조회
      * [GET] /payments/prepare/{merchant_uid}
+     *
+     * 사전등록 결제금액 수정
+     * [PUT] /payments/prepare
      */
     public function path(): string
     {
@@ -85,12 +105,14 @@ class PaymentPrepare extends RequestBase
             return Endpoint::PAYMENTS_PREPARE;
         } elseif ($this->instanceType === 'view') {
             return Endpoint::PAYMENTS_PREPARE . '/' . $this->merchant_uid;
+        } elseif ($this->instanceType === 'update') {
+            return Endpoint::PAYMENTS_PREPARE;
         }
     }
 
     public function attributes(): array
     {
-        if ($this->instanceType === 'store') {
+        if ($this->instanceType === 'store' || $this->instanceType === 'update') {
             return [
                 'body' => json_encode($this->toArray()),
             ];
